@@ -24,6 +24,64 @@ load_env() {
     : "${WDA_PROJECT:=$HOME/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj}"
     : "${WDA_DERIVED_DATA:=$HOME/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf}"
     : "${WARMUP_PORT:=8000}"
+
+    # Résout le chemin WDA (auto-détection si le défaut n'existe pas)
+    WDA_PROJECT="$(resolve_wda_project)"
+}
+
+# Cherche WebDriverAgent.xcodeproj sur le Mac.
+find_wda_project() {
+    local candidates=()
+    local p npm_root
+
+    # Chemin explicite (.env ou défaut)
+    if [[ -n "${WDA_PROJECT:-}" && -f "${WDA_PROJECT}" ]]; then
+        echo "$WDA_PROJECT"
+        return 0
+    fi
+
+    candidates+=(
+        "$HOME/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj"
+        "$HOME/WebDriverAgent/WebDriverAgent.xcodeproj"
+        "$HOME/Developer/WebDriverAgent/WebDriverAgent.xcodeproj"
+    )
+
+    if command -v npm >/dev/null 2>&1; then
+        npm_root="$(npm root -g 2>/dev/null || true)"
+        if [[ -n "$npm_root" ]]; then
+            candidates+=(
+                "$npm_root/appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj"
+            )
+        fi
+    fi
+
+    for p in "${candidates[@]}"; do
+        if [[ -f "$p" ]]; then
+            echo "$p"
+            return 0
+        fi
+    done
+
+    # Spotlight (Mac uniquement)
+    if command -v mdfind >/dev/null 2>&1; then
+        while IFS= read -r p; do
+            if [[ -f "$p" && "$p" == *WebDriverAgent.xcodeproj ]]; then
+                echo "$p"
+                return 0
+            fi
+        done < <(mdfind "kMDItemFSName == 'WebDriverAgent.xcodeproj'" 2>/dev/null | head -5)
+    fi
+
+    return 1
+}
+
+resolve_wda_project() {
+    local found
+    if found=$(find_wda_project); then
+        echo "$found"
+    else
+        echo "${WDA_PROJECT:-$HOME/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj}"
+    fi
 }
 
 check_iphone() {

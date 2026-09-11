@@ -17,9 +17,24 @@ echo "✅ Python venv OK"
 # .env
 if [[ ! -f "$ROOT/.env" ]]; then
     cp "$ROOT/config/mac.env.example" "$ROOT/.env"
-    echo "✅ Fichier .env créé — édite-le si tes chemins diffèrent"
+    echo "✅ Fichier .env créé"
 else
     echo "ℹ️  .env existe déjà"
+fi
+
+# Auto-détection WDA
+if found=$(find_wda_project); then
+    if grep -q "^WDA_PROJECT=" "$ROOT/.env" 2>/dev/null; then
+        sed -i '' "s|^WDA_PROJECT=.*|WDA_PROJECT=$found|" "$ROOT/.env"
+    else
+        echo "WDA_PROJECT=$found" >> "$ROOT/.env"
+    fi
+    echo "✅ WDA_PROJECT → $found"
+else
+    echo ""
+    echo "⚠️  WebDriverAgent introuvable automatiquement."
+    echo "   Lance : ./scripts/find-wda.sh"
+    echo "   Ou installe Appium : npm install -g appium && appium driver install xcuitest"
 fi
 
 # Outils optionnels
@@ -39,16 +54,9 @@ if ! command -v idevice_id >/dev/null 2>&1; then
     echo "   brew install libimobiledevice"
 fi
 
-if [[ ! -d "$(dirname "$WDA_PROJECT")" ]]; then
+if [[ ! -d "$(dirname "$WDA_PROJECT")" ]] || [[ ! -f "$WDA_PROJECT" ]]; then
     echo ""
-    echo "⚠️  WebDriverAgent introuvable à :"
-    echo "   $WDA_PROJECT"
-    echo ""
-    echo "Installe Appium + driver XCUITest :"
-    echo "   npm install -g appium"
-    echo "   appium driver install xcuitest"
-    echo ""
-    echo "Puis mets à jour WDA_PROJECT dans .env"
+    echo "⚠️  WebDriverAgent introuvable — lance ./scripts/find-wda.sh"
 fi
 
 echo ""

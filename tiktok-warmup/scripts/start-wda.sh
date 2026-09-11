@@ -21,7 +21,12 @@ echo "✅ iPhone détecté"
 
 if [[ ! -f "$WDA_PROJECT" ]]; then
     echo "❌ Projet WDA introuvable : $WDA_PROJECT"
-    echo "   Édite WDA_PROJECT dans .env ou lance ./scripts/setup-mac.sh"
+    echo ""
+    echo "Lance d'abord :"
+    echo "  ./scripts/find-wda.sh"
+    echo ""
+    echo "Ou édite WDA_PROJECT dans .env avec le chemin affiché"
+    echo "dans Xcode (clic droit WebDriverAgent → Show in Finder)."
     exit 1
 fi
 
