@@ -1,0 +1,75 @@
+# Profils de warmup TikTok — augmenter progressivement l'engagement
+
+profiles:
+  observer:
+    description: "Jours 1-3 — observation pure, aucune interaction"
+    min_watch_seconds: 4
+    max_watch_seconds: 25
+    like_probability: 0.0
+    follow_probability: 0.0
+    comment_probability: 0.0
+    profile_visit_probability: 0.02
+    scroll_back_probability: 0.08
+    pause_probability: 0.15
+    session_duration_minutes: 15
+    max_videos_per_session: 40
+
+  light:
+    description: "Jours 4-7 — engagement léger"
+    min_watch_seconds: 5
+    max_watch_seconds: 35
+    like_probability: 0.08
+    follow_probability: 0.01
+    comment_probability: 0.0
+    profile_visit_probability: 0.05
+    scroll_back_probability: 0.10
+    pause_probability: 0.12
+    session_duration_minutes: 20
+    max_videos_per_session: 50
+
+  moderate:
+    description: "Jours 8-14 — engagement modéré"
+    min_watch_seconds: 6
+    max_watch_seconds: 45
+    like_probability: 0.18
+    follow_probability: 0.03
+    comment_probability: 0.02
+    profile_visit_probability: 0.08
+    scroll_back_probability: 0.12
+    pause_probability: 0.10
+    session_duration_minutes: 25
+    max_videos_per_session: 60
+
+  active:
+    description: "Jour 15+ — prêt à poster, engagement naturel"
+    min_watch_seconds: 8
+    max_watch_seconds: 55
+    like_probability: 0.25
+    follow_probability: 0.05
+    comment_probability: 0.04
+    profile_visit_probability: 0.10
+    scroll_back_probability: 0.15
+    pause_probability: 0.08
+    session_duration_minutes: 30
+    max_videos_per_session: 70
+
+# Comportement humain global
+human_behavior:
+  swipe_duration_ms:
+    min: 280
+    max: 650
+  swipe_distance_variance: 0.15
+  micro_pause_ms:
+    min: 200
+    max: 1200
+  between_action_delay_ms:
+    min: 800
+    max: 3500
+  session_break_minutes:
+    min: 3
+    max: 8
+
+# Identifiants TikTok iOS
+tiktok:
+  bundle_id: "com.zhiliaoapp.musically"
+  app_name: "TikTok"
