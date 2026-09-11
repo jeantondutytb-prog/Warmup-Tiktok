@@ -1,7 +1,10 @@
 import asyncio
 import json
+import os
 from fastapi import APIRouter, HTTPException, Request
 from sse_starlette.sse import EventSourceResponse
+
+from app.core.device_status import get_device_status
 
 router = APIRouter()
 
@@ -9,6 +12,31 @@ router = APIRouter()
 @router.get("/api/status")
 async def get_status(request: Request):
     return request.app.state.orchestrator.get_status()
+
+
+@router.get("/api/device")
+async def device_status():
+    """État iPhone + WDA pour l'écran de lancement rapide."""
+    wda_url = os.environ.get("WDA_URL")
+    return get_device_status(wda_url)
+
+
+@router.get("/api/launcher/accounts")
+async def launcher_accounts(request: Request):
+    """Liste simplifiée des comptes warmup (sans les comptes protégés)."""
+    status = request.app.state.orchestrator.get_status()
+    accounts = []
+    for username, info in status.items():
+        if info.get("protected"):
+            continue
+        accounts.append({
+            "username": username,
+            "role": info.get("role", ""),
+            "protocol_day": info.get("protocol_day", 1),
+            "status": info.get("status", "idle"),
+            "can_start": info.get("status") != "running",
+        })
+    return accounts
 
 
 @router.post("/api/start-all")

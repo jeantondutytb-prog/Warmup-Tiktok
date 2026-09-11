@@ -42,6 +42,11 @@ WDA_URL=http://192.168.1.61:8100 python -m app.main
 
 Dashboard sur `http://localhost:8000`.
 
+L'écran d'accueil (`/`) est le **lancement rapide** en 3 étapes : branche
+l'iPhone, choisis le compte, confirme que TikTok est sur le feed, puis clique
+**Lancer le warmup**. La vue détaillée avec toutes les cartes reste sur
+`/dashboard`.
+
 ## Calibration — faite le 03.09.2026
 
 Les huit repères utilisés par les quatre phases ont été **vérifiés par un tap

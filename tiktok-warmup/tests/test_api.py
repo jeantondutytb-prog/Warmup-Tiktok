@@ -91,10 +91,21 @@ async def test_stop_single_account(mock_orchestrator):
 
 
 @pytest.mark.asyncio
-async def test_dashboard_page(mock_orchestrator):
+async def test_launch_page(mock_orchestrator):
     app = create_app(mock_orchestrator)
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         resp = await client.get("/")
+    assert resp.status_code == 200
+    assert "text/html" in resp.headers["content-type"]
+    assert "Lancer le warmup" in resp.text
+    assert "Branche ton iPhone" in resp.text
+
+
+@pytest.mark.asyncio
+async def test_dashboard_page(mock_orchestrator):
+    app = create_app(mock_orchestrator)
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        resp = await client.get("/dashboard")
     assert resp.status_code == 200
     assert "text/html" in resp.headers["content-type"]
     # Un compte protégé n'expose pas de bouton Start.
@@ -105,3 +116,30 @@ async def test_dashboard_page(mock_orchestrator):
     assert "Jour 1 / 14" in resp.text
     assert "filtre digicam" in resp.text
     assert "FYP ready" in resp.text
+
+
+@pytest.mark.asyncio
+async def test_launcher_accounts_excludes_protected(mock_orchestrator):
+    app = create_app(mock_orchestrator)
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        resp = await client.get("/api/launcher/accounts")
+    assert resp.status_code == 200
+    data = resp.json()
+    usernames = [a["username"] for a in data]
+    assert "u1" in usernames
+    assert "locked" not in usernames
+
+
+@pytest.mark.asyncio
+async def test_device_status_endpoint():
+    app = create_app(MagicMock())
+    with patch("app.api.routes.get_device_status") as mock_status:
+        mock_status.return_value = {
+            "iphone": {"connected": True, "message": "iPhone connecté"},
+            "wda": {"ready": True, "url": "http://127.0.0.1:8100", "message": "ok"},
+            "ready": True,
+        }
+        async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+            resp = await client.get("/api/device")
+    assert resp.status_code == 200
+    assert resp.json()["ready"] is True
