@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>TikTok Control Center</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="toolbar">
+      <h1>Control Center</h1>
+      <form id="add-form">
+        <input id="add-label" type="text" placeholder="@nom_du_compte" required />
+        <button type="submit">Ajouter</button>
+      </form>
+      <div id="pilot" class="pilot" hidden>
+        <span id="pilot-text" class="pilot-text"></span>
+        <button id="pilot-go" type="button">Y aller</button>
+      </div>
+      <nav id="pager" hidden>
+        <button id="prev-page" type="button">&larr;</button>
+        <span id="page-indicator"></span>
+        <button id="next-page" type="button">&rarr;</button>
+      </nav>
+    </header>
+    <main id="grid">
+      <div id="cells"></div>
+      <p id="empty" hidden>Aucun compte. Ajoute-en un pour commencer.</p>
+    </main>
+    <div id="error-banner" hidden role="alert"></div>
+    <script type="module" src="renderer/main.js"></script>
+  </body>
+</html>

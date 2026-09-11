@@ -1,0 +1,260 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project /Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -derivedDataPath /Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf -destination id=00008020-000D0CE43A99002E IPHONEOS_DEPLOYMENT_TARGET=18.7 DEVELOPMENT_TEAM=U284BGAVKL "CODE_SIGN_IDENTITY=Apple Development" PRODUCT_BUNDLE_IDENTIFIER=com.jean.wda.runner GCC_TREAT_WARNINGS_AS_ERRORS=0 COMPILER_INDEX_STORE_ENABLE=NO
+
+Build settings from command line:
+    CODE_SIGN_IDENTITY = Apple Development
+    COMPILER_INDEX_STORE_ENABLE = NO
+    DEVELOPMENT_TEAM = U284BGAVKL
+    GCC_TREAT_WARNINGS_AS_ERRORS = 0
+    IPHONEOS_DEPLOYMENT_TARGET = 18.7
+    PRODUCT_BUNDLE_IDENTIFIER = com.jean.wda.runner
+
+2026-08-21 18:42:19.700134+0200 WebDriverAgentRunner-Runner[3188:484908] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'All tests' started at 2026-08-21 18:42:20.143.
+Test Suite 'WebDriverAgentRunner.xctest' started at 2026-08-21 18:42:20.143.
+Test Suite 'UITestingUITests' started at 2026-08-21 18:42:20.144.
+    t =      nans Suite Set Up
+2026-08-21 18:42:20.167656+0200 WebDriverAgentRunner-Runner[3188:484908] [User Defaults] Couldn't write values for keys (
+    KeyboardAutocorrection
+) in CFPrefsPlistSource<0x1083fa980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:42:20.168039+0200 WebDriverAgentRunner-Runner[3188:484908] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_changedAt"
+) in CFPrefsPlistSource<0x1083fa980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:42:20.168345+0200 WebDriverAgentRunner-Runner[3188:484908] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_buildAtChange"
+) in CFPrefsPlistSource<0x1083fa980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:42:20.168638+0200 WebDriverAgentRunner-Runner[3188:484908] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_previousValue"
+) in CFPrefsPlistSource<0x1083fa980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:42:20.168940+0200 WebDriverAgentRunner-Runner[3188:484908] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_analyzedAt"
+) in CFPrefsPlistSource<0x1083fa980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:42:20.184743+0200 WebDriverAgentRunner-Runner[3188:484908] [User Defaults] Couldn't write values for keys (
+    KeyboardPrediction
+) in CFPrefsPlistSource<0x1083fa980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:42:20.185183+0200 WebDriverAgentRunner-Runner[3188:484908] [User Defaults] Couldn't write values for keys (
+    KeyboardShowPredictionBar
+) in CFPrefsPlistSource<0x1083fa980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:42:20.185526+0200 WebDriverAgentRunner-Runner[3188:484908] [User Defaults] Couldn't write values for keys (
+    DidShowGestureKeyboardIntroduction
+) in CFPrefsPlistSource<0x1083fa980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+Test Case '-[UITestingUITests testRunner]' started.
+    t =     0.00s Start Test at 2026-08-21 18:42:20.193
+    t =     0.00s Set Up
+2026-08-21 18:42:20.196441+0200 WebDriverAgentRunner-Runner[3188:484908] Built at Aug 21 2026 12:37:17
+2026-08-21 18:42:20.219728+0200 WebDriverAgentRunner-Runner[3188:484908] ServerURLHere->http://192.168.1.49:8100<-ServerURLHere
+2026-08-21 18:42:21.616984+0200 WebDriverAgentRunner-Runner[3188:484908] Using singleton test manager
+    t =    10.88s Open com.apple.Preferences
+    t =    10.88s     Launch com.apple.Preferences
+    t =    10.88s         Terminate com.apple.Preferences:3186
+    t =    12.18s         Setting up automation session
+2026-08-21 18:42:32.399946+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.apple.Preferences is in idle state (including animations)
+    t =    12.21s         Wait for com.apple.Preferences to idle
+    t =    13.52s Find the Application 'com.apple.Preferences'
+    t =    13.53s     Requesting snapshot of accessibility hierarchy for app with pid 3189
+    t =    13.69s Open com.zhiliaoapp.musically
+    t =    13.69s     Activate com.zhiliaoapp.musically
+2026-08-21 18:42:34.036677+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    13.85s         Wait for com.zhiliaoapp.musically to idle
+2026-08-21 18:42:37.740578+0200 WebDriverAgentRunner-Runner[3188:484908] Getting the most recent active application (out of 1 total items)
+    t =    17.56s Find the Application 'com.zhiliaoapp.musically'
+    t =    17.56s     Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    17.63s Find the Application 'com.zhiliaoapp.musically'
+    t =    17.63s     Requesting snapshot of accessibility hierarchy for app with pid 3106
+2026-08-21 18:42:40.562821+0200 WebDriverAgentRunner-Runner[3188:484908] Getting the most recent active application (out of 1 total items)
+    t =    20.37s Press Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 650.0) for 0.6 seconds, then drag to Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 200.0) with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+2026-08-21 18:42:40.570209+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    20.38s     Wait for com.zhiliaoapp.musically to idle
+    t =    20.39s     Find the Application 'com.zhiliaoapp.musically'
+    t =    20.39s         Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    20.44s Application is configured to skip UI interruption handling
+    t =    20.45s     Synthesize event
+    t =    20.45s         Find the Application 'com.zhiliaoapp.musically'
+    t =    20.46s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    20.51s         Find the Application 'com.zhiliaoapp.musically'
+    t =    20.52s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    20.59s         Find the Application 'com.zhiliaoapp.musically'
+    t =    20.59s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    20.65s         Find the Application 'com.zhiliaoapp.musically'
+    t =    20.65s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    20.73s         Find the Application 'com.zhiliaoapp.musically'
+    t =    20.73s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+2026-08-21 18:42:42.709911+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    22.52s     Wait for com.zhiliaoapp.musically to idle
+2026-08-21 18:42:46.515462+0200 WebDriverAgentRunner-Runner[3188:484908] Getting the most recent active application (out of 1 total items)
+    t =    26.32s Press Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 650.0) for 0.5 seconds, then drag to Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 200.0) with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+2026-08-21 18:42:46.520872+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    26.33s     Wait for com.zhiliaoapp.musically to idle
+    t =    26.34s     Find the Application 'com.zhiliaoapp.musically'
+    t =    26.34s         Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    26.54s Application is configured to skip UI interruption handling
+    t =    26.55s     Synthesize event
+    t =    26.55s         Find the Application 'com.zhiliaoapp.musically'
+    t =    26.55s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    26.65s         Find the Application 'com.zhiliaoapp.musically'
+    t =    26.65s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    26.74s         Find the Application 'com.zhiliaoapp.musically'
+    t =    26.74s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    26.84s         Find the Application 'com.zhiliaoapp.musically'
+    t =    26.84s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    26.94s         Find the Application 'com.zhiliaoapp.musically'
+    t =    26.95s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+2026-08-21 18:42:48.880469+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    28.69s     Wait for com.zhiliaoapp.musically to idle
+2026-08-21 18:42:54.020368+0200 WebDriverAgentRunner-Runner[3188:484908] Getting the most recent active application (out of 1 total items)
+    t =    33.83s Press Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 650.0) for 0.5 seconds, then drag to Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 200.0) with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+2026-08-21 18:42:54.023903+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    33.83s     Wait for com.zhiliaoapp.musically to idle
+    t =    33.84s     Find the Application 'com.zhiliaoapp.musically'
+    t =    33.85s         Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    33.97s Application is configured to skip UI interruption handling
+    t =    33.98s     Synthesize event
+    t =    33.98s         Find the Application 'com.zhiliaoapp.musically'
+    t =    33.99s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    34.08s         Find the Application 'com.zhiliaoapp.musically'
+    t =    34.08s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    34.19s         Find the Application 'com.zhiliaoapp.musically'
+    t =    34.19s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    34.28s         Find the Application 'com.zhiliaoapp.musically'
+    t =    34.29s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    34.38s         Find the Application 'com.zhiliaoapp.musically'
+    t =    34.39s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+2026-08-21 18:42:56.377548+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    36.19s     Wait for com.zhiliaoapp.musically to idle
+2026-08-21 18:43:00.897519+0200 WebDriverAgentRunner-Runner[3188:484908] Getting the most recent active application (out of 1 total items)
+    t =    40.71s Press Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 650.0) for 0.6 seconds, then drag to Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 200.0) with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+2026-08-21 18:43:00.901210+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    40.71s     Wait for com.zhiliaoapp.musically to idle
+    t =    40.72s     Find the Application 'com.zhiliaoapp.musically'
+    t =    40.72s         Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    40.87s Application is configured to skip UI interruption handling
+    t =    40.87s     Synthesize event
+    t =    40.88s         Find the Application 'com.zhiliaoapp.musically'
+    t =    40.88s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    41.00s         Find the Application 'com.zhiliaoapp.musically'
+    t =    41.00s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    41.12s         Find the Application 'com.zhiliaoapp.musically'
+    t =    41.12s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    41.22s         Find the Application 'com.zhiliaoapp.musically'
+    t =    41.22s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    41.33s         Find the Application 'com.zhiliaoapp.musically'
+    t =    41.33s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+2026-08-21 18:43:03.391693+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    43.20s     Wait for com.zhiliaoapp.musically to idle
+2026-08-21 18:43:08.389872+0200 WebDriverAgentRunner-Runner[3188:484908] Getting the most recent active application (out of 1 total items)
+    t =    48.20s Press Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 650.0) for 0.8 seconds, then drag to Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 200.0) with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+2026-08-21 18:43:08.393656+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    48.20s     Wait for com.zhiliaoapp.musically to idle
+    t =    48.23s     Find the Application 'com.zhiliaoapp.musically'
+    t =    48.23s         Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    48.37s Application is configured to skip UI interruption handling
+    t =    48.37s     Synthesize event
+    t =    48.38s         Find the Application 'com.zhiliaoapp.musically'
+    t =    48.38s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    48.50s         Find the Application 'com.zhiliaoapp.musically'
+    t =    48.50s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    48.61s         Find the Application 'com.zhiliaoapp.musically'
+    t =    48.61s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    48.72s         Find the Application 'com.zhiliaoapp.musically'
+    t =    48.72s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    48.82s         Find the Application 'com.zhiliaoapp.musically'
+    t =    48.82s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+2026-08-21 18:43:11.108583+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    50.92s     Wait for com.zhiliaoapp.musically to idle
+2026-08-21 18:43:14.261234+0200 WebDriverAgentRunner-Runner[3188:484908] Getting the most recent active application (out of 1 total items)
+    t =    54.07s Press Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 650.0) for 0.9 seconds, then drag to Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 200.0) with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+2026-08-21 18:43:14.265961+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    54.07s     Wait for com.zhiliaoapp.musically to idle
+    t =    54.09s     Find the Application 'com.zhiliaoapp.musically'
+    t =    54.09s         Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    54.24s Application is configured to skip UI interruption handling
+    t =    54.25s     Synthesize event
+    t =    54.25s         Find the Application 'com.zhiliaoapp.musically'
+    t =    54.26s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    54.38s         Find the Application 'com.zhiliaoapp.musically'
+    t =    54.38s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    54.50s         Find the Application 'com.zhiliaoapp.musically'
+    t =    54.50s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    54.61s         Find the Application 'com.zhiliaoapp.musically'
+    t =    54.61s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    54.71s         Find the Application 'com.zhiliaoapp.musically'
+    t =    54.72s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+2026-08-21 18:43:17.056098+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    56.86s     Wait for com.zhiliaoapp.musically to idle
+2026-08-21 18:43:22.404409+0200 WebDriverAgentRunner-Runner[3188:484908] Getting the most recent active application (out of 1 total items)
+    t =    62.21s Press Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 650.0) for 0.6 seconds, then drag to Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 200.0) with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+2026-08-21 18:43:22.409518+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    62.22s     Wait for com.zhiliaoapp.musically to idle
+    t =    62.23s     Find the Application 'com.zhiliaoapp.musically'
+    t =    62.24s         Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    62.38s Application is configured to skip UI interruption handling
+    t =    62.39s     Synthesize event
+    t =    62.39s         Find the Application 'com.zhiliaoapp.musically'
+    t =    62.40s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    62.53s         Find the Application 'com.zhiliaoapp.musically'
+    t =    62.53s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    62.66s         Find the Application 'com.zhiliaoapp.musically'
+    t =    62.67s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    62.78s         Find the Application 'com.zhiliaoapp.musically'
+    t =    62.78s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    62.89s         Find the Application 'com.zhiliaoapp.musically'
+    t =    62.89s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+2026-08-21 18:43:24.960709+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    64.77s     Wait for com.zhiliaoapp.musically to idle
+2026-08-21 18:43:35.060507+0200 WebDriverAgentRunner-Runner[3188:484908] Getting the most recent active application (out of 1 total items)
+    t =    74.87s Press Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 650.0) for 0.7 seconds, then drag to Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 200.0) with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+2026-08-21 18:43:35.064918+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    74.87s     Wait for com.zhiliaoapp.musically to idle
+    t =    74.89s     Find the Application 'com.zhiliaoapp.musically'
+    t =    74.89s         Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    75.04s Application is configured to skip UI interruption handling
+    t =    75.05s     Synthesize event
+    t =    75.05s         Find the Application 'com.zhiliaoapp.musically'
+    t =    75.05s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    75.18s         Find the Application 'com.zhiliaoapp.musically'
+    t =    75.19s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    75.32s         Find the Application 'com.zhiliaoapp.musically'
+    t =    75.32s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    75.43s         Find the Application 'com.zhiliaoapp.musically'
+    t =    75.43s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    75.54s         Find the Application 'com.zhiliaoapp.musically'
+    t =    75.55s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+2026-08-21 18:43:37.697387+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    77.51s     Wait for com.zhiliaoapp.musically to idle
+2026-08-21 18:43:53.676022+0200 WebDriverAgentRunner-Runner[3188:484908] Getting the most recent active application (out of 1 total items)
+    t =    93.48s Press Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 650.0) for 0.8 seconds, then drag to Application 'com.zhiliaoapp.musically'[0.00, 0.00] -> (187.0, 200.0) with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+2026-08-21 18:43:53.680212+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    93.49s     Wait for com.zhiliaoapp.musically to idle
+    t =    93.51s     Find the Application 'com.zhiliaoapp.musically'
+    t =    93.51s         Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    93.65s Application is configured to skip UI interruption handling
+    t =    93.66s     Synthesize event
+    t =    93.66s         Find the Application 'com.zhiliaoapp.musically'
+    t =    93.67s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    93.79s         Find the Application 'com.zhiliaoapp.musically'
+    t =    93.79s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    93.91s         Find the Application 'com.zhiliaoapp.musically'
+    t =    93.92s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    94.02s         Find the Application 'com.zhiliaoapp.musically'
+    t =    94.02s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =    94.13s         Find the Application 'com.zhiliaoapp.musically'
+    t =    94.13s             Requesting snapshot of accessibility hierarchy for app with pid 3106
+2026-08-21 18:43:56.339335+0200 WebDriverAgentRunner-Runner[3188:484908] Waiting up to 10s until com.zhiliaoapp.musically is in idle state (including animations)
+    t =    96.15s     Wait for com.zhiliaoapp.musically to idle
+    t =   111.94s Terminate com.apple.Preferences:3189
+    t =   113.12s Open com.apple.Preferences
+    t =   113.13s     Launch com.apple.Preferences
+    t =   113.30s         Setting up automation session
+2026-08-21 18:44:13.552455+0200 WebDriverAgentRunner-Runner[3188:484908] Quiescence checks are disabled for com.apple.Preferences application. Making it to believe it is idling
+    t =   114.45s Pressing Home button
+    t =   116.99s Open com.zhiliaoapp.musically
+    t =   116.99s     Activate com.zhiliaoapp.musically
+2026-08-21 18:44:17.318940+0200 WebDriverAgentRunner-Runner[3188:484908] Quiescence checks are disabled for com.zhiliaoapp.musically application. Making it to believe it is idling
+2026-08-21 18:45:04.512602+0200 WebDriverAgentRunner-Runner[3188:484908] Getting the most recent active application (out of 1 total items)
+    t =   164.33s Find the Application 'com.zhiliaoapp.musically'
+    t =   164.33s     Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =   225.35s     Find the Application 'com.zhiliaoapp.musically' (retry 1)
+    t =   225.37s         Requesting snapshot of accessibility hierarchy for app with pid 3106
+    t =   286.39s     Find the Application 'com.zhiliaoapp.musically' (retry 2)
+    t =   286.40s         Requesting snapshot of accessibility hierarchy for app with pid 3106

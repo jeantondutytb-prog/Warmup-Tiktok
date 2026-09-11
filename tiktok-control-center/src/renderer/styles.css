@@ -1,0 +1,170 @@
+:root {
+  --toolbar-height: 56px;
+  --cell-header-height: 30px;
+  --gap: 10px;
+  --bg: #0f0f10;
+  --panel: #1c1c1f;
+  --text: #f1f1f2;
+  --muted: #8a8a91;
+  --accent: #fe2c55;
+}
+
+* { box-sizing: border-box; }
+
+/*
+ * L'attribut `hidden` doit toujours gagner sur toute regle `display` de ce
+ * fichier. Sans ce garde, un selecteur d'auteur qui pose `display` sur un
+ * element (#pager, #empty, #error-banner : tous les trois bascules par
+ * `element.hidden = ...` en JS) prend le pas sur la regle UA `[hidden] {
+ * display: none }` - l'attribut n'a alors plus aucun effet visuel, et si
+ * l'element est positionne il peut rester au-dessus de l'interface et
+ * intercepter les clics meme "cache".
+ */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden; /* le chassis ne scrolle jamais : les vues natives ne suivraient pas */
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+#toolbar {
+  height: var(--toolbar-height);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+  background: var(--panel);
+  border-bottom: 1px solid #2a2a2e;
+}
+
+#toolbar h1 { font-size: 14px; margin: 0; font-weight: 600; }
+#add-form { display: flex; gap: 6px; }
+
+input, button {
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid #34343a;
+  background: #26262b;
+  color: var(--text);
+  padding: 5px 10px;
+}
+
+button { cursor: pointer; }
+button:hover { background: #34343a; }
+
+/*
+ * Entre #add-form et #pager (qui reste ancre a droite via margin-left:auto) :
+ * flex:1 lui laisse tout l'espace restant de la barre d'outils, et min-width:0
+ * autorise ce flex item a se retrecir sous son contenu naturel pour que
+ * .pilot-text puisse tronquer plutot que de pousser #pager hors de la barre
+ * quand titre + formulaire + pager sont tous presents.
+ */
+.pilot { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 8px; }
+.pilot-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+#pilot-go { flex: none; }
+
+#pager { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+#grid { position: relative; height: calc(100vh - var(--toolbar-height)); }
+
+.cell {
+  position: absolute;
+  border: 1px solid #2a2a2e;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+}
+
+.cell.focused { border-color: var(--accent); }
+
+.cell-header {
+  height: var(--cell-header-height);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  background: var(--panel);
+  cursor: pointer;
+}
+
+.cell-label { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cell-timer { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/*
+ * Score de regularite : volontairement terse (juste le nombre, pas de mot),
+ * flex:none pour ne jamais etre lui-meme rogne - c'est .cell-label, deja
+ * concu pour retrecir (overflow/ellipsis ci-dessus), qui absorbe le manque
+ * de place dans cet en-tete etroit.
+ */
+.cell-score {
+  flex: none;
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-actions { margin-left: auto; display: flex; gap: 4px; }
+.cell-actions button { padding: 1px 6px; font-size: 11px; }
+
+.status { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.status.stopped { background: #55555c; }
+.status.loading { background: #e0a63a; }
+.status.ready   { background: #3ecf6a; }
+.status.error   { background: var(--accent); }
+
+.cell-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% - var(--cell-header-height));
+  color: var(--muted);
+}
+
+/*
+ * Positionne dans #grid (position: relative), pas dans <body> : #grid ne
+ * couvre que la zone sous la barre d'outils, donc ce rectangle "inset: 0"
+ * ne peut plus jamais recouvrir #toolbar. pointer-events: none en plus par
+ * defense en profondeur - un message passif ne doit jamais intercepter un
+ * clic, meme si une regle future le rendait visible par erreur.
+ */
+#empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+#error-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 80vw;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.error-text { overflow-wrap: anywhere; }
+
+#error-banner button {
+  flex: none;
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+#error-banner button:hover { background: rgba(255, 255, 255, 0.3); }

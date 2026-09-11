@@ -1,0 +1,35 @@
+# Comptes du Protocole Peachtint.
+#
+# `tiktok_row` est la position dans le sélecteur de compte TikTok, de haut en
+# bas. `protected: true` interdit toute action d'écriture sur le compte : le
+# protocole classe emma.ftpl en « ne pas toucher », et l'orchestrateur refuse
+# de démarrer une session dessus.
+accounts:
+  - username: "emma.srpt"
+    device_profile: "iphone_xs"
+    comment_style: "casual"
+    tiktok_row: 0
+    role: "flagship"
+    protected: false
+
+  - username: "chloe.rtps"
+    device_profile: "iphone_xs"
+    comment_style: "questions"
+    tiktok_row: 1
+    role: "second"
+    protected: false
+
+  - username: "eva.drtp"
+    device_profile: "iphone_xs"
+    comment_style: "emoji_heavy"
+    tiktok_row: 2
+    role: "lab"
+    protected: false
+
+  # Compte Capiria (coupes hommes). Aucun warmup, aucune publication peachtint.
+  - username: "emma.ftpl"
+    device_profile: "iphone_xs"
+    comment_style: "casual"
+    tiktok_row: 3
+    role: "capiria"
+    protected: true

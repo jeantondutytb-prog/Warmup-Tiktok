@@ -1,0 +1,757 @@
+2026-08-21 16:20:37:783 [Appium] Welcome to Appium v3.6.0 (REV 5b90e281d4e0c8fbd6ca4d8358276fb305b8d0bd)
+2026-08-21 16:20:37:784 [Appium] Non-default server args:
+2026-08-21 16:20:37:785 [Appium] { logNoColors: true, logTimestamp: true, relaxedSecurityEnabled: true }
+2026-08-21 16:20:37:785 [Appium] Enabling relaxed security. All insecure features will be enabled unless explicitly disabled by --deny-insecure
+2026-08-21 16:20:37:785 [Appium] The autodetected Appium home path: /Users/jean/.appium
+2026-08-21 16:20:37:785 [Appium] Attempting to load driver uiautomator2...
+2026-08-21 16:20:37:785 [Appium] Attempting to load driver xcuitest...
+2026-08-21 16:20:37:786 [Appium] Requiring driver at /Users/jean/.appium/node_modules/appium-uiautomator2-driver/build/lib/index.js
+2026-08-21 16:20:38:018 [Appium] AndroidUiautomator2Driver has been successfully loaded in 0.233s
+2026-08-21 16:20:38:018 [Appium] Requiring driver at /Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/index.js
+2026-08-21 16:20:38:305 [Appium] XCUITestDriver has been successfully loaded in 0.520s
+2026-08-21 16:20:38:313 [Appium] Appium REST http interface listener started on http://0.0.0.0:4723
+2026-08-21 16:20:38:313 [Appium] You can provide the following URLs in your client code to connect to this server:
+	http://127.0.0.1:4723/ (only accessible from the same host)
+	http://192.168.1.48:4723/
+	http://169.254.250.97:4723/
+2026-08-21 16:20:38:313 [Appium] Available drivers:
+2026-08-21 16:20:38:313 [Appium]   - uiautomator2@8.4.0 (automationName 'UiAutomator2')
+2026-08-21 16:20:38:313 [Appium]   - xcuitest@12.7.0 (automationName 'XCUITest')
+2026-08-21 16:20:38:313 [Appium] Available plugins:
+2026-08-21 16:20:38:313 [Appium]   - relaxed-caps@2.2.5
+2026-08-21 16:20:38:313 [Appium] No plugins activated. Use the --use-plugins flag with names of plugins to activate
+2026-08-21 16:20:42:393 [HTTP] --> GET /status 
+2026-08-21 16:20:42:394 [AppiumDriver@30a8] Calling AppiumDriver.getStatus() with args: []
+2026-08-21 16:20:42:394 [AppiumDriver@30a8] Responding to client with driver.getStatus() result: {"ready":true,"message":"The server is ready to accept new connections","build":{"version":"3.6.0","git-sha":"5b90e281d4e0c8fbd6ca4d8358276fb305b8d0bd","built":"2026-08-17 05:48:02 +0000"}}
+2026-08-21 16:20:42:397 [HTTP] <-- GET /status 200 3 ms - 199
+2026-08-21 16:20:48:955 [HTTP] Request idempotency key: 5bc11df3-fabd-401a-a236-4772a683f7ab
+2026-08-21 16:20:48:960 [HTTP] --> POST /session {"capabilities":{"firstMatch":[{}],"alwaysMatch":{"appium:automationName":"XCUITest","platformName":"iOS","appium:udid":"00008020-000D0CE43A99002E","appium:bundleId":"com.apple.Preferences","appium:noReset":true,"appium:newCommandTimeout":600,"appium:autoAcceptAlerts":true,"appium:xcodeOrgId":"U284BGAVKL","appium:xcodeSigningId":"Apple Development","appium:updatedWDABundleId":"com.jean.wda.runner","appium:usePrebuiltWDA":true,"appium:derivedDataPath":"/Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf","appium:wdaLaunchTimeout":240000,"appium:wdaConnectionTimeout":120000,"appium:shouldWaitForQuiescence":false,"appium:waitForIdleTimeout":0,"appium:simpleIsVisibleCheck":true}}}
+2026-08-21 16:20:48:960 [AppiumDriver@30a8] Calling AppiumDriver.createSession() with args: [{"firstMatch":[{}],"alwaysMatch":{"appium:automationName":"XCUITest","platformName":"iOS","appium:udid":"00008020-000D0CE43A99002E","appium:bundleId":"com.apple.Preferences","appium:noReset":true,"appium:newCommandTimeout":600,"appium:autoAcceptAlerts":true,"appium:xcodeOrgId":"U284BGAVKL","appium:xcodeSigningId":"Apple Development","appium:updatedWDABundleId":"com.jean.wda.runner","appium:usePrebuiltWDA":true,"appium:derivedDataPath":"/Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf","appium:wdaLaunchTimeout":240000,"appium:wdaConnectionTimeout":120000,"appium:shouldWaitForQuiescence":false,"appium:waitForIdleTimeout":0,"appium:simpleIsVisibleCheck":true}},{"firstMatch":[{}],"alwaysMatch":{"appium:automationName":"XCUITest","platformName":"iOS","appium:udid":"00008020-000D0CE43A99002E","appium:bundleId":"com.apple.Preferences","appium:noReset":true,"appium:newCommandTimeout":600,"appium:autoAcceptAlerts":true,"appium:xcodeOrgId":"U284BGAVKL","appium:xcodeSigningId…
+2026-08-21 16:20:48:960 [AppiumDriver@30a8] Event 'newSessionRequested' logged at 1787329248960 (18:20:48 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:20:48:961 [Appium] Attempting to find matching driver for automationName 'XCUITest' and platformName 'iOS'
+2026-08-21 16:20:48:961 [Appium] The 'xcuitest' driver was installed and matched caps.
+2026-08-21 16:20:48:961 [Appium] Will require it at /Users/jean/.appium/node_modules/appium-xcuitest-driver
+2026-08-21 16:20:48:961 [Appium] Requiring driver at /Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/index.js
+2026-08-21 16:20:48:961 [AppiumDriver@30a8] Appium v3.6.0 creating new XCUITestDriver (v12.7.0) session
+2026-08-21 16:20:48:961 [AppiumDriver@30a8] Checking BaseDriver versions for Appium and XCUITestDriver
+2026-08-21 16:20:48:961 [AppiumDriver@30a8] Appium's BaseDriver version is 10.7.2
+2026-08-21 16:20:48:961 [AppiumDriver@30a8] XCUITestDriver's BaseDriver version is 10.7.2
+2026-08-21 16:20:48:962 [AppiumDriver@30a8] Enabling relaxed security for this session as per the server configuration. All insecure features will be enabled unless explicitly disabled by --deny-insecure
+2026-08-21 16:20:48:963 [XCUITestDriver@52e8] 
+2026-08-21 16:20:48:963 [XCUITestDriver@52e8] Creating session with W3C capabilities: {
+  "alwaysMatch": {
+    "platformName": "iOS",
+    "appium:automationName": "XCUITest",
+    "appium:udid": "00008020-000D0CE43A99002E",
+    "appium:bundleId": "com.apple.Preferences",
+    "appium:noReset": true,
+    "appium:newCommandTimeout": 600,
+    "appium:autoAcceptAlerts": true,
+    "appium:xcodeOrgId": "U284BGAVKL",
+    "appium:xcodeSigningId": "Apple Development",
+    "appium:updatedWDABundleId": "com.jean.wda.runner",
+    "appium:usePrebuiltWDA": true,
+    "appium:derivedDataPath": "/Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf",
+    "appium:wdaLaunchTimeout": 240000,
+    "appium:wdaConnectionTimeout": 120000,
+    "appium:shouldWaitForQuiescence": false,
+    "appium:waitForIdleTimeout": 0,
+    "appium:simpleIsVisibleCheck": true
+  },
+  "firstMatch": [
+    {}
+  ]
+}
+2026-08-21 16:20:48:963 [XCUITestDriver@52e8] The following provided capabilities were not recognized by this driver:
+2026-08-21 16:20:48:964 [XCUITestDriver@52e8]   shouldWaitForQuiescence
+2026-08-21 16:20:48:964 [XCUITestDriver@52e8]   simpleIsVisibleCheck
+2026-08-21 16:20:48:964 [XCUITestDriver@52e8] 'platformVersion' capability ('undefined') is not a valid version number. Consider fixing it or be ready to experience an inconsistent driver behavior.
+2026-08-21 16:20:48:964 [5606adca][XCUITestDriver@52e8] Session created with session id: 5606adca-55da-4812-858d-689624cae0f6
+2026-08-21 16:20:48:964 [5606adca][XCUITest] Current user: 'jean'
+2026-08-21 16:20:49:028 [5606adca][XCUITest] RemoteXPC devices listing unavailable: Tunnel registry port not found. Please run the tunnel creation script first See https://appium.github.io/appium-xcuitest-driver/latest/guides/remotexpc-tunnels-real-devices/ Falling back to appium-ios-device.
+2026-08-21 16:20:49:028 [5606adca][XCUITestDriver@52e8] Available real devices: 00008020-000D0CE43A99002E
+2026-08-21 16:20:49:028 [5606adca][XCUITestDriver@52e8] Creating iDevice object with udid '00008020-000D0CE43A99002E'
+2026-08-21 16:20:49:082 [5606adca][XCUITestDriver@52e8] No platformVersion specified. Using device version: '18.7.7'
+2026-08-21 16:20:49:082 [5606adca][XCUITestDriver@52e8] Determining device to run tests on: udid: '00008020-000D0CE43A99002E', real device: true
+2026-08-21 16:20:49:082 [5606adca][BaseDriver] Initialized new IPC object with max object size of 1048576 bytes and max topics of 1000
+2026-08-21 16:20:49:082 [5606adca][BaseDriver] Subscribing 52e84c38-2dfb-46bc-94a7-28069a388d2e to topic 'xcuitest:sessionUdidClaimed'
+2026-08-21 16:20:49:082 [5606adca][BaseDriver] Subscribing 52e84c38-2dfb-46bc-94a7-28069a388d2e to topic 'xcuitest:sessionUdidContended'
+2026-08-21 16:20:49:082 [5606adca][BaseDriver] Subscribing 52e84c38-2dfb-46bc-94a7-28069a388d2e to topic 'xcuitest:sessionUdidReleased'
+2026-08-21 16:20:49:082 [5606adca][BaseDriver] 52e84c38-2dfb-46bc-94a7-28069a388d2e is publishing a message to topic xcuitest:sessionUdidClaimed
+2026-08-21 16:20:49:095 [5606adca][BaseDriver] Unsubscribing 52e84c38-2dfb-46bc-94a7-28069a388d2e from topic 'xcuitest:sessionUdidContended'
+2026-08-21 16:20:49:096 [5606adca][BaseDriver] Unsubscribing 52e84c38-2dfb-46bc-94a7-28069a388d2e from topic 'xcuitest:sessionUdidReleased'
+2026-08-21 16:20:49:096 [5606adca][XCUITestDriver@52e8] Normalized platformVersion capability value '18.7.7' to '18.7'
+2026-08-21 16:20:49:106 [5606adca][XCUITestDriver@52e8] Event 'xcodeDetailsRetrieved' logged at 1787329249106 (18:20:49 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:20:49:107 [5606adca][XCUITestDriver@52e8] Event 'appConfigured' logged at 1787329249107 (18:20:49 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:20:49:107 [5606adca][XCUITestDriver@52e8] Event 'resetStarted' logged at 1787329249107 (18:20:49 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:20:49:107 [5606adca][XCUITestDriver@52e8] Reset: fullReset not set. Leaving as is
+2026-08-21 16:20:49:107 [5606adca][XCUITestDriver@52e8] Event 'resetComplete' logged at 1787329249107 (18:20:49 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:20:49:107 [5606adca][XCUITestDriver@52e8] Using WDA path: '/Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent'
+2026-08-21 16:20:49:107 [5606adca][XCUITestDriver@52e8] Using WDA agent: '/Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj'
+2026-08-21 16:20:49:113 [5606adca][XCUITestDriver@52e8] RemoteXPC session initialization unavailable: Tunnel registry port not found. Please run the tunnel creation script first See https://appium.github.io/appium-xcuitest-driver/latest/guides/remotexpc-tunnels-real-devices/ Falling back to appium-ios-device.
+2026-08-21 16:20:49:230 [5606adca][XCUITestDriver@52e8] Failed to create crash reports client: Failed crash reports via RemoteXPC for '00008020-000D0CE43A99002E' (RemoteXPC is not available for this session). Skipping crash logs collection for real devices.
+2026-08-21 16:20:49:230 [5606adca][XCUITestDriver@52e8] Event 'logCaptureStarted' logged at 1787329249230 (18:20:49 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:20:49:230 [5606adca][XCUITestDriver@52e8] Setting up real device
+2026-08-21 16:20:49:413 [5606adca][XCUITestDriver@52e8] Requesting connection for device 00008020-000D0CE43A99002E on local port 8100, device port 8100
+2026-08-21 16:20:49:413 [5606adca][XCUITestDriver@52e8] Cached connections count: 0
+2026-08-21 16:20:49:414 [5606adca][XCUITestDriver@52e8] Using RemoteXPC usbmux strategy for '00008020-000D0CE43A99002E'
+2026-08-21 16:20:49:414 [5606adca][XCUITestDriver@52e8] Successfully requested the connection for 00008020-000D0CE43A99002E:8100
+2026-08-21 16:20:49:888 [5606adca][XCUITestDriver@52e8] Starting WebDriverAgent initialization with the synchronization key '/Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf'
+2026-08-21 16:20:49:889 [5606adca][WD Proxy] NoSessionProxy options: {"scheme":"http","server":"127.0.0.1","port":8100,"base":"","reqBasePath":"","sessionId":null,"timeout":3000}
+2026-08-21 16:20:49:889 [5606adca][WD Proxy] Matched '/status' to command name 'getStatus'
+2026-08-21 16:20:49:890 [5606adca][WD Proxy] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:20:49:893 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:20:49:895 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:49:895 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:49:896 [5606adca][WD Proxy] socket hang up
+2026-08-21 16:20:49:896 [5606adca][XCUITestDriver@52e8] WDA is not listening at 'http://127.0.0.1:8100/'. Original error:: Could not proxy command to the remote server. Original error: socket hang up
+2026-08-21 16:20:49:896 [5606adca][XCUITestDriver@52e8] WDA is currently not running. There is nothing to cache
+2026-08-21 16:20:50:105 [5606adca][XCUITestDriver@52e8] Trying to start WebDriverAgent 1 times with 10000ms interval
+2026-08-21 16:20:50:106 [5606adca][XCUITestDriver@52e8] These values can be customized by changing wdaStartupRetries/wdaStartupRetryInterval capabilities
+2026-08-21 16:20:50:106 [5606adca][XCUITestDriver@52e8] Event 'wdaStartAttempted' logged at 1787329250106 (18:20:50 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:20:50:106 [5606adca][XCUITestDriver@52e8] Selected 'real-device-xcodebuild' WebDriverAgent startup strategy
+2026-08-21 16:20:50:106 [5606adca][XCUITestDriver@52e8] Launching WebDriverAgent on the device
+2026-08-21 16:20:50:107 [5606adca][XCUITestDriver@52e8] JWProxy options: {"scheme":"http","server":"127.0.0.1","port":8100,"base":"","reqBasePath":"","sessionId":null,"timeout":120000,"keepAlive":true}
+2026-08-21 16:20:50:107 [5606adca][XCUITestDriver@52e8] NoSessionProxy options: {"scheme":"http","server":"127.0.0.1","port":8100,"base":"","reqBasePath":"","sessionId":null,"timeout":120000,"keepAlive":true}
+2026-08-21 16:20:50:107 [5606adca][XCUITestDriver@52e8] Skipped WDA project cleanup according to the provided capabilities
+2026-08-21 16:20:50:108 [5606adca][WebDriverAgent] Killing running processes 'xcodebuild.*00008020-000D0CE43A99002E' for the device 00008020-000D0CE43A99002E...
+2026-08-21 16:20:50:140 [5606adca][WebDriverAgent] 'pgrep -if xcodebuild.*00008020-000D0CE43A99002E' didn't detect any matching processes. Return code: 1
+2026-08-21 16:20:50:140 [5606adca][XCUITestDriver@52e8] Beginning test with command 'xcodebuild test-without-building -project /Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -derivedDataPath /Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf -destination id=00008020-000D0CE43A99002E IPHONEOS_DEPLOYMENT_TARGET=18.7 DEVELOPMENT_TEAM=U284BGAVKL CODE_SIGN_IDENTITY=Apple Development PRODUCT_BUNDLE_IDENTIFIER=com.jean.wda.runner GCC_TREAT_WARNINGS_AS_ERRORS=0 COMPILER_INDEX_STORE_ENABLE=NO' in directory '/Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent'
+2026-08-21 16:20:50:141 [5606adca][XCUITestDriver@52e8] Output from xcodebuild will only be logged if any errors are present there. To change this, use 'showXcodeLog' desired capability
+2026-08-21 16:20:50:471 [5606adca][XCUITestDriver@52e8] Waiting up to 240000ms for WebDriverAgent to start
+2026-08-21 16:20:50:471 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:20:50:471 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:20:50:472 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:20:50:474 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:50:474 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:50:474 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:20:51:476 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:20:51:476 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:20:51:480 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:20:51:484 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:51:484 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:51:485 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:20:52:486 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:20:52:486 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:20:52:487 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:20:52:491 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:52:492 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:52:492 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:20:53:494 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:20:53:494 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:20:53:495 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:20:53:497 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:53:497 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:53:498 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:20:54:499 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:20:54:500 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:20:54:502 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:20:54:505 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:54:506 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:54:506 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:20:55:507 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:20:55:507 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:20:55:509 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:20:55:514 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:55:514 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:55:515 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:20:56:516 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:20:56:516 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:20:56:517 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:20:56:520 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:56:520 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:56:521 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:20:57:521 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:20:57:522 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:20:57:523 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:20:57:526 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:57:526 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:57:526 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:20:58:527 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:20:58:527 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:20:58:530 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:20:58:535 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:58:535 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:58:535 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:20:59:538 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:20:59:538 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:20:59:540 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:20:59:544 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:59:544 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:20:59:545 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:00:546 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:00:546 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:00:550 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:00:554 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:00:554 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:00:555 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:01:557 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:01:558 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:01:560 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:01:565 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:01:566 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:01:567 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:02:569 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:02:569 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:02:571 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:02:574 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:02:574 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:02:576 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:03:577 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:03:578 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:03:579 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:03:583 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:03:583 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:03:583 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:04:585 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:04:586 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:04:588 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:04:591 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:04:591 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:04:592 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:05:593 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:05:593 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:05:596 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:05:599 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:05:599 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:05:600 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:06:603 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:06:603 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:06:605 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:06:609 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:06:609 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:06:609 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:07:612 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:07:612 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:07:615 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:07:619 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:07:619 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:07:620 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:08:623 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:08:623 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:08:625 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:08:630 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:08:630 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:08:631 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:09:633 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:09:633 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:09:635 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:09:639 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:09:639 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:09:639 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:10:641 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:10:641 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:10:643 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:10:648 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:10:648 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:10:649 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:11:650 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:11:650 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:11:651 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:11:654 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:11:654 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:11:655 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:12:655 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:12:655 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:12:657 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:12:659 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:12:659 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:12:660 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:13:662 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:13:662 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:13:665 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:13:668 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:13:668 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:13:669 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:14:670 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:14:671 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:14:673 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:14:676 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:14:676 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:14:677 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:15:679 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:15:679 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:15:681 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:15:684 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:15:684 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:15:685 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:16:686 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:16:686 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:16:688 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:16:692 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:16:692 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:16:693 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:17:694 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:17:695 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:17:698 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:17:701 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:17:701 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:17:702 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:18:703 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:18:703 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:18:705 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:18:709 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:18:709 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:18:710 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:19:711 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:19:711 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:19:714 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:19:717 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:19:717 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:19:718 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:20:719 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:20:719 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:20:720 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:20:723 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:20:723 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:20:723 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:21:724 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:21:724 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:21:726 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:21:730 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:21:730 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:21:731 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:22:732 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:22:732 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:22:733 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:22:736 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:22:736 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:22:736 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:23:736 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:23:736 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:23:737 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:23:741 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:23:741 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:23:741 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:24:742 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:24:742 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:24:743 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:24:745 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:24:745 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:24:746 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:25:747 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:25:747 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:25:749 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:25:753 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:25:753 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:25:754 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:26:754 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:26:754 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:26:755 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:26:757 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:26:757 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:26:758 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:27:758 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:27:758 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:27:760 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:27:764 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:27:765 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:27:765 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:28:767 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:28:767 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:28:768 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:28:770 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:28:770 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:28:770 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:29:771 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:29:771 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:29:774 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:29:777 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:29:777 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:29:779 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:30:780 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:30:780 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:30:782 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:30:785 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:30:785 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:30:786 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:31:787 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:31:787 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:31:788 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:31:790 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:31:790 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:31:791 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:32:792 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:32:792 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:32:794 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:32:798 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:32:798 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:32:799 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:33:799 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:33:799 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:33:801 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:33:804 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:33:804 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:33:804 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:34:805 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:34:805 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:34:807 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:34:810 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:34:810 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:34:811 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:35:813 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:35:813 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:35:815 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:35:818 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:35:818 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:35:819 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:36:820 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:36:820 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:36:822 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:36:824 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:36:824 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:36:825 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:37:826 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:37:826 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:37:827 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:37:830 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:37:830 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:37:831 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:38:832 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:38:832 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:38:834 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:38:836 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:38:836 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:38:837 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:39:839 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:39:839 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:39:841 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:39:844 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:39:844 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:39:844 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:40:845 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:40:845 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:40:846 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:40:849 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream connect error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:40:849 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket error (local 8100 -> device 8100): Connection was refused to port 8100
+2026-08-21 16:21:40:849 [5606adca][XCUITestDriver@52e8] socket hang up
+2026-08-21 16:21:41:851 [5606adca][XCUITestDriver@52e8] Matched '/status' to command name 'getStatus'
+2026-08-21 16:21:41:851 [5606adca][XCUITestDriver@52e8] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body
+2026-08-21 16:21:41:852 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:41:855 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:41:867 [5606adca][XCUITestDriver@52e8] Got response with status 200: {"value":{"build":{"upgradedAt":"1787326357532","version":"16.2.1","time":"Aug 21 2026 12:37:17","productBundleIdentifier":"com.jean.wda.runner"},"os":{"testmanagerdVersion":65535,"name":"iOS","sdkVersion":"26.4","version":"18.7.7"},"device":"iphone","ios":{"ip":"192.168.1.49"},"message":"WebDriverAgent is ready to accept commands","state":"success","ready":true},"sessionId":null}
+2026-08-21 16:21:41:867 [5606adca][XCUITestDriver@52e8] WebDriverAgent information:
+2026-08-21 16:21:41:867 [5606adca][XCUITestDriver@52e8] {
+  "build": {
+    "upgradedAt": "1787326357532",
+    "version": "16.2.1",
+    "time": "Aug 21 2026 12:37:17",
+    "productBundleIdentifier": "com.jean.wda.runner"
+  },
+  "os": {
+    "testmanagerdVersion": 65535,
+    "name": "iOS",
+    "sdkVersion": "26.4",
+    "version": "18.7.7"
+  },
+  "device": "iphone",
+  "ios": {
+    "ip": "192.168.1.49"
+  },
+  "message": "WebDriverAgent is ready to accept commands",
+  "state": "success",
+  "ready": true
+}
+2026-08-21 16:21:41:868 [5606adca][XCUITestDriver@52e8] WebDriverAgent successfully started after 51726ms
+2026-08-21 16:21:41:868 [5606adca][XCUITestDriver@52e8] Event 'wdaSessionAttempted' logged at 1787329301868 (18:21:41 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:21:41:868 [5606adca][XCUITestDriver@52e8] Sending createSession command to WDA
+2026-08-21 16:21:41:869 [5606adca][XCUITestDriver@52e8] Matched '/session' to command name 'createSession'
+2026-08-21 16:21:41:869 [5606adca][XCUITestDriver@52e8] Proxying [POST /session] to [POST http://127.0.0.1:8100/session] with body: {"capabilities":{"firstMatch":[{"bundleId":"com.apple.Preferences","arguments":[],"environment":{},"eventloopIdleDelaySec":0,"shouldWaitForQuiescence":true,"maxTypingFrequency":60,"shouldUseSingletonTestManager":true,"waitForIdleTimeout":0,"shouldTerminateApp":false,"forceAppLaunch":false,"useNativeCachingStrategy":true,"forceSimulatorSoftwareKeyboardPresence":true,"defaultAlertAction":"accept"}],"alwaysMatch":{}}}
+2026-08-21 16:21:41:870 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:41:872 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:21:44:599 [5606adca][XCUITestDriver@52e8] Got response with status 200: {"value":{"sessionId":"0D573031-FC23-49BA-9ED0-6DF1377F6190","capabilities":{"sdkVersion":"18.7.7","device":"iphone"}},"sessionId":"0D573031-FC23-49BA-9ED0-6DF1377F6190"}
+2026-08-21 16:21:44:599 [5606adca][XCUITestDriver@52e8] Determined the downstream protocol as 'W3C'
+2026-08-21 16:21:44:599 [5606adca][XCUITestDriver@52e8] WDA session startup took 2731ms
+2026-08-21 16:21:44:599 [5606adca][XCUITestDriver@52e8] Event 'wdaSessionStarted' logged at 1787329304599 (18:21:44 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:21:44:600 [5606adca][XCUITestDriver@52e8] WebDriverAgent version: '16.2.1'
+2026-08-21 16:21:44:600 [5606adca][XCUITestDriver@52e8] Event 'wdaStarted' logged at 1787329304600 (18:21:44 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:21:44:600 [5606adca][BaseDriver] The value of 'elementResponseAttributes' setting did not change. Skipping the update for it
+2026-08-21 16:21:44:601 [5606adca][BaseDriver] The value of 'shouldUseCompactResponses' setting did not change. Skipping the update for it
+2026-08-21 16:21:44:601 [5606adca][XCUITestDriver@52e8] Forwarding MJPEG server port 9100 to local port 9100
+2026-08-21 16:21:44:601 [5606adca][XCUITestDriver@52e8] Requesting connection for device 00008020-000D0CE43A99002E on local port 9100, device port 9100
+2026-08-21 16:21:44:601 [5606adca][XCUITestDriver@52e8] Cached connections count: 1
+2026-08-21 16:21:44:603 [5606adca][XCUITestDriver@52e8] Using RemoteXPC usbmux strategy for '00008020-000D0CE43A99002E'
+2026-08-21 16:21:44:603 [5606adca][XCUITestDriver@52e8] Successfully requested the connection for 00008020-000D0CE43A99002E:9100
+2026-08-21 16:21:44:603 [5606adca][XCUITestDriver@52e8] Initialized new IPC object with max object size of 1048576 bytes and max topics of 1000
+2026-08-21 16:21:44:603 [5606adca][BaseDriver] Unsubscribing 52e84c38-2dfb-46bc-94a7-28069a388d2e from topic 'xcuitest:sessionUdidClaimed'
+2026-08-21 16:21:44:604 [5606adca][BaseDriver] Subscribing 52e84c38-2dfb-46bc-94a7-28069a388d2e to topic 'xcuitest:sessionUdidClaimed'
+2026-08-21 16:21:44:604 [5606adca][AppiumDriver@30a8] New XCUITestDriver session created successfully, session 5606adca-55da-4812-858d-689624cae0f6 added to master session list
+2026-08-21 16:21:44:604 [5606adca][AppiumDriver@30a8] Event 'newSessionStarted' logged at 1787329304604 (18:21:44 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:21:44:605 [5606adca][XCUITestDriver@52e8] Cached the protocol value 'W3C' for the new session 5606adca-55da-4812-858d-689624cae0f6
+2026-08-21 16:21:44:605 [5606adca][XCUITestDriver@52e8] Responding to client with driver.createSession() result: {"capabilities":{"webStorageEnabled":false,"locationContextEnabled":false,"browserName":"","platform":"MAC","javascriptEnabled":true,"databaseEnabled":false,"takesScreenshot":true,"networkConnectionEnabled":false,"platformName":"iOS","automationName":"XCUITest","udid":"00008020-000D0CE43A99002E","bundleId":"com.apple.Preferences","noReset":true,"newCommandTimeout":600,"autoAcceptAlerts":true,"xcodeOrgId":"U284BGAVKL","xcodeSigningId":"Apple Development","updatedWDABundleId":"com.jean.wda.runner","usePrebuiltWDA":true,"derivedDataPath":"/Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf","wdaLaunchTimeout":240000,"wdaConnectionTimeout":120000,"shouldWaitForQuiescence":false,"waitForIdleTimeout":0,"simpleIsVisibleCheck":true,"platformVersion":"18.7"}}
+2026-08-21 16:21:44:606 [HTTP] <-- POST /session 200 55645 ms - 861
+2026-08-21 16:21:44:620 [5606adca][HTTP] --> GET /session/5606adca-55da-4812-858d-689624cae0f6/window/rect 
+2026-08-21 16:21:44:621 [5606adca][XCUITestDriver@52e8] Calling AppiumDriver.getWindowRect() with args: ["5606adca-55da-4812-858d-689624cae0f6"]
+2026-08-21 16:21:44:621 [5606adca][XCUITestDriver@52e8] Executing command 'getWindowRect'
+2026-08-21 16:21:44:623 [5606adca][XCUITestDriver@52e8] Matched '/window/rect' to command name 'getWindowRect'
+2026-08-21 16:21:44:623 [5606adca][XCUITestDriver@52e8] Proxying [GET /window/rect] to [GET http://127.0.0.1:8100/session/0D573031-FC23-49BA-9ED0-6DF1377F6190/window/rect] with no body
+2026-08-21 16:21:55:509 [HTTP] <-- GET /session/5606adca-55da-4812-858d-689624cae0f6/window/rect - - ms - -
+2026-08-21 16:21:58:746 [5606adca][XCUITestDriver@52e8] Got response with status 200: {"value":{"y":0,"x":0,"width":375,"height":812},"sessionId":"0D573031-FC23-49BA-9ED0-6DF1377F6190"}
+2026-08-21 16:21:58:747 [5606adca][XCUITestDriver@52e8] Responding to client with driver.getWindowRect() result: {"y":0,"x":0,"width":375,"height":812}
+2026-08-21 16:22:11:875 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream socket disconnected (local 8100 -> device 8100)
+2026-08-21 16:22:11:876 [XCUITestDriver@52e8] RemoteXPC downstream socket disconnected (local 8100 -> device 8100)
+2026-08-21 16:22:28:746 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream socket disconnected (local 8100 -> device 8100)
+2026-08-21 16:22:28:746 [XCUITestDriver@52e8] RemoteXPC downstream socket disconnected (local 8100 -> device 8100)
+2026-08-21 16:24:42:946 [HTTP] Request idempotency key: def6ec3d-1f0e-46d2-8d3a-ea5758472dc0
+2026-08-21 16:24:42:946 [HTTP] --> POST /session {"capabilities":{"firstMatch":[{}],"alwaysMatch":{"appium:automationName":"XCUITest","platformName":"iOS","appium:udid":"00008020-000D0CE43A99002E","appium:bundleId":"com.zhiliaoapp.musically","appium:noReset":true,"appium:newCommandTimeout":300,"appium:autoAcceptAlerts":true,"appium:xcodeOrgId":"U284BGAVKL","appium:xcodeSigningId":"Apple Development","appium:updatedWDABundleId":"com.jean.wda.runner","appium:usePreinstalledWDA":true,"appium:webDriverAgentUrl":"http://192.168.1.49:8100","appium:shouldWaitForQuiescence":false,"appium:waitForIdleTimeout":0,"appium:simpleIsVisibleCheck":true}}}
+2026-08-21 16:24:42:946 [AppiumDriver@30a8] Calling AppiumDriver.createSession() with args: [{"firstMatch":[{}],"alwaysMatch":{"appium:automationName":"XCUITest","platformName":"iOS","appium:udid":"00008020-000D0CE43A99002E","appium:bundleId":"com.zhiliaoapp.musically","appium:noReset":true,"appium:newCommandTimeout":300,"appium:autoAcceptAlerts":true,"appium:xcodeOrgId":"U284BGAVKL","appium:xcodeSigningId":"Apple Development","appium:updatedWDABundleId":"com.jean.wda.runner","appium:usePreinstalledWDA":true,"appium:webDriverAgentUrl":"http://192.168.1.49:8100","appium:shouldWaitForQuiescence":false,"appium:waitForIdleTimeout":0,"appium:simpleIsVisibleCheck":true}},{"firstMatch":[{}],"alwaysMatch":{"appium:automationName":"XCUITest","platformName":"iOS","appium:udid":"00008020-000D0CE43A99002E","appium:bundleId":"com.zhiliaoapp.musically","appium:noReset":true,"appium:newCommandTimeout":300,"appium:autoAcceptAlerts":true,"appium:xcodeOrgId":"U284BGAVKL","appium:xcodeSigningId":"Apple Development","appium:updatedWDABundleId":"com.jean.wda.runner","appium:usePreinstalledWDA":true,"appium:webDriverAge…
+2026-08-21 16:24:42:946 [AppiumDriver@30a8] Event 'newSessionRequested' logged at 1787329482946 (18:24:42 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:24:42:946 [Appium] Attempting to find matching driver for automationName 'XCUITest' and platformName 'iOS'
+2026-08-21 16:24:42:947 [Appium] The 'xcuitest' driver was installed and matched caps.
+2026-08-21 16:24:42:947 [Appium] Will require it at /Users/jean/.appium/node_modules/appium-xcuitest-driver
+2026-08-21 16:24:42:947 [Appium] Requiring driver at /Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/index.js
+2026-08-21 16:24:42:947 [AppiumDriver@30a8] Appium v3.6.0 creating new XCUITestDriver (v12.7.0) session
+2026-08-21 16:24:42:947 [AppiumDriver@30a8] Checking BaseDriver versions for Appium and XCUITestDriver
+2026-08-21 16:24:42:947 [AppiumDriver@30a8] Appium's BaseDriver version is 10.7.2
+2026-08-21 16:24:42:947 [AppiumDriver@30a8] XCUITestDriver's BaseDriver version is 10.7.2
+2026-08-21 16:24:42:947 [AppiumDriver@30a8] Enabling relaxed security for this session as per the server configuration. All insecure features will be enabled unless explicitly disabled by --deny-insecure
+2026-08-21 16:24:42:947 [XCUITestDriver@34be] 
+2026-08-21 16:24:42:947 [XCUITestDriver@34be] Creating session with W3C capabilities: {
+  "alwaysMatch": {
+    "platformName": "iOS",
+    "appium:automationName": "XCUITest",
+    "appium:udid": "00008020-000D0CE43A99002E",
+    "appium:bundleId": "com.zhiliaoapp.musically",
+    "appium:noReset": true,
+    "appium:newCommandTimeout": 300,
+    "appium:autoAcceptAlerts": true,
+    "appium:xcodeOrgId": "U284BGAVKL",
+    "appium:xcodeSigningId": "Apple Development",
+    "appium:updatedWDABundleId": "com.jean.wda.runner",
+    "appium:usePreinstalledWDA": true,
+    "appium:webDriverAgentUrl": "http://192.168.1.49:8100",
+    "appium:shouldWaitForQuiescence": false,
+    "appium:waitForIdleTimeout": 0,
+    "appium:simpleIsVisibleCheck": true
+  },
+  "firstMatch": [
+    {}
+  ]
+}
+2026-08-21 16:24:42:948 [XCUITestDriver@34be] The following provided capabilities were not recognized by this driver:
+2026-08-21 16:24:42:948 [XCUITestDriver@34be]   shouldWaitForQuiescence
+2026-08-21 16:24:42:948 [XCUITestDriver@34be]   simpleIsVisibleCheck
+2026-08-21 16:24:42:948 [XCUITestDriver@34be] 'platformVersion' capability ('undefined') is not a valid version number. Consider fixing it or be ready to experience an inconsistent driver behavior.
+2026-08-21 16:24:42:948 [5113dbd7][XCUITestDriver@34be] Session created with session id: 5113dbd7-def9-4d4f-8fd2-77b5a48bd59e
+2026-08-21 16:24:42:948 [5113dbd7][XCUITest] Current user: 'jean'
+2026-08-21 16:24:43:091 [5113dbd7][XCUITestDriver@34be] Skipping checking of the real devices availability since the session specifies appium:webDriverAgentUrl
+2026-08-21 16:24:43:091 [5113dbd7][XCUITestDriver@34be] Creating iDevice object with udid '00008020-000D0CE43A99002E'
+2026-08-21 16:24:43:145 [5113dbd7][XCUITestDriver@34be] No platformVersion specified. Using device version: '18.7.7'
+2026-08-21 16:24:43:146 [5113dbd7][XCUITestDriver@34be] Determining device to run tests on: udid: '00008020-000D0CE43A99002E', real device: true
+2026-08-21 16:24:43:146 [5113dbd7][BaseDriver] Subscribing 34be2d97-a03c-40c8-b78c-fa03851adbb6 to topic 'xcuitest:sessionUdidClaimed'
+2026-08-21 16:24:43:146 [5113dbd7][BaseDriver] Subscribing 34be2d97-a03c-40c8-b78c-fa03851adbb6 to topic 'xcuitest:sessionUdidContended'
+2026-08-21 16:24:43:146 [5113dbd7][BaseDriver] Subscribing 34be2d97-a03c-40c8-b78c-fa03851adbb6 to topic 'xcuitest:sessionUdidReleased'
+2026-08-21 16:24:43:146 [5113dbd7][BaseDriver] 34be2d97-a03c-40c8-b78c-fa03851adbb6 is publishing a message to topic xcuitest:sessionUdidClaimed
+2026-08-21 16:24:43:146 [5113dbd7][BaseDriver] 52e84c38-2dfb-46bc-94a7-28069a388d2e is publishing a message to topic xcuitest:sessionUdidContended
+2026-08-21 16:24:43:146 [5113dbd7][XCUITestDriver@52e8] Session '5113dbd7-def9-4d4f-8fd2-77b5a48bd59e' is starting on udid '00008020-000D0CE43A99002E', which is already in use by another session identified by 5606adca-55da-4812-858d-689624cae0f6. Running multiple parallel sessions on the same device is highly discouraged. Consider enabling the Appium server's '--session-override' flag and make sure to properly quit the previous session before starting a new one. Terminating the obsolete session.
+2026-08-21 16:24:43:146 [5113dbd7][BaseDriver] Unsubscribing 52e84c38-2dfb-46bc-94a7-28069a388d2e from topic 'xcuitest:sessionUdidClaimed'
+2026-08-21 16:24:43:147 [5113dbd7][XCUITestDriver@52e8] Proxying [DELETE /session/5606adca-55da-4812-858d-689624cae0f6] to [DELETE http://127.0.0.1:8100/session/0D573031-FC23-49BA-9ED0-6DF1377F6190] with no body
+2026-08-21 16:24:43:147 [5606adca][XCUITestDriver@52e8] RemoteXPC downstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:24:43:150 [5606adca][XCUITestDriver@52e8] RemoteXPC upstream socket connected (local 8100 -> device 8100)
+2026-08-21 16:24:43:156 [5113dbd7][XCUITestDriver@52e8] Got response with status 200: {"value":null,"sessionId":null}
+2026-08-21 16:24:43:156 [5113dbd7][XCUITestDriver@52e8] Not clearing log files. Use `clearSystemFiles` capability to turn on.
+2026-08-21 16:24:43:156 [5113dbd7][XCUITestDriver@52e8] Releasing connections for 00008020-000D0CE43A99002E device on any port number
+2026-08-21 16:24:43:156 [5113dbd7][XCUITestDriver@52e8] Found cached connections to release: ["00008020-000D0CE43A99002E:8100","00008020-000D0CE43A99002E:9100"]
+2026-08-21 16:24:43:156 [5113dbd7][XCUITestDriver@52e8] Releasing the listener for '00008020-000D0CE43A99002E:8100'
+2026-08-21 16:24:43:156 [5113dbd7][XCUITestDriver@52e8] Releasing the listener for '00008020-000D0CE43A99002E:9100'
+2026-08-21 16:24:43:156 [5113dbd7][XCUITestDriver@52e8] Cached connections count: 0
+2026-08-21 16:24:43:156 [5113dbd7][BaseDriver] 52e84c38-2dfb-46bc-94a7-28069a388d2e is publishing a message to topic xcuitest:sessionUdidReleased
+2026-08-21 16:24:43:157 [5113dbd7][XCUITestDriver@34be] Received release confirmation from 1 session for udid '00008020-000D0CE43A99002E'
+2026-08-21 16:24:43:157 [5113dbd7][BaseDriver] Unsubscribing 34be2d97-a03c-40c8-b78c-fa03851adbb6 from topic 'xcuitest:sessionUdidContended'
+2026-08-21 16:24:43:157 [5113dbd7][BaseDriver] Unsubscribing 34be2d97-a03c-40c8-b78c-fa03851adbb6 from topic 'xcuitest:sessionUdidReleased'
+2026-08-21 16:24:43:157 [5113dbd7][XCUITestDriver@34be] Normalized platformVersion capability value '18.7.7' to '18.7'
+2026-08-21 16:24:43:157 [5113dbd7][XCUITestDriver@34be] Event 'xcodeDetailsRetrieved' logged at 1787329483157 (18:24:43 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:24:43:157 [5113dbd7][XCUITestDriver@34be] Event 'appConfigured' logged at 1787329483157 (18:24:43 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:24:43:157 [5113dbd7][XCUITestDriver@34be] Event 'resetStarted' logged at 1787329483157 (18:24:43 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:24:43:157 [5113dbd7][XCUITestDriver@34be] Reset: fullReset not set. Leaving as is
+2026-08-21 16:24:43:157 [5113dbd7][XCUITestDriver@34be] Event 'resetComplete' logged at 1787329483157 (18:24:43 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:24:43:157 [5113dbd7][XCUITestDriver@34be] Using WDA path: '/Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent'
+2026-08-21 16:24:43:157 [5113dbd7][XCUITestDriver@34be] Using WDA agent: '/Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj'
+2026-08-21 16:24:43:159 [5113dbd7][XCUITestDriver@34be] RemoteXPC session initialization unavailable: Tunnel registry port not found. Please run the tunnel creation script first See https://appium.github.io/appium-xcuitest-driver/latest/guides/remotexpc-tunnels-real-devices/ Falling back to appium-ios-device.
+2026-08-21 16:24:43:321 [5113dbd7][XCUITestDriver@34be] Failed to create crash reports client: Failed crash reports via RemoteXPC for '00008020-000D0CE43A99002E' (RemoteXPC is not available for this session). Skipping crash logs collection for real devices.
+2026-08-21 16:24:43:321 [5113dbd7][XCUITestDriver@34be] Event 'logCaptureStarted' logged at 1787329483321 (18:24:43 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:24:43:321 [5113dbd7][XCUITestDriver@34be] Setting up real device
+2026-08-21 16:24:43:487 [5113dbd7][XCUITestDriver@34be] Requesting connection for device 00008020-000D0CE43A99002E on local port 8100
+2026-08-21 16:24:43:487 [5113dbd7][XCUITestDriver@34be] Cached connections count: 0
+2026-08-21 16:24:43:487 [5113dbd7][XCUITestDriver@34be] Successfully requested the connection for 00008020-000D0CE43A99002E:8100
+2026-08-21 16:24:43:488 [5113dbd7][XCUITestDriver@34be] Starting WebDriverAgent initialization with the synchronization key 'XCUITestDriver'
+2026-08-21 16:24:43:490 [5113dbd7][XCUITestDriver@34be] Trying to start WebDriverAgent once since at least one of webDriverAgentUrl,usePreinstalledWDA capabilities is provided
+2026-08-21 16:24:43:490 [5113dbd7][XCUITestDriver@34be] Event 'wdaStartAttempted' logged at 1787329483490 (18:24:43 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:24:43:766 [5113dbd7][XCUITestDriver@34be] The executable name for the bundle id 'com.jean.wda.runner.xctrunner' was 'WebDriverAgentRunner-Runner'
+2026-08-21 16:24:43:766 [5113dbd7][XCUITestDriver@34be] Calling devicectl to kill the process
+2026-08-21 16:24:43:767 [5113dbd7][Devicectl] Executing "xcrun" "devicectl" "device" "info" "processes" "--device" "00008020-000D0CE43A99002E" "--quiet" "--json-output" "-"
+2026-08-21 16:24:44:102 [5113dbd7][Devicectl] Executing "xcrun" "devicectl" "device" "process" "signal" "--device" "00008020-000D0CE43A99002E" "--signal" "2" "--pid" "3082" "--quiet" "--json-output" "-"
+2026-08-21 16:24:44:287 [5113dbd7][XCUITestDriver@34be] Killed process for 'com.jean.wda.runner.xctrunner' app with PID 3082
+2026-08-21 16:24:44:498 [5113dbd7][XCUITestDriver@34be] Selected 'existing-url' WebDriverAgent startup strategy
+2026-08-21 16:24:44:499 [5113dbd7][XCUITestDriver@34be] Using provided WebdriverAgent at 'http://192.168.1.49:8100'
+2026-08-21 16:24:44:500 [5113dbd7][XCUITestDriver@34be] JWProxy options: {"scheme":"http","server":"192.168.1.49","port":8100,"base":"","reqBasePath":"","sessionId":null,"keepAlive":true}
+2026-08-21 16:24:44:500 [5113dbd7][XCUITestDriver@34be] NoSessionProxy options: {"scheme":"http","server":"192.168.1.49","port":8100,"base":"","reqBasePath":"","sessionId":null,"keepAlive":true}
+2026-08-21 16:24:44:500 [5113dbd7][WD Proxy] NoSessionProxy options: {"scheme":"http","server":"192.168.1.49","port":8100,"base":"","reqBasePath":"","sessionId":null,"timeout":3000}
+2026-08-21 16:24:44:500 [5113dbd7][WD Proxy] Matched '/status' to command name 'getStatus'
+2026-08-21 16:24:44:500 [5113dbd7][WD Proxy] Proxying [GET /status] to [GET http://192.168.1.49:8100/status] with no body
+2026-08-21 16:24:45:616 [5113dbd7][WD Proxy] connect ECONNREFUSED 192.168.1.49:8100
+2026-08-21 16:24:45:617 [5113dbd7][XCUITestDriver@34be] WDA is not listening at 'http://192.168.1.49:8100/'. Original error:: Could not proxy command to the remote server. Original error: connect ECONNREFUSED 192.168.1.49:8100
+2026-08-21 16:24:45:617 [5113dbd7][XCUITestDriver@34be] Event 'wdaSessionAttempted' logged at 1787329485617 (18:24:45 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:24:45:617 [5113dbd7][XCUITestDriver@34be] Sending createSession command to WDA
+2026-08-21 16:24:45:618 [5113dbd7][XCUITestDriver@34be] Matched '/status' to command name 'getStatus'
+2026-08-21 16:24:45:618 [5113dbd7][XCUITestDriver@34be] Proxying [GET /status] to [GET http://192.168.1.49:8100/status] with no body
+2026-08-21 16:24:47:166 [5113dbd7][XCUITestDriver@34be] connect ECONNREFUSED 192.168.1.49:8100
+2026-08-21 16:24:47:166 [5113dbd7][XCUITestDriver@34be] Event 'wdaSessionFailed' logged at 1787329487166 (18:24:47 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:24:47:167 [5113dbd7][XCUITestDriver@34be] UnknownError: Could not proxy command to the remote server. Original error: connect ECONNREFUSED 192.168.1.49:8100
+    at ProxyRequestError.getActualError (/Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/@appium/base-driver/build/lib/protocol/errors.js:684:16)
+    at JWProxy.command (/Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/@appium/base-driver/build/lib/jsonwp-proxy/proxy.js:274:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async XCUITestDriver.proxyCommand (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/proxy-helper.js:78:17)
+    at async establishProxySession (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:237:61)
+    at async file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:189:29
+    at async wrapped (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/asyncbox/build/esm/lib/asyncbox.js:161:19)
+    at async retry (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/asyncbox/build/esm/lib/asyncbox.js:136:19)
+    at async retryInterval (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/asyncbox/build/esm/lib/asyncbox.js:172:12)
+    at async runStartupWithRetries (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:177:5)
+    at async startUnderSynchronizationLock (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:128:5)
+    at async file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:22:9
+2026-08-21 16:24:47:167 [5113dbd7][XCUITestDriver@34be] {}
+2026-08-21 16:24:47:167 [5113dbd7][BaseDriver] Unsubscribing 34be2d97-a03c-40c8-b78c-fa03851adbb6 from topic 'xcuitest:sessionUdidClaimed'
+2026-08-21 16:24:47:167 [5113dbd7][XCUITestDriver@34be] Releasing connections for 00008020-000D0CE43A99002E device on any port number
+2026-08-21 16:24:47:167 [5113dbd7][XCUITestDriver@34be] Found cached connections to release: ["00008020-000D0CE43A99002E:8100"]
+2026-08-21 16:24:47:167 [5113dbd7][XCUITestDriver@34be] Cached connections count: 0
+2026-08-21 16:24:47:168 [5113dbd7][AppiumDriver@30a8] Event 'newSessionStarted' logged at 1787329487168 (18:24:47 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:24:47:168 [5113dbd7][AppiumDriver@30a8] Encountered internal error running command: Error: Unable to start WebDriverAgent session. Original error: Could not proxy command to the remote server. Original error: connect ECONNREFUSED 192.168.1.49:8100
+    at establishProxySession (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:254:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:189:29
+    at async wrapped (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/asyncbox/build/esm/lib/asyncbox.js:161:19)
+    at async retry (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/asyncbox/build/esm/lib/asyncbox.js:136:19)
+    at async retryInterval (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/asyncbox/build/esm/lib/asyncbox.js:172:12)
+    at async runStartupWithRetries (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:177:5)
+    at async startUnderSynchronizationLock (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:128:5)
+    at async file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:22:9
+2026-08-21 16:24:47:171 [HTTP] <-- POST /session 500 4224 ms - 2115
+2026-08-21 16:25:07:589 [5606adca][Xcode] xcodebuild exited with code '65' and signal 'null'
+2026-08-21 16:27:40:640 [HTTP] --> GET /status 
+2026-08-21 16:27:40:640 [AppiumDriver@30a8] Calling AppiumDriver.getStatus() with args: []
+2026-08-21 16:27:40:640 [AppiumDriver@30a8] Responding to client with driver.getStatus() result: {"ready":true,"message":"The server is ready to accept new connections","build":{"version":"3.6.0","git-sha":"5b90e281d4e0c8fbd6ca4d8358276fb305b8d0bd","built":"2026-08-17 05:48:02 +0000"}}
+2026-08-21 16:27:40:641 [HTTP] <-- GET /status 200 2 ms - 199
+2026-08-21 16:28:35:429 [HTTP] Request idempotency key: 90fc42a3-40fb-4517-81e3-e0d7b0858a27
+2026-08-21 16:28:35:430 [HTTP] --> POST /session {"capabilities":{"firstMatch":[{}],"alwaysMatch":{"appium:automationName":"XCUITest","platformName":"iOS","appium:udid":"00008020-000D0CE43A99002E","appium:bundleId":"com.apple.Preferences","appium:noReset":true,"appium:newCommandTimeout":300,"appium:autoAcceptAlerts":true,"appium:xcodeOrgId":"U284BGAVKL","appium:xcodeSigningId":"Apple Development","appium:updatedWDABundleId":"com.jean.wda.runner","appium:usePreinstalledWDA":true,"appium:webDriverAgentUrl":"http://192.168.1.49:8100","appium:shouldWaitForQuiescence":false,"appium:waitForIdleTimeout":0,"appium:simpleIsVisibleCheck":true}}}
+2026-08-21 16:28:35:430 [AppiumDriver@30a8] Calling AppiumDriver.createSession() with args: [{"firstMatch":[{}],"alwaysMatch":{"appium:automationName":"XCUITest","platformName":"iOS","appium:udid":"00008020-000D0CE43A99002E","appium:bundleId":"com.apple.Preferences","appium:noReset":true,"appium:newCommandTimeout":300,"appium:autoAcceptAlerts":true,"appium:xcodeOrgId":"U284BGAVKL","appium:xcodeSigningId":"Apple Development","appium:updatedWDABundleId":"com.jean.wda.runner","appium:usePreinstalledWDA":true,"appium:webDriverAgentUrl":"http://192.168.1.49:8100","appium:shouldWaitForQuiescence":false,"appium:waitForIdleTimeout":0,"appium:simpleIsVisibleCheck":true}},{"firstMatch":[{}],"alwaysMatch":{"appium:automationName":"XCUITest","platformName":"iOS","appium:udid":"00008020-000D0CE43A99002E","appium:bundleId":"com.apple.Preferences","appium:noReset":true,"appium:newCommandTimeout":300,"appium:autoAcceptAlerts":true,"appium:xcodeOrgId":"U284BGAVKL","appium:xcodeSigningId":"Apple Development","appium:updatedWDABundleId":"com.jean.wda.runner","appium:usePreinstalledWDA":true,"appium:webDriverAgentUrl"…
+2026-08-21 16:28:35:430 [AppiumDriver@30a8] Event 'newSessionRequested' logged at 1787329715430 (18:28:35 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:28:35:430 [Appium] Attempting to find matching driver for automationName 'XCUITest' and platformName 'iOS'
+2026-08-21 16:28:35:430 [Appium] The 'xcuitest' driver was installed and matched caps.
+2026-08-21 16:28:35:430 [Appium] Will require it at /Users/jean/.appium/node_modules/appium-xcuitest-driver
+2026-08-21 16:28:35:430 [Appium] Requiring driver at /Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/index.js
+2026-08-21 16:28:35:431 [AppiumDriver@30a8] Appium v3.6.0 creating new XCUITestDriver (v12.7.0) session
+2026-08-21 16:28:35:431 [AppiumDriver@30a8] Checking BaseDriver versions for Appium and XCUITestDriver
+2026-08-21 16:28:35:431 [AppiumDriver@30a8] Appium's BaseDriver version is 10.7.2
+2026-08-21 16:28:35:431 [AppiumDriver@30a8] XCUITestDriver's BaseDriver version is 10.7.2
+2026-08-21 16:28:35:431 [AppiumDriver@30a8] Enabling relaxed security for this session as per the server configuration. All insecure features will be enabled unless explicitly disabled by --deny-insecure
+2026-08-21 16:28:35:431 [XCUITestDriver@f47f] 
+2026-08-21 16:28:35:431 [XCUITestDriver@f47f] Creating session with W3C capabilities: {
+  "alwaysMatch": {
+    "platformName": "iOS",
+    "appium:automationName": "XCUITest",
+    "appium:udid": "00008020-000D0CE43A99002E",
+    "appium:bundleId": "com.apple.Preferences",
+    "appium:noReset": true,
+    "appium:newCommandTimeout": 300,
+    "appium:autoAcceptAlerts": true,
+    "appium:xcodeOrgId": "U284BGAVKL",
+    "appium:xcodeSigningId": "Apple Development",
+    "appium:updatedWDABundleId": "com.jean.wda.runner",
+    "appium:usePreinstalledWDA": true,
+    "appium:webDriverAgentUrl": "http://192.168.1.49:8100",
+    "appium:shouldWaitForQuiescence": false,
+    "appium:waitForIdleTimeout": 0,
+    "appium:simpleIsVisibleCheck": true
+  },
+  "firstMatch": [
+    {}
+  ]
+}
+2026-08-21 16:28:35:432 [XCUITestDriver@f47f] The following provided capabilities were not recognized by this driver:
+2026-08-21 16:28:35:432 [XCUITestDriver@f47f]   shouldWaitForQuiescence
+2026-08-21 16:28:35:432 [XCUITestDriver@f47f]   simpleIsVisibleCheck
+2026-08-21 16:28:35:432 [XCUITestDriver@f47f] 'platformVersion' capability ('undefined') is not a valid version number. Consider fixing it or be ready to experience an inconsistent driver behavior.
+2026-08-21 16:28:35:432 [c6a873b8][XCUITestDriver@f47f] Session created with session id: c6a873b8-e944-4e8e-a2ec-b560ec07ddbf
+2026-08-21 16:28:35:432 [c6a873b8][XCUITest] Current user: 'jean'
+2026-08-21 16:28:35:566 [c6a873b8][XCUITestDriver@f47f] Skipping checking of the real devices availability since the session specifies appium:webDriverAgentUrl
+2026-08-21 16:28:35:566 [c6a873b8][XCUITestDriver@f47f] Creating iDevice object with udid '00008020-000D0CE43A99002E'
+2026-08-21 16:28:35:620 [c6a873b8][XCUITestDriver@f47f] No platformVersion specified. Using device version: '18.7.7'
+2026-08-21 16:28:35:620 [c6a873b8][XCUITestDriver@f47f] Determining device to run tests on: udid: '00008020-000D0CE43A99002E', real device: true
+2026-08-21 16:28:35:620 [c6a873b8][BaseDriver] Subscribing f47f5ebd-eaaa-4b27-b07d-0d7479b50f8a to topic 'xcuitest:sessionUdidClaimed'
+2026-08-21 16:28:35:620 [c6a873b8][BaseDriver] Subscribing f47f5ebd-eaaa-4b27-b07d-0d7479b50f8a to topic 'xcuitest:sessionUdidContended'
+2026-08-21 16:28:35:620 [c6a873b8][BaseDriver] Subscribing f47f5ebd-eaaa-4b27-b07d-0d7479b50f8a to topic 'xcuitest:sessionUdidReleased'
+2026-08-21 16:28:35:620 [c6a873b8][BaseDriver] f47f5ebd-eaaa-4b27-b07d-0d7479b50f8a is publishing a message to topic xcuitest:sessionUdidClaimed
+2026-08-21 16:28:35:632 [c6a873b8][BaseDriver] Unsubscribing f47f5ebd-eaaa-4b27-b07d-0d7479b50f8a from topic 'xcuitest:sessionUdidContended'
+2026-08-21 16:28:35:632 [c6a873b8][BaseDriver] Unsubscribing f47f5ebd-eaaa-4b27-b07d-0d7479b50f8a from topic 'xcuitest:sessionUdidReleased'
+2026-08-21 16:28:35:632 [c6a873b8][XCUITestDriver@f47f] Normalized platformVersion capability value '18.7.7' to '18.7'
+2026-08-21 16:28:35:632 [c6a873b8][XCUITestDriver@f47f] Event 'xcodeDetailsRetrieved' logged at 1787329715632 (18:28:35 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:28:35:632 [c6a873b8][XCUITestDriver@f47f] Event 'appConfigured' logged at 1787329715632 (18:28:35 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:28:35:632 [c6a873b8][XCUITestDriver@f47f] Event 'resetStarted' logged at 1787329715632 (18:28:35 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:28:35:632 [c6a873b8][XCUITestDriver@f47f] Reset: fullReset not set. Leaving as is
+2026-08-21 16:28:35:632 [c6a873b8][XCUITestDriver@f47f] Event 'resetComplete' logged at 1787329715632 (18:28:35 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:28:35:632 [c6a873b8][XCUITestDriver@f47f] Using WDA path: '/Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent'
+2026-08-21 16:28:35:632 [c6a873b8][XCUITestDriver@f47f] Using WDA agent: '/Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj'
+2026-08-21 16:28:35:634 [c6a873b8][XCUITestDriver@f47f] RemoteXPC session initialization unavailable: Tunnel registry port not found. Please run the tunnel creation script first See https://appium.github.io/appium-xcuitest-driver/latest/guides/remotexpc-tunnels-real-devices/ Falling back to appium-ios-device.
+2026-08-21 16:28:35:748 [c6a873b8][XCUITestDriver@f47f] Failed to create crash reports client: Failed crash reports via RemoteXPC for '00008020-000D0CE43A99002E' (RemoteXPC is not available for this session). Skipping crash logs collection for real devices.
+2026-08-21 16:28:35:748 [c6a873b8][XCUITestDriver@f47f] Event 'logCaptureStarted' logged at 1787329715748 (18:28:35 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:28:35:748 [c6a873b8][XCUITestDriver@f47f] Setting up real device
+2026-08-21 16:28:35:912 [c6a873b8][XCUITestDriver@f47f] Requesting connection for device 00008020-000D0CE43A99002E on local port 8100
+2026-08-21 16:28:35:912 [c6a873b8][XCUITestDriver@f47f] Cached connections count: 0
+2026-08-21 16:28:35:912 [c6a873b8][XCUITestDriver@f47f] Successfully requested the connection for 00008020-000D0CE43A99002E:8100
+2026-08-21 16:28:35:913 [c6a873b8][XCUITestDriver@f47f] Starting WebDriverAgent initialization with the synchronization key 'XCUITestDriver'
+2026-08-21 16:28:35:913 [c6a873b8][XCUITestDriver@f47f] Trying to start WebDriverAgent once since at least one of webDriverAgentUrl,usePreinstalledWDA capabilities is provided
+2026-08-21 16:28:35:913 [c6a873b8][XCUITestDriver@f47f] Event 'wdaStartAttempted' logged at 1787329715913 (18:28:35 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:28:36:179 [c6a873b8][XCUITestDriver@f47f] The executable name for the bundle id 'com.jean.wda.runner.xctrunner' was 'WebDriverAgentRunner-Runner'
+2026-08-21 16:28:36:179 [c6a873b8][XCUITestDriver@f47f] Calling devicectl to kill the process
+2026-08-21 16:28:36:179 [c6a873b8][Devicectl] Executing "xcrun" "devicectl" "device" "info" "processes" "--device" "00008020-000D0CE43A99002E" "--quiet" "--json-output" "-"
+2026-08-21 16:28:36:429 [c6a873b8][Devicectl] Executing "xcrun" "devicectl" "device" "process" "signal" "--device" "00008020-000D0CE43A99002E" "--signal" "2" "--pid" "3099" "--quiet" "--json-output" "-"
+2026-08-21 16:28:36:586 [c6a873b8][XCUITestDriver@f47f] Killed process for 'com.jean.wda.runner.xctrunner' app with PID 3099
+2026-08-21 16:28:36:744 [c6a873b8][XCUITestDriver@f47f] Selected 'existing-url' WebDriverAgent startup strategy
+2026-08-21 16:28:36:744 [c6a873b8][XCUITestDriver@f47f] Using provided WebdriverAgent at 'http://192.168.1.49:8100'
+2026-08-21 16:28:36:744 [c6a873b8][XCUITestDriver@f47f] JWProxy options: {"scheme":"http","server":"192.168.1.49","port":8100,"base":"","reqBasePath":"","sessionId":null,"keepAlive":true}
+2026-08-21 16:28:36:744 [c6a873b8][XCUITestDriver@f47f] NoSessionProxy options: {"scheme":"http","server":"192.168.1.49","port":8100,"base":"","reqBasePath":"","sessionId":null,"keepAlive":true}
+2026-08-21 16:28:36:744 [c6a873b8][WD Proxy] NoSessionProxy options: {"scheme":"http","server":"192.168.1.49","port":8100,"base":"","reqBasePath":"","sessionId":null,"timeout":3000}
+2026-08-21 16:28:36:744 [c6a873b8][WD Proxy] Matched '/status' to command name 'getStatus'
+2026-08-21 16:28:36:744 [c6a873b8][WD Proxy] Proxying [GET /status] to [GET http://192.168.1.49:8100/status] with no body
+2026-08-21 16:28:37:855 [c6a873b8][WD Proxy] connect ECONNREFUSED 192.168.1.49:8100
+2026-08-21 16:28:37:855 [c6a873b8][XCUITestDriver@f47f] WDA is not listening at 'http://192.168.1.49:8100/'. Original error:: Could not proxy command to the remote server. Original error: connect ECONNREFUSED 192.168.1.49:8100
+2026-08-21 16:28:37:855 [c6a873b8][XCUITestDriver@f47f] Event 'wdaSessionAttempted' logged at 1787329717855 (18:28:37 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:28:37:855 [c6a873b8][XCUITestDriver@f47f] Sending createSession command to WDA
+2026-08-21 16:28:37:856 [c6a873b8][XCUITestDriver@f47f] Matched '/status' to command name 'getStatus'
+2026-08-21 16:28:37:856 [c6a873b8][XCUITestDriver@f47f] Proxying [GET /status] to [GET http://192.168.1.49:8100/status] with no body
+2026-08-21 16:28:38:960 [c6a873b8][XCUITestDriver@f47f] connect ECONNREFUSED 192.168.1.49:8100
+2026-08-21 16:28:38:961 [c6a873b8][XCUITestDriver@f47f] Event 'wdaSessionFailed' logged at 1787329718961 (18:28:38 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:28:38:961 [c6a873b8][XCUITestDriver@f47f] UnknownError: Could not proxy command to the remote server. Original error: connect ECONNREFUSED 192.168.1.49:8100
+    at ProxyRequestError.getActualError (/Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/@appium/base-driver/build/lib/protocol/errors.js:684:16)
+    at JWProxy.command (/Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/@appium/base-driver/build/lib/jsonwp-proxy/proxy.js:274:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async XCUITestDriver.proxyCommand (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/proxy-helper.js:78:17)
+    at async establishProxySession (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:237:61)
+    at async file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:189:29
+    at async wrapped (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/asyncbox/build/esm/lib/asyncbox.js:161:19)
+    at async retry (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/asyncbox/build/esm/lib/asyncbox.js:136:19)
+    at async retryInterval (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/asyncbox/build/esm/lib/asyncbox.js:172:12)
+    at async runStartupWithRetries (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:177:5)
+    at async startUnderSynchronizationLock (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:128:5)
+    at async file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:22:9
+2026-08-21 16:28:38:961 [c6a873b8][XCUITestDriver@f47f] {}
+2026-08-21 16:28:38:961 [c6a873b8][BaseDriver] Unsubscribing f47f5ebd-eaaa-4b27-b07d-0d7479b50f8a from topic 'xcuitest:sessionUdidClaimed'
+2026-08-21 16:28:38:961 [c6a873b8][XCUITestDriver@f47f] Releasing connections for 00008020-000D0CE43A99002E device on any port number
+2026-08-21 16:28:38:961 [c6a873b8][XCUITestDriver@f47f] Found cached connections to release: ["00008020-000D0CE43A99002E:8100"]
+2026-08-21 16:28:38:961 [c6a873b8][XCUITestDriver@f47f] Cached connections count: 0
+2026-08-21 16:28:38:962 [c6a873b8][AppiumDriver@30a8] Event 'newSessionStarted' logged at 1787329718962 (18:28:38 GMT+0200 (heure d’été d’Europe centrale))
+2026-08-21 16:28:38:962 [c6a873b8][AppiumDriver@30a8] Encountered internal error running command: Error: Unable to start WebDriverAgent session. Original error: Could not proxy command to the remote server. Original error: connect ECONNREFUSED 192.168.1.49:8100
+    at establishProxySession (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:254:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:189:29
+    at async wrapped (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/asyncbox/build/esm/lib/asyncbox.js:161:19)
+    at async retry (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/asyncbox/build/esm/lib/asyncbox.js:136:19)
+    at async retryInterval (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/asyncbox/build/esm/lib/asyncbox.js:172:12)
+    at async runStartupWithRetries (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:177:5)
+    at async startUnderSynchronizationLock (file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:128:5)
+    at async file:///Users/jean/.appium/node_modules/appium-xcuitest-driver/build/lib/commands/wda/startup.js:22:9
+2026-08-21 16:28:38:963 [HTTP] <-- POST /session 500 3533 ms - 2115
+2026-08-21 16:34:27:261 [HTTP] --> GET /sessions 
+2026-08-21 16:34:27:264 [HTTP] No route found for /sessions
+2026-08-21 16:34:27:265 [HTTP] <-- GET /sessions 404 5 ms - 3056

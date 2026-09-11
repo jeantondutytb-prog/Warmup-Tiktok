@@ -1,0 +1,21 @@
+INFO:     Started server process [60016]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:61225 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61228 - "POST /api/start/jeanzdozzr HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61304 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61324 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61337 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61348 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61363 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61377 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61379 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61382 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61387 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61390 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61410 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61412 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61477 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61474 - "POST /api/stop-all HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61664 - "GET /api/status HTTP/1.1" 200 OK

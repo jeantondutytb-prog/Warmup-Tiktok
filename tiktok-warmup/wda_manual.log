@@ -1,0 +1,119 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project /Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -derivedDataPath /Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf -destination id=00008020-000D0CE43A99002E IPHONEOS_DEPLOYMENT_TARGET=18.7 DEVELOPMENT_TEAM=U284BGAVKL "CODE_SIGN_IDENTITY=Apple Development" PRODUCT_BUNDLE_IDENTIFIER=com.jean.wda.runner GCC_TREAT_WARNINGS_AS_ERRORS=0 COMPILER_INDEX_STORE_ENABLE=NO
+
+Build settings from command line:
+    CODE_SIGN_IDENTITY = Apple Development
+    COMPILER_INDEX_STORE_ENABLE = NO
+    DEVELOPMENT_TEAM = U284BGAVKL
+    GCC_TREAT_WARNINGS_AS_ERRORS = 0
+    IPHONEOS_DEPLOYMENT_TARGET = 18.7
+    PRODUCT_BUNDLE_IDENTIFIER = com.jean.wda.runner
+
+2026-08-21 18:25:45.256873+0200 WebDriverAgentRunner-Runner[3099:473886] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'All tests' started at 2026-08-21 18:25:45.683.
+Test Suite 'WebDriverAgentRunner.xctest' started at 2026-08-21 18:25:45.684.
+Test Suite 'UITestingUITests' started at 2026-08-21 18:25:45.684.
+    t =      nans Suite Set Up
+2026-08-21 18:25:45.703325+0200 WebDriverAgentRunner-Runner[3099:473886] [User Defaults] Couldn't write values for keys (
+    KeyboardAutocorrection
+) in CFPrefsPlistSource<0x105402100> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:25:45.703716+0200 WebDriverAgentRunner-Runner[3099:473886] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_changedAt"
+) in CFPrefsPlistSource<0x105402100> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:25:45.704076+0200 WebDriverAgentRunner-Runner[3099:473886] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_buildAtChange"
+) in CFPrefsPlistSource<0x105402100> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:25:45.704392+0200 WebDriverAgentRunner-Runner[3099:473886] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_previousValue"
+) in CFPrefsPlistSource<0x105402100> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:25:45.704696+0200 WebDriverAgentRunner-Runner[3099:473886] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_analyzedAt"
+) in CFPrefsPlistSource<0x105402100> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:25:45.719772+0200 WebDriverAgentRunner-Runner[3099:473886] [User Defaults] Couldn't write values for keys (
+    KeyboardPrediction
+) in CFPrefsPlistSource<0x105402100> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:25:45.720182+0200 WebDriverAgentRunner-Runner[3099:473886] [User Defaults] Couldn't write values for keys (
+    KeyboardShowPredictionBar
+) in CFPrefsPlistSource<0x105402100> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:25:45.720509+0200 WebDriverAgentRunner-Runner[3099:473886] [User Defaults] Couldn't write values for keys (
+    DidShowGestureKeyboardIntroduction
+) in CFPrefsPlistSource<0x105402100> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+Test Case '-[UITestingUITests testRunner]' started.
+    t =     0.00s Start Test at 2026-08-21 18:25:45.728
+    t =     0.00s Set Up
+2026-08-21 18:25:45.731541+0200 WebDriverAgentRunner-Runner[3099:473886] Built at Aug 21 2026 12:37:17
+2026-08-21 18:25:45.755500+0200 WebDriverAgentRunner-Runner[3099:473886] ServerURLHere->http://192.168.1.49:8100<-ServerURLHere
+2026-08-21 18:27:28.488756+0200 WebDriverAgentRunner-Runner[3099:473886] Using singleton test manager
+2026-08-21 18:28:58.257056+0200 WebDriverAgentRunner-Runner[3155:476103] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+
+Restarting after unexpected exit, crash, or test timeout; summary will include totals from previous launches.
+
+Test Suite 'Selected tests' started at 2026-08-21 18:28:58.703.
+Test Suite 'WebDriverAgentRunner.xctest' started at 2026-08-21 18:28:58.703.
+Test Suite 'UITestingUITests' started at 2026-08-21 18:28:58.703.
+    t =      nans Suite Set Up
+2026-08-21 18:28:58.725518+0200 WebDriverAgentRunner-Runner[3155:476103] [User Defaults] Couldn't write values for keys (
+    KeyboardAutocorrection
+) in CFPrefsPlistSource<0x109c1a980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:28:58.725926+0200 WebDriverAgentRunner-Runner[3155:476103] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_changedAt"
+) in CFPrefsPlistSource<0x109c1a980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:28:58.726240+0200 WebDriverAgentRunner-Runner[3155:476103] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_buildAtChange"
+) in CFPrefsPlistSource<0x109c1a980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:28:58.726537+0200 WebDriverAgentRunner-Runner[3155:476103] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_previousValue"
+) in CFPrefsPlistSource<0x109c1a980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:28:58.726830+0200 WebDriverAgentRunner-Runner[3155:476103] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_analyzedAt"
+) in CFPrefsPlistSource<0x109c1a980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:28:58.741892+0200 WebDriverAgentRunner-Runner[3155:476103] [User Defaults] Couldn't write values for keys (
+    KeyboardPrediction
+) in CFPrefsPlistSource<0x109c1a980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:28:58.742297+0200 WebDriverAgentRunner-Runner[3155:476103] [User Defaults] Couldn't write values for keys (
+    KeyboardShowPredictionBar
+) in CFPrefsPlistSource<0x109c1a980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:28:58.742634+0200 WebDriverAgentRunner-Runner[3155:476103] [User Defaults] Couldn't write values for keys (
+    DidShowGestureKeyboardIntroduction
+) in CFPrefsPlistSource<0x109c1a980> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+Test Suite 'UITestingUITests' passed at 2026-08-21 18:28:58.750.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.047) seconds
+Test Suite 'WebDriverAgentRunner.xctest' passed at 2026-08-21 18:28:58.751.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.047) seconds
+Test Suite 'Selected tests' passed at 2026-08-21 18:28:58.751.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.048) seconds
+2026-08-21 18:28:59.051 xcodebuild[40836:3909843]  IDETestOperationsObserverDebug: Failure collecting diagnostics from devices: Process exited with error 1:
+ ERROR: The operation couldn?t be completed. (CoreDeviceCLISupport.DiagnoseError error 0.)
+This tool generates files that allow Apple to investigate issues with your
+computer and help improve Apple products. The files might contain personal
+information found on your device or associated with your Apple Account(s),
+including but not limited to your name, serial numbers of your device,
+your device name, your device's location over the last one to two days,
+your attached peripheral devices, your user name, your email address and
+email settings, file paths, file names, Siri suggestions, your computer's
+IP addresses, and network connection information.
+
+This information is used by Apple in accordance with its privacy policy
+(www.apple.com/privacy) and is not shared with any other company. By using
+this tool and sending the results to Apple, you consent to Apple using the
+contents of these files to improve Apple products.
+
+An error occurred while running devicectl diagnose. Will archive the diagnostics collected thus far.
+Wrote file to /Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf/Logs/Test/Test-WebDriverAgentRunner-2026.08.21_18-25-41-+0200.xcresult/Staging/1_Test/Diagnostics/devicectl_diagnostics.zip
+Partial devicectl diagnose bundle located here: /Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf/Logs/Test/Test-WebDriverAgentRunner-2026.08.21_18-25-41-+0200.xcresult/Staging/1_Test/Diagnostics/devicectl_diagnostics.zip
+
+2026-08-21 18:28:59.053 xcodebuild[40836:3906052] [MT] IDETestOperationsObserverDebug: 197.345 elapsed -- Testing started completed.
+2026-08-21 18:28:59.053 xcodebuild[40836:3906052] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-08-21 18:28:59.053 xcodebuild[40836:3906052] [MT] IDETestOperationsObserverDebug: 197.345 sec, +197.345 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf/Logs/Test/Test-WebDriverAgentRunner-2026.08.21_18-25-41-+0200.xcresult
+
+Failing tests:
+	-[UITestingUITests testRunner]
+
+** TEST EXECUTE FAILED **
+
+Testing started

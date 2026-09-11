@@ -1,0 +1,168 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project /Users/jean/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -derivedDataPath /Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf -destination id=00008020-000D0CE43A99002E IPHONEOS_DEPLOYMENT_TARGET=18.7 DEVELOPMENT_TEAM=U284BGAVKL "CODE_SIGN_IDENTITY=Apple Development" PRODUCT_BUNDLE_IDENTIFIER=com.jean.wda.runner GCC_TREAT_WARNINGS_AS_ERRORS=0 COMPILER_INDEX_STORE_ENABLE=NO
+
+Build settings from command line:
+    CODE_SIGN_IDENTITY = Apple Development
+    COMPILER_INDEX_STORE_ENABLE = NO
+    DEVELOPMENT_TEAM = U284BGAVKL
+    GCC_TREAT_WARNINGS_AS_ERRORS = 0
+    IPHONEOS_DEPLOYMENT_TARGET = 18.7
+    PRODUCT_BUNDLE_IDENTIFIER = com.jean.wda.runner
+
+2026-08-21 18:48:31.554778+0200 WebDriverAgentRunner-Runner[3191:488344] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'All tests' started at 2026-08-21 18:48:32.273.
+Test Suite 'WebDriverAgentRunner.xctest' started at 2026-08-21 18:48:32.274.
+Test Suite 'UITestingUITests' started at 2026-08-21 18:48:32.275.
+    t =      nans Suite Set Up
+2026-08-21 18:48:32.334024+0200 WebDriverAgentRunner-Runner[3191:488344] [User Defaults] Couldn't write values for keys (
+    KeyboardAutocorrection
+) in CFPrefsPlistSource<0x1077ff300> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:48:32.335217+0200 WebDriverAgentRunner-Runner[3191:488344] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_changedAt"
+) in CFPrefsPlistSource<0x1077ff300> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:48:32.336183+0200 WebDriverAgentRunner-Runner[3191:488344] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_buildAtChange"
+) in CFPrefsPlistSource<0x1077ff300> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:48:32.337092+0200 WebDriverAgentRunner-Runner[3191:488344] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_previousValue"
+) in CFPrefsPlistSource<0x1077ff300> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:48:32.337992+0200 WebDriverAgentRunner-Runner[3191:488344] [User Defaults] Couldn't write values for keys (
+    "KeyboardAutocorrection_analyzedAt"
+) in CFPrefsPlistSource<0x1077ff300> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:48:32.384085+0200 WebDriverAgentRunner-Runner[3191:488344] [User Defaults] Couldn't write values for keys (
+    KeyboardPrediction
+) in CFPrefsPlistSource<0x1077ff300> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:48:32.384866+0200 WebDriverAgentRunner-Runner[3191:488344] [User Defaults] Couldn't write values for keys (
+    KeyboardShowPredictionBar
+) in CFPrefsPlistSource<0x1077ff300> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+2026-08-21 18:48:32.385514+0200 WebDriverAgentRunner-Runner[3191:488344] [User Defaults] Couldn't write values for keys (
+    DidShowGestureKeyboardIntroduction
+) in CFPrefsPlistSource<0x1077ff300> (Domain: com.apple.keyboard.preferences, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+Test Case '-[UITestingUITests testRunner]' started.
+    t =     0.00s Start Test at 2026-08-21 18:48:32.405
+    t =     0.01s Set Up
+2026-08-21 18:48:32.418191+0200 WebDriverAgentRunner-Runner[3191:488344] Built at Aug 21 2026 12:37:17
+2026-08-21 18:48:32.479213+0200 WebDriverAgentRunner-Runner[3191:488344] ServerURLHere->http://192.168.1.49:8100<-ServerURLHere
+2026-08-21 18:48:33.300569+0200 WebDriverAgentRunner-Runner[3191:488344] Using singleton test manager
+2026-08-21 20:50:13.680 xcodebuild[49983:3948459] [MT] IDELaunchReport: 953970bb384744c0:953970bb384744c0: Finished with error: An error occurred while communicating with a remote process.
+Domain: com.apple.dt.CoreDeviceError
+Code: 3
+User Info: {
+    DVTErrorCreationDateKey = "2026-08-21 18:50:13 +0000";
+    IDERunOperationFailingWorker = IDELaunchCoreDeviceWorker;
+}
+--
+The connection was invalidated.
+Domain: com.apple.Mercury.error
+Code: 1001
+User Info: {
+    XPCConnectionDescription = "<RemoteXPCPeerConnection 0xa3d131500> { <remote connection: 0xa39a8ebc0> { type = preconnected, state = canceled, remote service name = (null), server mode = 0, protocol version number = 1, protocol feature flags = 0x6, local service version = 0, remote service version = 0, traffic class = 0, (root, reply) helo received = (1, 1), next msg id = 7, first msg id = 1, send in progress = 0, preexisting socket = -1 }";
+}
+--
+
+2026-08-21 20:50:13.681 xcodebuild[49983:3948459] [MT] IDELaunchReport: 953970bb384744c0:953970bb384744c0: com.apple.dt.IDERunOperationWorkerFinished {
+    "device_identifier" = "00008020-000D0CE43A99002E";
+    "device_isCoreDevice" = 1;
+    "device_model" = "iPhone11,2";
+    "device_osBuild" = "18.7.7 (22H340)";
+    "device_osBuild_monotonic" = 2207034000;
+    "device_os_variant" = 1;
+    "device_platform" = "com.apple.platform.iphoneos";
+    "device_platform_family" = 2;
+    "device_reality" = 1;
+    "device_thinningType" = "iPhone11,2";
+    "device_transport" = 1;
+    "launchSession_schemeCommand" = Test;
+    "launchSession_schemeCommand_enum" = 2;
+    "launchSession_targetArch" = arm64;
+    "launchSession_targetArch_enum" = 6;
+    "operation_duration_ms" = 7304882;
+    "operation_errorCode" = 1001;
+    "operation_errorDomain" = "com.apple.dt.CoreDeviceError.3.com.apple.Mercury.error";
+    "operation_errorWorker" = IDELaunchCoreDeviceWorker;
+    "operation_error_reportable" = 1;
+    "operation_name" = IDERunOperationWorkerGroup;
+    "param_consoleMode" = 0;
+    "param_debugger_attachToExtensions" = 0;
+    "param_debugger_attachToXPC" = 0;
+    "param_debugger_type" = 1;
+    "param_destination_isProxy" = 0;
+    "param_destination_platform" = "com.apple.platform.iphoneos";
+    "param_diag_MTE_enable" = 0;
+    "param_diag_MainThreadChecker_stopOnIssue" = 0;
+    "param_diag_MallocStackLogging_enableDuringAttach" = 0;
+    "param_diag_MallocStackLogging_enableForXPC" = 0;
+    "param_diag_allowLocationSimulation" = 1;
+    "param_diag_checker_mtc_enable" = 0;
+    "param_diag_checker_tpc_enable" = 1;
+    "param_diag_gpu_frameCapture_enable" = 3;
+    "param_diag_gpu_shaderValidation_enable" = 0;
+    "param_diag_gpu_validation_enable" = 1;
+    "param_diag_guardMalloc_enable" = 0;
+    "param_diag_memoryGraphOnResourceException" = 0;
+    "param_diag_queueDebugging_enable" = 0;
+    "param_diag_runtimeProfile_generate" = 0;
+    "param_diag_sanitizer_asan_enable" = 0;
+    "param_diag_sanitizer_tsan_enable" = 0;
+    "param_diag_sanitizer_tsan_stopOnIssue" = 0;
+    "param_diag_sanitizer_ubsan_enable" = 0;
+    "param_diag_sanitizer_ubsan_stopOnIssue" = 0;
+    "param_diag_showNonLocalizedStrings" = 0;
+    "param_diag_viewDebugging_enabled" = 0;
+    "param_diag_viewDebugging_insertDylibOnLaunch" = 0;
+    "param_install_style" = 2;
+    "param_launcher_UID" = 2;
+    "param_launcher_allowDeviceSensorReplayData" = 0;
+    "param_launcher_kind" = 0;
+    "param_launcher_style" = 0;
+    "param_launcher_substyle" = 64;
+    "param_runnable_appExtensionHostRunMode" = 0;
+    "param_runnable_productType" = "com.apple.product-type.application";
+    "param_testing_launchedForTesting" = 1;
+    "param_testing_suppressSimulatorApp" = 1;
+    "param_testing_usingCLI" = 0;
+    "sdk_canonicalName" = "iphoneos26.5";
+    "sdk_osVersion" = "26.5";
+    "sdk_platformID" = 2;
+    "sdk_variant" = iphoneos;
+    "sdk_version_monotonic" = 2305008100;
+}
+
+
+*** If you believe this error represents a bug, please attach the result bundle at /Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf/Logs/Test/Test-WebDriverAgentRunner-2026.08.21_18-48-00-+0200.xcresult
+
+2026-08-21 20:50:14.044 xcodebuild[49983:4057972]  IDETestOperationsObserverDebug: Failure collecting diagnostics from devices: Process exited with error 1:
+ ERROR: The operation couldn?t be completed. (CoreDeviceCLISupport.DiagnoseError error 0.)
+This tool generates files that allow Apple to investigate issues with your
+computer and help improve Apple products. The files might contain personal
+information found on your device or associated with your Apple Account(s),
+including but not limited to your name, serial numbers of your device,
+your device name, your device's location over the last one to two days,
+your attached peripheral devices, your user name, your email address and
+email settings, file paths, file names, Siri suggestions, your computer's
+IP addresses, and network connection information.
+
+This information is used by Apple in accordance with its privacy policy
+(www.apple.com/privacy) and is not shared with any other company. By using
+this tool and sending the results to Apple, you consent to Apple using the
+contents of these files to improve Apple products.
+
+An error occurred while running devicectl diagnose. Will archive the diagnostics collected thus far.
+Wrote file to /Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf/Logs/Test/Test-WebDriverAgentRunner-2026.08.21_18-48-00-+0200.xcresult/Staging/1_Test/Diagnostics/devicectl_diagnostics.zip
+Partial devicectl diagnose bundle located here: /Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf/Logs/Test/Test-WebDriverAgentRunner-2026.08.21_18-48-00-+0200.xcresult/Staging/1_Test/Diagnostics/devicectl_diagnostics.zip
+
+2026-08-21 20:50:14.047 xcodebuild[49983:3948459] [MT] IDETestOperationsObserverDebug: 7333.304 elapsed -- Testing started completed.
+2026-08-21 20:50:14.047 xcodebuild[49983:3948459] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-08-21 20:50:14.047 xcodebuild[49983:3948459] [MT] IDETestOperationsObserverDebug: 7333.304 sec, +7333.304 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/jean/Library/Developer/Xcode/DerivedData/WebDriverAgent-entqkdybqjzegiahlgkxvxghpzdf/Logs/Test/Test-WebDriverAgentRunner-2026.08.21_18-48-00-+0200.xcresult
+
+Testing failed:
+	An error occurred while communicating with a remote process.
+	testRunner encountered an error (Encountered a problem with the test runner after launch. (Underlying Error: An error occurred while communicating with a remote process. (Underlying Error: The connection was invalidated.)))
+
+** TEST EXECUTE FAILED **
+
+Testing started

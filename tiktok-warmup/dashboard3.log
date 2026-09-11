@@ -1,0 +1,37 @@
+INFO:     Started server process [58037]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60599 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60607 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60620 - "POST /api/start/jeanzdozzr HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60663 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60687 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60705 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60718 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60733 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60739 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60751 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60756 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60778 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60780 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60782 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60790 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60795 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60801 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60819 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60841 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60851 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60854 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60866 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60885 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60904 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60915 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60925 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60928 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60937 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60939 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61021 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61095 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61167 - "POST /api/stop-all HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61179 - "GET /api/status HTTP/1.1" 200 OK

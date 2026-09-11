@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Warmup</title>
+    <script src="https://unpkg.com/htmx.org@2.0.0"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        header h1 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover { opacity: 0.85; }
+
+        .btn-start {
+            background: #25d366;
+            color: #000;
+        }
+
+        .btn-stop {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            padding: 20px 30px;
+        }
+
+        .card {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .status {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-idle { background: #333; color: #888; }
+        .status-running { background: #25d36622; color: #25d366; }
+        .status-error { background: #e74c3c22; color: #e74c3c; }
+
+        .counters {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .counter {
+            background: #222;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .counter strong {
+            display: block;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .logs {
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 12px;
+            font-family: monospace;
+            background: #111;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 12px;
+        }
+
+        .logs::-webkit-scrollbar { width: 4px; }
+        .logs::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+
+        .log-entry {
+            padding: 3px 0;
+            border-bottom: 1px solid #1a1a1a;
+            color: #aaa;
+        }
+
+        .log-entry .time { color: #666; }
+        .log-entry .action { color: #25d366; }
+
+        .card-controls {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .ramp-up-info {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        .protocol-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        .tag {
+            font-size: 10px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: #2a2a2a;
+            color: #aaa;
+        }
+        .tag-locked { background: #4a2a12; color: #e0a45c; }
+        .tag-cold { background: #3a2a2a; color: #e08c8c; }
+        .tag-warming { background: #3a3520; color: #ddc46a; }
+        .tag-ready { background: #1e3a2a; color: #6cd39a; }
+        .keyword { color: #8ab4f8; }
+        .caps { font-variant-numeric: tabular-nums; }
+        .caps b { color: #ddd; font-weight: 600; }
+        .caps .over { color: #e08c8c; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>TikTok Warmup</h1>
+    <div class="controls">
+        <button class="btn btn-start" onclick="startAll()">Start All</button>
+        <button class="btn btn-stop" onclick="stopAll()">Stop All</button>
+    </div>
+</header>
+
+<div class="grid" id="accounts-grid">
+    {% for username, data in accounts.items() %}
+    <div class="card" id="card-{{ username }}">
+        <div class="card-header">
+            <h2>{{ username }}</h2>
+            <span class="status status-{{ data.status }}">{{ data.status }}</span>
+        </div>
+
+        <div class="protocol-line">
+            <span class="tag">{{ data.role }}</span>
+            {% if data.protected %}<span class="tag tag-locked">ne pas toucher</span>{% endif %}
+            <span>Jour {{ data.protocol_day }} / 14</span>
+            {% if data.last_session and data.last_session.fyp_verdict %}
+            <span class="tag tag-{{ data.last_session.fyp_verdict }}">FYP {{ data.last_session.fyp_verdict }}</span>
+            {% endif %}
+        </div>
+
+        {% if data.last_session and data.last_session.keyword %}
+        <div class="ramp-up-info">
+            dernière session : <span class="keyword">« {{ data.last_session.keyword }} »</span>
+            {% if not data.last_session.completed %}— interrompue{% endif %}
+        </div>
+        {% endif %}
+
+        <div class="ramp-up-info caps">
+            24 h :
+            <b class="{% if data.used_24h.likes >= data.caps_24h.likes[1] %}over{% endif %}">{{ data.used_24h.likes }}</b>/{{ data.caps_24h.likes[0] }}–{{ data.caps_24h.likes[1] }} likes ·
+            <b class="{% if data.used_24h.follows >= data.caps_24h.follows[1] %}over{% endif %}">{{ data.used_24h.follows }}</b>/{{ data.caps_24h.follows[0] }}–{{ data.caps_24h.follows[1] }} abos ·
+            <b class="{% if data.used_24h.comments >= data.caps_24h.comments[1] %}over{% endif %}">{{ data.used_24h.comments }}</b>/{{ data.caps_24h.comments[1] }} comm.
+        </div>
+
+        <div class="counters">
+            <div class="counter">
+                <strong id="cnt-{{ username }}-videos">{{ data.counters.videos_watched }}</strong>
+                Videos
+            </div>
+            <div class="counter">
+                <strong id="cnt-{{ username }}-likes">{{ data.counters.likes }}</strong>
+                Likes
+            </div>
+            <div class="counter">
+                <strong id="cnt-{{ username }}-follows">{{ data.counters.follows }}</strong>
+                Follows
+            </div>
+            <div class="counter">
+                <strong id="cnt-{{ username }}-comments">{{ data.counters.comments }}</strong>
+                Comments
+            </div>
+        </div>
+
+        <div class="card-controls">
+            {% if data.protected %}
+            <span class="ramp-up-info">Aucun warmup sur ce compte.</span>
+            {% else %}
+            <button class="btn btn-start btn-sm" onclick="startAccount('{{ username }}')">Start</button>
+            <button class="btn btn-stop btn-sm" onclick="stopAccount('{{ username }}')">Stop</button>
+            {% endif %}
+        </div>
+
+        <div class="logs" id="logs-{{ username }}">
+            {% for log in data.recent_logs %}
+            <div class="log-entry">
+                <span class="time">{{ log.time[-8:] }}</span>
+                <span class="action">{{ log.action }}</span>
+                {{ log.detail }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    async function startAll() {
+        await fetch('/api/start-all', { method: 'POST' });
+        updateStatus();
+    }
+
+    async function stopAll() {
+        await fetch('/api/stop-all', { method: 'POST' });
+        updateStatus();
+    }
+
+    async function startAccount(username) {
+        await fetch(`/api/start/${username}`, { method: 'POST' });
+        updateStatus();
+    }
+
+    async function stopAccount(username) {
+        await fetch(`/api/stop/${username}`, { method: 'POST' });
+        updateStatus();
+    }
+
+    async function updateStatus() {
+        const resp = await fetch('/api/status');
+        const data = await resp.json();
+        for (const [username, info] of Object.entries(data)) {
+            const statusEl = document.querySelector(`#card-${username} .status`);
+            if (statusEl) {
+                statusEl.textContent = info.status;
+                statusEl.className = `status status-${info.status}`;
+            }
+            const ids = { videos: 'videos_watched', likes: 'likes', follows: 'follows', comments: 'comments' };
+            for (const [short, key] of Object.entries(ids)) {
+                const el = document.getElementById(`cnt-${username}-${short}`);
+                if (el) el.textContent = info.counters[key];
+            }
+        }
+    }
+
+    const evtSource = new EventSource('/api/events');
+
+    evtSource.addEventListener('action', (e) => {
+        const event = JSON.parse(e.data);
+        const logsEl = document.getElementById(`logs-${event.username}`);
+        if (logsEl) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const time = event.timestamp.slice(11, 19);
+            const parts = event.data.split(': ');
+            entry.innerHTML = `<span class="time">${time}</span> <span class="action">${parts[0]}</span> ${parts.slice(1).join(': ')}`;
+            logsEl.prepend(entry);
+            while (logsEl.children.length > 50) logsEl.removeChild(logsEl.lastChild);
+        }
+        updateStatus();
+    });
+
+    evtSource.addEventListener('status', (e) => {
+        updateStatus();
+    });
+
+    evtSource.addEventListener('error_event', (e) => {
+        updateStatus();
+    });
+
+    setInterval(updateStatus, 30000);
+</script>
+
+</body>
+</html>

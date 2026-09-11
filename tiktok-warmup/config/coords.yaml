@@ -1,0 +1,78 @@
+# Carte des points de tap, en pourcentage de l'écran.
+#
+# L'UI de TikTok n'est pas exposée dans l'arbre d'accessibilité XCUITest (tout
+# est `visible="false"`, sans label), donc chaque interaction est un tap en
+# coordonnées. Les pourcentages survivent à un changement d'appareil ; les
+# points, non.
+#
+# Calibré le 03.09.2026 sur iPhone XS, iOS 18.7.7, TikTok en français, compte
+# emma.srpt. `calibrated: true` signifie **vérifié par un tap réel** dont
+# l'effet a été constaté sur une capture — pas simplement mesuré à l'œil.
+#
+# ⚠️ Les valeurs héritées du handoff d'août étaient toutes fausses : la barre
+# latérale de TikTok a gagné un bouton de réaction (le smiley), ce qui a
+# décalé le cœur, le +, le commentaire et le partage d'environ 140 points vers
+# le bas. L'ancien `btn_like` tombait sur le smiley.
+
+screen:
+  width: 375
+  height: 812
+
+points:
+  # --- navigation (vérifiés) ---
+  # La barre d'onglets est centrée sur y=752, pas 787 : l'ancienne valeur
+  # tombait dans la bande du trait d'accueil.
+  home_tab:            {x: 0.099, y: 0.926, calibrated: true}
+  profile_tab:         {x: 0.899, y: 0.926, calibrated: true}
+
+  # --- phase recherche (vérifiés) ---
+  # La loupe en haut à droite du fil « Pour toi ».
+  search_icon:         {x: 0.925, y: 0.080, calibrated: true}
+  # Première vignette de la grille de résultats, onglet « Top » (celui par
+  # défaut). Position valable avec ou sans la rangée de filtres
+  # « Tous / Non regardées / Regardées » qui apparaît selon la requête.
+  result_first:        {x: 0.253, y: 0.341, calibrated: true}
+
+  # --- phase profils (vérifiés) ---
+  # L'avatar du créateur dans la colonne de droite. Ouvre son profil.
+  creator_avatar:      {x: 0.920, y: 0.429, calibrated: true}
+  # Le bouton « Suivre » d'une page de profil. C'est celui-ci qu'il faut taper
+  # depuis un profil — le + de la barre latérale n'existe que sur une vidéo.
+  btn_follow_profile:  {x: 0.371, y: 0.291, calibrated: true}
+  # Une vignette au centre de la grille, après défilement. Viser le centre
+  # plutôt que « la première cellule » : la hauteur de l'en-tête varie selon
+  # la bio, les stories à la une et le panneau de suggestions qui apparaît
+  # après un abonnement.
+  profile_grid_cell:   {x: 0.499, y: 0.579, calibrated: true}
+
+  # --- actions sur une vidéo (vérifiées) ---
+  btn_like:            {x: 0.920, y: 0.517, calibrated: true}
+
+  # --- mesurés sur capture, jamais vérifiés par un tap ---
+  # Le champ de recherche. Plus utilisé du tout : la vue le focalise seule à
+  # l'ouverture et la frappe passe par /wda/keys. Gardé comme repère.
+  search_field:        {x: 0.413, y: 0.081, calibrated: false}
+  # Le + rouge sous l'avatar, sur une vidéo. Non utilisé par les phases :
+  # l'abonnement passe par btn_follow_profile.
+  btn_follow:          {x: 0.920, y: 0.458, calibrated: false}
+  # Bulle de commentaire et flèche de partage. Aucune phase ne les utilise
+  # aujourd'hui (le protocole autorise 0-3 commentaires, non implémentés).
+  btn_comment:         {x: 0.920, y: 0.597, calibrated: false}
+  btn_share:           {x: 0.918, y: 0.764, calibrated: false}
+  # ⚠️ NE PAS UTILISER. L'ordre de la rangée d'onglets d'une page de
+  # résultats dépend de la requête : pour « filtre pellicule », « Boutique »
+  # occupait cette position et la session #42 a fini dans TikTok Shop.
+  # Aucune coordonnée fixe ne peut désigner « Vidéos ».
+  tab_videos:          {x: 0.509, y: 0.135, calibrated: false}
+  # Ouvre le sélecteur de compte depuis le profil. La bascule automatique
+  # entre comptes a été abandonnée en août ; ce point n'a pas été revérifié.
+  display_name:        {x: 0.400, y: 0.160, calibrated: false}
+  # Repères géométriques, sans mesure nécessaire.
+  screen_center:       {x: 0.500, y: 0.500, calibrated: true}
+  close_panel:         {x: 0.500, y: 0.120, calibrated: true}
+
+# Le geste de retour arrière : balayage depuis le bord gauche.
+back_swipe:
+  from: {x: 0.01, y: 0.50}
+  to:   {x: 0.60, y: 0.50}
+  duration_ms: 250

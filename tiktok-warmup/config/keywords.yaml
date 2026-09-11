@@ -1,0 +1,17 @@
+# Mots-clés de la phase de recherche, tirés du Protocole Peachtint.
+#
+# Un seul mot-clé par session, en rotation d'une session à l'autre : enchaîner
+# la liste entière dans une même session est un motif non humain.
+keywords:
+  fr:
+    - "filtre digicam"
+    - "effet appareil photo numérique"
+    - "retouche photo esthétique"
+    - "filtre pellicule"
+    - "photo années 2000"
+  en:
+    - "digicam filter"
+    - "g7x filter"
+    - "film camera filter"
+    - "camera roll aesthetic"
+    - "flash photography edit"

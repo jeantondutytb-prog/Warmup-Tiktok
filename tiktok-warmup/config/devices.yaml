@@ -1,0 +1,26 @@
+devices:
+  pixel_6:
+    model: "Pixel 6"
+    resolution: "1080x2400"
+    android_version: "13"
+    dpi: 411
+  samsung_s21:
+    model: "Samsung Galaxy S21"
+    resolution: "1080x2400"
+    android_version: "12"
+    dpi: 421
+  oneplus_9:
+    model: "OnePlus 9"
+    resolution: "1080x2400"
+    android_version: "13"
+    dpi: 402
+  xiaomi_12:
+    model: "Xiaomi 12"
+    resolution: "1080x2400"
+    android_version: "12"
+    dpi: 419
+  pixel_7:
+    model: "Pixel 7"
+    resolution: "1080x2400"
+    android_version: "14"
+    dpi: 416
