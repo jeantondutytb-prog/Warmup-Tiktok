@@ -28,9 +28,16 @@ def get_settings() -> Settings:
     db_dir = os.path.join(base_dir, "data")
     os.makedirs(db_dir, exist_ok=True)
     demo = os.getenv("DEMO_MODE", "0").strip().lower() in {"1", "true", "yes"}
+    client_key = os.getenv("TIKTOK_CLIENT_KEY", "").strip()
+    client_secret = os.getenv("TIKTOK_CLIENT_SECRET", "").strip()
+    placeholders = {"", "your_client_key", "your_client_secret", "changeme"}
+    if client_key in placeholders:
+        client_key = ""
+    if client_secret in placeholders:
+        client_secret = ""
     return Settings(
-        client_key=os.getenv("TIKTOK_CLIENT_KEY", "").strip(),
-        client_secret=os.getenv("TIKTOK_CLIENT_SECRET", "").strip(),
+        client_key=client_key,
+        client_secret=client_secret,
         redirect_uri=os.getenv("TIKTOK_REDIRECT_URI", "http://localhost:8080/auth/callback").strip(),
         app_base_url=os.getenv("APP_BASE_URL", "http://localhost:8080").strip().rstrip("/"),
         demo_mode=demo,
