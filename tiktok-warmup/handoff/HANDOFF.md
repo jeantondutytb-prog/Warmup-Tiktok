@@ -24,6 +24,22 @@ par WebDriverAgent. L'app exécute le **Protocole Peachtint** : des sessions de
 
 ## Lancer
 
+### Méthode rapide (Mac)
+
+```bash
+cd tiktok-warmup          # ou cd Warmup-Tiktok/tiktok-warmup si clone GitHub
+chmod +x scripts/*.sh
+./scripts/setup-mac.sh    # une seule fois
+./scripts/lancer.sh         # guide interactif + ouvre localhost:8000
+```
+
+Le script `lancer.sh` :
+1. Vérifie que l'iPhone est branché
+2. Ouvre un terminal pour WebDriverAgent si besoin
+3. Lance le dashboard et ouvre Safari/Chrome
+
+**Manuel (2 terminaux)** si tu préfères :
+
 ```bash
 # Terminal 1 : WebDriverAgent (voir « L'adresse de WDA change » plus bas)
 xcodebuild test-without-building \
@@ -41,6 +57,11 @@ WDA_URL=http://192.168.1.61:8100 python -m app.main
 ```
 
 Dashboard sur `http://localhost:8000`.
+
+L'écran d'accueil (`/`) est le **lancement rapide** en 3 étapes : branche
+l'iPhone, choisis le compte, confirme que TikTok est sur le feed, puis clique
+**Lancer le warmup**. La vue détaillée avec toutes les cartes reste sur
+`/dashboard`.
 
 ## Calibration — faite le 03.09.2026
 

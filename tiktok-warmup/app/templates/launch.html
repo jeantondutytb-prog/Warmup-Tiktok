@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warmup TikTok</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --border: #2a2a2a;
+            --text: #f5f5f5;
+            --muted: #888;
+            --accent: #fe2c55;
+            --accent-soft: rgba(254, 44, 85, 0.15);
+            --ok: #25f4ee;
+            --ok-soft: rgba(37, 244, 238, 0.12);
+            --warn: #ffb020;
+            --danger: #ff4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .wrap {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 32px 20px 48px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        header p {
+            color: var(--muted);
+            margin-top: 8px;
+            font-size: 15px;
+        }
+
+        .step {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .step-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-num.done { background: var(--ok-soft); color: var(--ok); }
+        .step-num.active { background: var(--accent-soft); color: var(--accent); }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #1c1c1c;
+            border: 1px solid var(--border);
+            width: 100%;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+            flex-shrink: 0;
+        }
+
+        .dot.ok { background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+        .dot.bad { background: var(--danger); }
+
+        .status-detail {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .accounts {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .account {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+
+        .account:hover { border-color: #444; }
+        .account.selected {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .account input { display: none; }
+
+        .account-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .account-meta {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .account-badge {
+            margin-left: auto;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #222;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .check-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: border-color 0.15s;
+        }
+
+        .check-row.checked { border-color: var(--ok); background: var(--ok-soft); }
+
+        .check-row input {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: var(--ok);
+            flex-shrink: 0;
+        }
+
+        .check-label strong {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .check-label span {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        .launch-btn {
+            width: 100%;
+            margin-top: 8px;
+            padding: 18px 24px;
+            border: none;
+            border-radius: 14px;
+            background: var(--accent);
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s;
+        }
+
+        .launch-btn:hover:not(:disabled) { opacity: 0.92; }
+        .launch-btn:active:not(:disabled) { transform: scale(0.98); }
+        .launch-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .hint {
+            text-align: center;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 12px;
+        }
+
+        .hint a { color: var(--ok); text-decoration: none; }
+
+        .running-panel {
+            display: none;
+            margin-top: 24px;
+            background: var(--surface);
+            border: 1px solid var(--accent);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .running-panel.visible { display: block; }
+
+        .running-panel h2 {
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .timer {
+            font-size: 42px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            margin: 16px 0 8px;
+        }
+
+        .phase {
+            font-size: 15px;
+            color: var(--ok);
+            margin-bottom: 16px;
+            min-height: 22px;
+        }
+
+        .live-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .stat {
+            background: #1c1c1c;
+            border-radius: 10px;
+            padding: 10px 6px;
+        }
+
+        .stat b {
+            display: block;
+            font-size: 20px;
+        }
+
+        .stat span {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .mini-logs {
+            text-align: left;
+            max-height: 120px;
+            overflow-y: auto;
+            background: #0d0d0d;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-family: ui-monospace, monospace;
+            font-size: 11px;
+            color: #aaa;
+            margin-bottom: 16px;
+        }
+
+        .mini-logs div { padding: 2px 0; }
+
+        .stop-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: var(--danger);
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .toast {
+            display: none;
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .toast.visible { display: block; }
+        .toast.error { background: rgba(255, 68, 68, 0.15); color: #ff8888; border: 1px solid rgba(255, 68, 68, 0.3); }
+        .toast.warn { background: rgba(255, 176, 32, 0.12); color: #ffcc66; border: 1px solid rgba(255, 176, 32, 0.25); }
+
+        .force-link {
+            display: none;
+            margin-top: 8px;
+            background: none;
+            border: none;
+            color: var(--warn);
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .force-link.visible { display: inline-block; }
+
+        .setup-panel { display: block; }
+        .setup-panel.hidden { display: none; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <h1>Warmup TikTok</h1>
+        <p>Branche · Sélectionne · Feed · Go</p>
+    </header>
+
+    <div id="setupPanel" class="setup-panel">
+        <section class="step">
+            <div class="step-head">
+                <div class="step-num" id="step1Num">1</div>
+                <div class="step-title">Branche ton iPhone</div>
+            </div>
+            <div class="status-pill">
+                <span class="dot" id="iphoneDot"></span>
+                <span id="iphoneText">Vérification...</span>
+            </div>
+            <div class="status-pill" style="margin-top:8px">
+                <span class="dot" id="wdaDot"></span>
+                <span id="wdaText">Vérification WDA...</span>
+            </div>
+            <div class="status-detail" id="deviceHint">
+                Assure-toi que l'iPhone est déverrouillé et que tu as fait « Faire confiance » sur le Mac.
+            </div>
+        </section>
+
+        <section class="step">
+            <div class="step-head">
+                <div class="step-num" id="step2Num">2</div>
+                <div class="step-title">Choisis le compte</div>
+            </div>
+            <div class="accounts" id="accountsList"></div>
+        </section>
+
+        <section class="step">
+            <div class="step-head">
+                <div class="step-num" id="step3Num">3</div>
+                <div class="step-title">Ouvre TikTok sur le feed</div>
+            </div>
+            <label class="check-row" id="feedCheckRow">
+                <input type="checkbox" id="feedReady">
+                <div class="check-label">
+                    <strong>TikTok est ouvert sur le fil d'accueil</strong>
+                    <span>Onglet Accueil ▶ en bas — le feed avec les vidéos qui défilent. Le bon compte doit être actif.</span>
+                </div>
+            </label>
+        </section>
+
+        <button class="launch-btn" id="launchBtn" disabled>Lancer le warmup</button>
+        <div class="toast" id="toast"></div>
+        <button class="force-link" id="forceBtn">Forcer le lancement quand même</button>
+        <p class="hint">Session de 18 min · Protocole Peachtint · <a href="/dashboard">Vue avancée</a></p>
+    </div>
+
+    <div class="running-panel" id="runningPanel">
+        <h2 id="runningAccount">@compte</h2>
+        <div class="phase" id="runningPhase">Démarrage...</div>
+        <div class="timer" id="runningTimer">00:00</div>
+        <div class="live-stats">
+            <div class="stat"><b id="statVideos">0</b><span>Vidéos</span></div>
+            <div class="stat"><b id="statLikes">0</b><span>Likes</span></div>
+            <div class="stat"><b id="statFollows">0</b><span>Abos</span></div>
+            <div class="stat"><b id="statComments">0</b><span>Comm.</span></div>
+        </div>
+        <div class="mini-logs" id="miniLogs"></div>
+        <button class="stop-btn" id="stopBtn">Arrêter</button>
+    </div>
+</div>
+
+<script>
+    const SESSION_SECONDS = 18 * 60;
+    let selectedAccount = null;
+    let feedReady = false;
+    let deviceReady = false;
+    let sessionStart = null;
+    let timerInterval = null;
+    let lastRefusal = null;
+
+    const els = {
+        iphoneDot: document.getElementById('iphoneDot'),
+        iphoneText: document.getElementById('iphoneText'),
+        wdaDot: document.getElementById('wdaDot'),
+        wdaText: document.getElementById('wdaText'),
+        deviceHint: document.getElementById('deviceHint'),
+        accountsList: document.getElementById('accountsList'),
+        feedCheckRow: document.getElementById('feedCheckRow'),
+        feedReady: document.getElementById('feedReady'),
+        launchBtn: document.getElementById('launchBtn'),
+        toast: document.getElementById('toast'),
+        forceBtn: document.getElementById('forceBtn'),
+        setupPanel: document.getElementById('setupPanel'),
+        runningPanel: document.getElementById('runningPanel'),
+        runningAccount: document.getElementById('runningAccount'),
+        runningPhase: document.getElementById('runningPhase'),
+        runningTimer: document.getElementById('runningTimer'),
+        miniLogs: document.getElementById('miniLogs'),
+        stopBtn: document.getElementById('stopBtn'),
+        step1Num: document.getElementById('step1Num'),
+        step2Num: document.getElementById('step2Num'),
+        step3Num: document.getElementById('step3Num'),
+    };
+
+    function showToast(msg, type = 'error') {
+        els.toast.textContent = msg;
+        els.toast.className = `toast visible ${type}`;
+    }
+
+    function hideToast() {
+        els.toast.className = 'toast';
+        els.forceBtn.classList.remove('visible');
+        lastRefusal = null;
+    }
+
+    function updateLaunchBtn() {
+        const ok = deviceReady && selectedAccount && feedReady;
+        els.launchBtn.disabled = !ok;
+        els.step1Num.className = 'step-num' + (deviceReady ? ' done' : ' active');
+        els.step2Num.className = 'step-num' + (selectedAccount ? ' done' : '');
+        els.step3Num.className = 'step-num' + (feedReady ? ' done' : '');
+    }
+
+    async function refreshDevice() {
+        try {
+            const resp = await fetch('/api/device');
+            const data = await resp.json();
+            const iphoneOk = data.iphone.connected;
+            const wdaOk = data.wda.ready;
+            deviceReady = data.ready;
+
+            els.iphoneDot.className = 'dot ' + (iphoneOk ? 'ok' : 'bad');
+            els.iphoneText.textContent = data.iphone.message;
+            els.wdaDot.className = 'dot ' + (wdaOk ? 'ok' : 'bad');
+            els.wdaText.textContent = data.wda.message;
+
+            if (!iphoneOk) {
+                els.deviceHint.textContent = "Branche l'iPhone en USB, déverrouille-le et accepte « Faire confiance à cet ordinateur ».";
+            } else if (!wdaOk) {
+                els.deviceHint.textContent = `Lance WebDriverAgent dans un terminal, puis vérifie WDA_URL (${data.wda.url}).`;
+            } else {
+                els.deviceHint.textContent = "Tout est prêt côté Mac. Passe à l'étape 2.";
+            }
+            updateLaunchBtn();
+        } catch (e) {
+            els.iphoneText.textContent = 'Erreur de connexion au serveur';
+        }
+    }
+
+    async function loadAccounts() {
+        const resp = await fetch('/api/launcher/accounts');
+        const accounts = await resp.json();
+        els.accountsList.innerHTML = accounts.map(acc => `
+            <label class="account ${selectedAccount === acc.username ? 'selected' : ''}" data-username="${acc.username}">
+                <input type="radio" name="account" value="${acc.username}">
+                <div>
+                    <div class="account-name">@${acc.username}</div>
+                    <div class="account-meta">Jour ${acc.protocol_day}/14 · ${acc.role}</div>
+                </div>
+                <span class="account-badge">${acc.status === 'running' ? 'en cours' : acc.can_start ? 'prêt' : 'attente'}</span>
+            </label>
+        `).join('');
+
+        els.accountsList.querySelectorAll('.account').forEach(el => {
+            el.addEventListener('click', () => {
+                selectedAccount = el.dataset.username;
+                els.accountsList.querySelectorAll('.account').forEach(a => a.classList.remove('selected'));
+                el.classList.add('selected');
+                el.querySelector('input').checked = true;
+                hideToast();
+                updateLaunchBtn();
+            });
+        });
+
+        if (!selectedAccount && accounts.length) {
+            const first = accounts.find(a => a.can_start) || accounts[0];
+            selectedAccount = first.username;
+            const firstEl = els.accountsList.querySelector(`[data-username="${first.username}"]`);
+            if (firstEl) {
+                firstEl.classList.add('selected');
+                firstEl.querySelector('input').checked = true;
+            }
+        }
+        updateLaunchBtn();
+    }
+
+    els.feedReady.addEventListener('change', () => {
+        feedReady = els.feedReady.checked;
+        els.feedCheckRow.classList.toggle('checked', feedReady);
+        updateLaunchBtn();
+    });
+
+    els.feedCheckRow.addEventListener('click', (e) => {
+        if (e.target !== els.feedReady) {
+            els.feedReady.checked = !els.feedReady.checked;
+            els.feedReady.dispatchEvent(new Event('change'));
+        }
+    });
+
+    function formatTime(seconds) {
+        const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+    }
+
+    function startTimer() {
+        sessionStart = Date.now();
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+            els.runningTimer.textContent = formatTime(Math.min(elapsed, SESSION_SECONDS));
+        }, 1000);
+    }
+
+    function showRunning(username) {
+        els.setupPanel.classList.add('hidden');
+        els.runningPanel.classList.add('visible');
+        els.runningAccount.textContent = `@${username}`;
+        els.runningPhase.textContent = 'Connexion à l\'iPhone...';
+        els.miniLogs.innerHTML = '';
+        startTimer();
+    }
+
+    function showSetup() {
+        els.setupPanel.classList.remove('hidden');
+        els.runningPanel.classList.remove('visible');
+        clearInterval(timerInterval);
+        sessionStart = null;
+        loadAccounts();
+    }
+
+    function addLog(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        els.miniLogs.prepend(div);
+        while (els.miniLogs.children.length > 30) els.miniLogs.removeChild(els.miniLogs.lastChild);
+    }
+
+    async function launch(force = false) {
+        if (!selectedAccount) return;
+        hideToast();
+        els.launchBtn.disabled = true;
+        els.launchBtn.textContent = 'Démarrage...';
+
+        try {
+            const url = force
+                ? `/api/start/${selectedAccount}?force=1`
+                : `/api/start/${selectedAccount}`;
+            const resp = await fetch(url, { method: 'POST' });
+            if (!resp.ok) throw new Error('Erreur serveur');
+            showRunning(selectedAccount);
+        } catch (e) {
+            showToast('Impossible de démarrer la session.');
+        } finally {
+            els.launchBtn.textContent = 'Lancer le warmup';
+            updateLaunchBtn();
+        }
+    }
+
+    els.launchBtn.addEventListener('click', () => launch(false));
+    els.forceBtn.addEventListener('click', () => {
+        if (lastRefusal) launch(true);
+    });
+
+    els.stopBtn.addEventListener('click', async () => {
+        if (!selectedAccount) return;
+        els.stopBtn.disabled = true;
+        await fetch(`/api/stop/${selectedAccount}`, { method: 'POST' });
+        showSetup();
+        els.stopBtn.disabled = false;
+    });
+
+    async function refreshStats() {
+        if (!selectedAccount || !els.runningPanel.classList.contains('visible')) return;
+        const resp = await fetch('/api/status');
+        const data = await resp.json();
+        const info = data[selectedAccount];
+        if (!info) return;
+
+        if (info.status === 'idle' && els.runningPanel.classList.contains('visible')) {
+            showSetup();
+            return;
+        }
+
+        els.statVideos.textContent = info.counters.videos_watched;
+        els.statLikes.textContent = info.counters.likes;
+        els.statFollows.textContent = info.counters.follows;
+        els.statComments.textContent = info.counters.comments;
+    }
+
+    const evtSource = new EventSource('/api/events');
+
+    evtSource.addEventListener('phase', (e) => {
+        const event = JSON.parse(e.data);
+        if (event.username !== selectedAccount) return;
+        els.runningPhase.textContent = event.data;
+        addLog(event.data);
+    });
+
+    evtSource.addEventListener('action', (e) => {
+        const event = JSON.parse(e.data);
+        if (event.username !== selectedAccount) return;
+        const time = event.timestamp.slice(11, 19);
+        addLog(`${time} · ${event.data}`);
+        refreshStats();
+    });
+
+    evtSource.addEventListener('status', (e) => {
+        const event = JSON.parse(e.data);
+        if (event.username === selectedAccount && event.data === 'running') {
+            showRunning(selectedAccount);
+        }
+        refreshStats();
+    });
+
+    evtSource.addEventListener('refused', (e) => {
+        const event = JSON.parse(e.data);
+        if (event.username !== selectedAccount) return;
+        lastRefusal = event.data;
+        showToast(`Session refusée : ${event.data}`, 'warn');
+        els.forceBtn.classList.add('visible');
+    });
+
+    evtSource.addEventListener('error_event', (e) => {
+        const event = JSON.parse(e.data);
+        if (event.username !== selectedAccount) return;
+        showToast(event.data, 'error');
+        showSetup();
+    });
+
+    evtSource.addEventListener('session', (e) => {
+        const event = JSON.parse(e.data);
+        if (event.username !== selectedAccount) return;
+        addLog(event.data);
+    });
+
+    refreshDevice();
+    loadAccounts();
+    setInterval(refreshDevice, 4000);
+    setInterval(refreshStats, 5000);
+</script>
+</body>
+</html>

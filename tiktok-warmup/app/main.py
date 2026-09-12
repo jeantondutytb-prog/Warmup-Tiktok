@@ -22,6 +22,10 @@ def create_app(orchestrator: Orchestrator | None = None) -> FastAPI:
     app.state.orchestrator = orchestrator
 
     @app.get("/", response_class=HTMLResponse)
+    async def launch(request: Request):
+        return templates.TemplateResponse("launch.html", {"request": request})
+
+    @app.get("/dashboard", response_class=HTMLResponse)
     async def dashboard(request: Request):
         status = orchestrator.get_status()
         return templates.TemplateResponse("dashboard.html", {"request": request, "accounts": status})
