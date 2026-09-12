@@ -5,6 +5,7 @@ export function getSettings () {
 
   const appBase = (
     process.env.APP_BASE_URL ??
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ??
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://127.0.0.1:8080')
   ).replace(/\/$/, '')
 
