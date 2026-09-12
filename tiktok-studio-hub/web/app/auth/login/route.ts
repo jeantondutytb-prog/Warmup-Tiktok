@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getSettings } from '@/lib/config'
-import { saveOAuthState } from '@/lib/db'
+import { createOAuthCookieValue, OAUTH_COOKIE } from '@/lib/oauth-cookie'
 import { newOAuthState } from '@/lib/pkce'
 import { authorizeUrl } from '@/lib/tiktok'
 
@@ -14,13 +14,6 @@ export async function GET () {
   }
 
   const { state, codeVerifier, codeChallenge } = newOAuthState()
-  try {
-    await saveOAuthState(state, codeVerifier)
-  } catch (e) {
-    const message = e instanceof Error ? e.message : 'Erreur base de données'
-    return NextResponse.json({ error: message }, { status: 503 })
-  }
-
   const url = authorizeUrl(
     settings.clientKey,
     settings.redirectUri,
@@ -28,5 +21,18 @@ export async function GET () {
     settings.oauthScopes,
     codeChallenge
   )
-  return NextResponse.redirect(url)
+
+  const response = NextResponse.redirect(url)
+  response.cookies.set(
+    OAUTH_COOKIE,
+    createOAuthCookieValue(state, codeVerifier, settings.clientSecret),
+    {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 600,
+      path: '/'
+    }
+  )
+  return response
 }

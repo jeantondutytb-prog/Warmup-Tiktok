@@ -40,7 +40,7 @@ export default function Dashboard () {
     setOauthOk(cfg.oauth_configured)
     const dash = await fetch('/api/dashboard').then(r => r.json())
     if (dash.error) {
-      setBanner({ text: `Base de données : ${dash.error}. Ajoutez Postgres dans Vercel → Storage.`, type: 'info' })
+      setBanner({ text: `Stockage : ${dash.error}`, type: 'info' })
       setData({ totals: { accounts: 0, followers: 0, views: 0, likes: 0, comments: 0, shares: 0, videos: 0, profile_likes: 0, following: 0 }, accounts: [] })
       return
     }

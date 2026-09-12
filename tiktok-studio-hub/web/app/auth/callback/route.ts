@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSettings } from '@/lib/config'
-import { consumeOAuthState, upsertAccount } from '@/lib/db'
+import { OAUTH_COOKIE, readOAuthCookieValue } from '@/lib/oauth-cookie'
+import { upsertAccount } from '@/lib/store'
 import {
   exchangeCode,
   fetchAllVideos,
@@ -16,16 +17,22 @@ export async function GET (request: NextRequest) {
   const code = params.get('code') ?? ''
   const state = params.get('state') ?? ''
 
+  const redirect = (query: string) =>
+    NextResponse.redirect(new URL(`/${query}`, settings.appBaseUrl))
+
   if (error) {
-    return NextResponse.redirect(new URL(`/?auth_error=${encodeURIComponent(error)}`, settings.appBaseUrl))
+    return redirect(`?auth_error=${encodeURIComponent(error)}`)
   }
   if (!code) {
-    return NextResponse.redirect(new URL('/?auth_error=missing_code', settings.appBaseUrl))
+    return redirect('?auth_error=missing_code')
   }
 
-  const codeVerifier = await consumeOAuthState(state)
+  const cookie = request.cookies.get(OAUTH_COOKIE)?.value
+  const codeVerifier = cookie
+    ? readOAuthCookieValue(cookie, settings.clientSecret, state)
+    : null
   if (!codeVerifier) {
-    return NextResponse.redirect(new URL('/?auth_error=invalid_state', settings.appBaseUrl))
+    return redirect('?auth_error=invalid_state')
   }
 
   try {
@@ -57,11 +64,13 @@ export async function GET (request: NextRequest) {
       totalShares: totals.shares
     })
   } catch (e) {
-    const msg = e instanceof TikTokApiError ? e.message : 'oauth_failed'
-    return NextResponse.redirect(
-      new URL(`/?auth_error=${encodeURIComponent(msg.slice(0, 200))}`, settings.appBaseUrl)
-    )
+    const msg = e instanceof TikTokApiError ? e.message : String(e)
+    const response = redirect(`?auth_error=${encodeURIComponent(msg.slice(0, 200))}`)
+    response.cookies.delete(OAUTH_COOKIE)
+    return response
   }
 
-  return NextResponse.redirect(new URL('/?connected=1', settings.appBaseUrl))
+  const response = redirect('?connected=1')
+  response.cookies.delete(OAUTH_COOKIE)
+  return response
 }

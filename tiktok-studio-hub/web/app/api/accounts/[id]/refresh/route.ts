@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getSettings } from '@/lib/config'
-import { getAccount, updateAccountStats } from '@/lib/db'
+import { getAccount, updateAccountStats } from '@/lib/store'
 import {
   fetchAllVideos,
   fetchUserInfo,
@@ -8,16 +7,17 @@ import {
   TikTokApiError
 } from '@/lib/tiktok'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST (
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params
-  const account = await getAccount(Number(id))
-  if (!account) return NextResponse.json({ error: 'Compte introuvable' }, { status: 404 })
-
-  const settings = getSettings()
   try {
+    const account = await getAccount(Number(id))
+    if (!account) return NextResponse.json({ error: 'Compte introuvable' }, { status: 404 })
+
     const user = await fetchUserInfo(account.access_token)
     const videos = await fetchAllVideos(account.access_token)
     const totals = sumVideos(videos)
