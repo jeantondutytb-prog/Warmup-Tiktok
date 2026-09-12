@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Warmup</title>
+    <title>TikTok — Stats réunies</title>
     <script src="https://unpkg.com/htmx.org@2.0.0"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -178,17 +178,132 @@
         .caps { font-variant-numeric: tabular-nums; }
         .caps b { color: #ddd; font-weight: 600; }
         .caps .over { color: #e08c8c; }
+
+        .summary {
+            margin: 20px 30px 0;
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #141820 100%);
+            border: 1px solid #2a2a2a;
+            border-radius: 14px;
+        }
+
+        .summary-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .summary-head h2 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .summary-meta {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .summary-meta b { color: #ddd; }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .summary-stat {
+            background: #111;
+            border-radius: 10px;
+            padding: 12px 14px;
+        }
+
+        .summary-stat strong {
+            display: block;
+            font-size: 22px;
+            color: #fff;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .summary-stat span {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        .summary-stat.accent strong { color: #fe2c55; }
+        .summary-stat.live strong { color: #25d366; }
+
+        .section-title {
+            padding: 24px 30px 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>TikTok Warmup</h1>
+    <h1>TikTok — Stats réunies</h1>
     <div class="controls">
         <button class="btn btn-start" onclick="startAll()">Start All</button>
         <button class="btn btn-stop" onclick="stopAll()">Stop All</button>
     </div>
 </header>
+
+<section class="summary" id="summary-panel">
+    <div class="summary-head">
+        <h2>Vue d'ensemble</h2>
+        <div class="summary-meta" id="summary-meta">
+            <b>{{ summary.account_count }}</b> comptes ·
+            <b>{{ summary.warmup_accounts }}</b> en warmup ·
+            <b id="summary-running">{{ summary.running }}</b> actif(s)
+        </div>
+    </div>
+    <div class="summary-grid">
+        <div class="summary-stat">
+            <strong id="sum-videos">{{ summary.counters.videos_watched }}</strong>
+            <span>Vidéos vues</span>
+        </div>
+        <div class="summary-stat accent">
+            <strong id="sum-likes">{{ summary.counters.likes }}</strong>
+            <span>Likes</span>
+        </div>
+        <div class="summary-stat">
+            <strong id="sum-follows">{{ summary.counters.follows }}</strong>
+            <span>Abonnements</span>
+        </div>
+        <div class="summary-stat">
+            <strong id="sum-comments">{{ summary.counters.comments }}</strong>
+            <span>Commentaires</span>
+        </div>
+        <div class="summary-stat">
+            <strong id="sum-24h-likes">{{ summary.used_24h.likes }}</strong>
+            <span>Likes 24 h</span>
+        </div>
+        <div class="summary-stat">
+            <strong id="sum-24h-follows">{{ summary.used_24h.follows }}</strong>
+            <span>Abos 24 h</span>
+        </div>
+        <div class="summary-stat">
+            <strong id="sum-sessions">{{ summary.sessions.completed }}</strong>
+            <span>Sessions finies</span>
+        </div>
+        <div class="summary-stat live">
+            <strong id="sum-fyp-ready">{{ summary.fyp.ready }}</strong>
+            <span>FYP prêts</span>
+        </div>
+    </div>
+</section>
+
+<p class="section-title">Par compte</p>
 
 <div class="grid" id="accounts-grid">
     {% for username, data in accounts.items() %}
@@ -297,6 +412,29 @@
                 const el = document.getElementById(`cnt-${username}-${short}`);
                 if (el) el.textContent = info.counters[key];
             }
+        }
+        await updateSummary();
+    }
+
+    async function updateSummary() {
+        const resp = await fetch('/api/summary');
+        const summary = await resp.json();
+        const runningEl = document.getElementById('summary-running');
+        if (runningEl) runningEl.textContent = summary.running;
+
+        const map = {
+            'sum-videos': summary.counters.videos_watched,
+            'sum-likes': summary.counters.likes,
+            'sum-follows': summary.counters.follows,
+            'sum-comments': summary.counters.comments,
+            'sum-24h-likes': summary.used_24h.likes,
+            'sum-24h-follows': summary.used_24h.follows,
+            'sum-sessions': summary.sessions.completed,
+            'sum-fyp-ready': summary.fyp.ready,
+        };
+        for (const [id, value] of Object.entries(map)) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
         }
     }
 

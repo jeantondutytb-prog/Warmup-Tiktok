@@ -9,7 +9,7 @@ templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "t
 
 
 def create_app(orchestrator: Orchestrator | None = None) -> FastAPI:
-    app = FastAPI(title="TikTok Warmup")
+    app = FastAPI(title="TikTok Stats")
     app.include_router(router)
 
     if orchestrator is None:
@@ -24,7 +24,11 @@ def create_app(orchestrator: Orchestrator | None = None) -> FastAPI:
     @app.get("/", response_class=HTMLResponse)
     async def dashboard(request: Request):
         status = orchestrator.get_status()
-        return templates.TemplateResponse("dashboard.html", {"request": request, "accounts": status})
+        summary = orchestrator.get_summary()
+        return templates.TemplateResponse(
+            "dashboard.html",
+            {"request": request, "accounts": status, "summary": summary},
+        )
 
     return app
 

@@ -147,6 +147,59 @@ class Orchestrator:
                 }
         return result
 
+    def get_summary(self) -> dict:
+        """Agrège les stats de tous les comptes pour le dashboard unifié."""
+        status = self.get_status()
+        summary = {
+            "account_count": len(status),
+            "warmup_accounts": 0,
+            "protected_accounts": 0,
+            "running": 0,
+            "idle": 0,
+            "error": 0,
+            "counters": {
+                "likes": 0,
+                "follows": 0,
+                "comments": 0,
+                "videos_watched": 0,
+                "scrolls": 0,
+            },
+            "used_24h": {"likes": 0, "follows": 0, "comments": 0},
+            "fyp": {"ready": 0, "warming": 0, "cold": 0, "unknown": 0},
+            "sessions": {"total": 0, "completed": 0},
+        }
+
+        for data in status.values():
+            if data["protected"]:
+                summary["protected_accounts"] += 1
+            else:
+                summary["warmup_accounts"] += 1
+
+            st = data["status"]
+            if st in summary:
+                summary[st] += 1
+
+            for key in summary["counters"]:
+                summary["counters"][key] += data["counters"].get(key, 0)
+            for key in summary["used_24h"]:
+                summary["used_24h"][key] += data["used_24h"].get(key, 0)
+
+            verdict = (data.get("last_session") or {}).get("fyp_verdict")
+            if verdict in summary["fyp"]:
+                summary["fyp"][verdict] += 1
+            else:
+                summary["fyp"]["unknown"] += 1
+
+        with self.Session() as session:
+            summary["sessions"]["total"] = session.query(WarmupSession).count()
+            summary["sessions"]["completed"] = (
+                session.query(WarmupSession)
+                .filter(WarmupSession.completed.is_(True))
+                .count()
+            )
+
+        return summary
+
     def subscribe(self) -> asyncio.Queue:
         queue: asyncio.Queue = asyncio.Queue()
         self._subscribers.append(queue)

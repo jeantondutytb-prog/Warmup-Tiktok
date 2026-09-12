@@ -41,6 +41,24 @@ def mock_orchestrator():
     orch.stop_all = AsyncMock()
     orch.start_account = AsyncMock()
     orch.stop_account = AsyncMock()
+    orch.get_summary.return_value = {
+        "account_count": 2,
+        "warmup_accounts": 1,
+        "protected_accounts": 1,
+        "running": 0,
+        "idle": 2,
+        "error": 0,
+        "counters": {
+            "likes": 5,
+            "follows": 2,
+            "comments": 1,
+            "videos_watched": 42,
+            "scrolls": 10,
+        },
+        "used_24h": {"likes": 3, "follows": 1, "comments": 0},
+        "fyp": {"ready": 1, "warming": 0, "cold": 0, "unknown": 1},
+        "sessions": {"total": 4, "completed": 3},
+    }
     return orch
 
 
@@ -91,12 +109,27 @@ async def test_stop_single_account(mock_orchestrator):
 
 
 @pytest.mark.asyncio
+async def test_get_summary(mock_orchestrator):
+    app = create_app(mock_orchestrator)
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        resp = await client.get("/api/summary")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["account_count"] == 2
+    assert data["counters"]["videos_watched"] == 42
+    mock_orchestrator.get_summary.assert_called_once()
+
+
+@pytest.mark.asyncio
 async def test_dashboard_page(mock_orchestrator):
     app = create_app(mock_orchestrator)
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         resp = await client.get("/")
     assert resp.status_code == 200
     assert "text/html" in resp.headers["content-type"]
+    assert "Stats réunies" in resp.text
+    assert "Vue d'ensemble" in resp.text
+    assert 'id="sum-videos">42<' in resp.text
     # Un compte protégé n'expose pas de bouton Start.
     assert "Aucun warmup sur ce compte." in resp.text
     assert "startAccount('locked')" not in resp.text
