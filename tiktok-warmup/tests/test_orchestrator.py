@@ -48,6 +48,16 @@ def test_get_status_returns_counters():
     assert status["u1"]["counters"]["likes"] == 0
 
 
+def test_get_summary_aggregates_all_accounts():
+    orch = make_orchestrator()
+    summary = orch.get_summary()
+    assert summary["account_count"] >= 1
+    assert "counters" in summary
+    assert "used_24h" in summary
+    assert "sessions" in summary
+    assert summary["sessions"]["total"] >= 0
+
+
 def test_subscribe_returns_queue():
     orch = make_orchestrator()
     queue = orch.subscribe()

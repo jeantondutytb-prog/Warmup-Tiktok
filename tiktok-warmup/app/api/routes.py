@@ -11,6 +11,11 @@ async def get_status(request: Request):
     return request.app.state.orchestrator.get_status()
 
 
+@router.get("/api/summary")
+async def get_summary(request: Request):
+    return request.app.state.orchestrator.get_summary()
+
+
 @router.post("/api/start-all")
 async def start_all(request: Request):
     await request.app.state.orchestrator.start_all()
