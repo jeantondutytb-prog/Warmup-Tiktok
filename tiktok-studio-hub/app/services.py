@@ -23,6 +23,18 @@ def consume_oauth_state(state: str, *, max_age_seconds: int = 600) -> bool:
     return (datetime.datetime.utcnow().timestamp() - created) <= max_age_seconds
 
 
+def purge_demo_accounts(session: Session) -> int:
+    """Retire les comptes fictifs quand on passe en mode réel."""
+    deleted = (
+        session.query(ConnectedAccount)
+        .filter(ConnectedAccount.access_token == "demo")
+        .delete()
+    )
+    if deleted:
+        session.commit()
+    return deleted
+
+
 def ensure_demo_accounts(session: Session) -> None:
     if session.query(ConnectedAccount).count():
         return

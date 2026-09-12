@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import RedirectResponse
 
@@ -49,7 +51,7 @@ async def callback(request: Request, code: str = "", state: str = "", error: str
         user = await client.fetch_user_info(access_token)
         videos = await client.fetch_all_videos(access_token)
     except TikTokApiError as exc:
-        return RedirectResponse(f"/?auth_error={str(exc)[:120]}")
+        return RedirectResponse(f"/?auth_error={quote(str(exc)[:200])}")
 
     open_id = user.get("open_id") or token_data.get("open_id")
     if not open_id:

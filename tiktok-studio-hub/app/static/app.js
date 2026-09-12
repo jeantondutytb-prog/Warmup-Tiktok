@@ -61,7 +61,13 @@ function renderDashboard(data) {
   document.getElementById('total-accounts').textContent = fmt(t.accounts);
 
   const tbody = document.getElementById('accounts-table-body');
-  tbody.innerHTML = data.accounts.map((a) => `
+  if (!data.accounts.length) {
+    tbody.innerHTML = `
+      <tr><td colspan="7" style="text-align:center;color:#888;padding:32px">
+        Aucun compte connecté — cliquez « + Ajouter un compte » pour commencer.
+      </td></tr>`;
+  } else {
+    tbody.innerHTML = data.accounts.map((a) => `
     <tr>
       <td>
         <div class="account-cell">
@@ -77,9 +83,17 @@ function renderDashboard(data) {
       <td>${fmtDate(a.last_synced_at)}</td>
     </tr>
   `).join('');
+  }
 
   const cards = document.getElementById('accounts-cards');
-  cards.innerHTML = data.accounts.map((a) => `
+  if (!data.accounts.length) {
+    cards.innerHTML = `
+      <article class="account-card" style="grid-column:1/-1;text-align:center;color:#888;padding:40px">
+        Aucun compte TikTok connecté.<br><br>
+        <a class="btn-primary" href="/auth/login" style="display:inline-block;width:auto;padding:12px 24px">+ Ajouter un compte</a>
+      </article>`;
+  } else {
+    cards.innerHTML = data.accounts.map((a) => `
     <article class="account-card" data-id="${a.id}">
       <div class="account-card-head">
         ${avatarHtml(a)}
@@ -100,6 +114,7 @@ function renderDashboard(data) {
       </div>
     </article>
   `).join('');
+  }
 }
 
 async function refreshDashboard() {

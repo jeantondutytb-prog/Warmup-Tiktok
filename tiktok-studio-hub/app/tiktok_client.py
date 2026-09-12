@@ -71,12 +71,22 @@ class TikTokClient:
                 data=data,
                 headers={"Content-Type": "application/x-www-form-urlencoded"},
             )
+        return self._parse_token_response(resp)
+
+    def _parse_token_response(self, resp: httpx.Response) -> dict[str, Any]:
         if resp.status_code >= 400:
             raise TikTokApiError(resp.text, status_code=resp.status_code)
         payload = resp.json()
-        if payload.get("error"):
-            raise TikTokApiError(str(payload["error"]))
-        return payload
+        err = payload.get("error") or {}
+        if isinstance(err, str):
+            raise TikTokApiError(err)
+        if err.get("code") not in (None, "ok"):
+            raise TikTokApiError(err.get("message") or str(err))
+        # v2 renvoie souvent les tokens dans `data`, v1 les met à la racine.
+        token_data = payload.get("data") or payload
+        if not token_data.get("access_token"):
+            raise TikTokApiError("Réponse OAuth TikTok sans access_token")
+        return token_data
 
     async def fetch_user_info(self, access_token: str) -> dict[str, Any]:
         async with httpx.AsyncClient(timeout=30.0) as client:

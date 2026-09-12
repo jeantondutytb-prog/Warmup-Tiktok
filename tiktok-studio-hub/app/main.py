@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from app.config import get_settings
 from app.database import build_session_factory
 from app.routes import api, auth
-from app.services import ensure_demo_accounts
+from app.services import ensure_demo_accounts, purge_demo_accounts
 from app.tiktok_client import TikTokClient
 
 
@@ -15,9 +15,11 @@ def create_app() -> FastAPI:
     settings = get_settings()
     session_factory = build_session_factory(settings.db_path)
 
-    if settings.demo_mode:
-        with session_factory() as session:
+    with session_factory() as session:
+        if settings.demo_mode:
             ensure_demo_accounts(session)
+        else:
+            purge_demo_accounts(session)
 
     app = FastAPI(title="TikTok Studio Hub")
     app.state.settings = settings
