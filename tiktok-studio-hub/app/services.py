@@ -1,26 +1,39 @@
 import datetime
 import secrets
+from dataclasses import dataclass
 from typing import Any
 
 from sqlalchemy.orm import Session
 
 from app.config import Settings
 from app.database import ConnectedAccount
+from app.pkce import generate_code_challenge, generate_code_verifier
 from app.tiktok_client import TikTokApiError, TikTokClient, token_expiry
 
 
-_oauth_states: dict[str, float] = {}
+@dataclass
+class OAuthSession:
+    created_at: float
+    code_verifier: str
 
 
-def remember_oauth_state(state: str) -> None:
-    _oauth_states[state] = datetime.datetime.utcnow().timestamp()
+_oauth_states: dict[str, OAuthSession] = {}
 
 
-def consume_oauth_state(state: str, *, max_age_seconds: int = 600) -> bool:
-    created = _oauth_states.pop(state, None)
-    if created is None:
-        return False
-    return (datetime.datetime.utcnow().timestamp() - created) <= max_age_seconds
+def remember_oauth_state(state: str, code_verifier: str) -> None:
+    _oauth_states[state] = OAuthSession(
+        created_at=datetime.datetime.utcnow().timestamp(),
+        code_verifier=code_verifier,
+    )
+
+
+def consume_oauth_state(state: str, *, max_age_seconds: int = 600) -> str | None:
+    session = _oauth_states.pop(state, None)
+    if session is None:
+        return None
+    if (datetime.datetime.utcnow().timestamp() - session.created_at) > max_age_seconds:
+        return None
+    return session.code_verifier
 
 
 def purge_demo_accounts(session: Session) -> int:
@@ -145,7 +158,9 @@ def build_dashboard(session: Session) -> dict[str, Any]:
     return {"totals": totals, "accounts": rows}
 
 
-def new_oauth_state() -> str:
+def new_oauth_state() -> tuple[str, str, str]:
     state = secrets.token_urlsafe(24)
-    remember_oauth_state(state)
-    return state
+    code_verifier = generate_code_verifier()
+    remember_oauth_state(state, code_verifier)
+    code_challenge = generate_code_challenge(code_verifier)
+    return state, code_verifier, code_challenge

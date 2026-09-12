@@ -38,8 +38,10 @@ def get_settings() -> Settings:
     return Settings(
         client_key=client_key,
         client_secret=client_secret,
-        redirect_uri=os.getenv("TIKTOK_REDIRECT_URI", "http://localhost:8080/auth/callback").strip(),
-        app_base_url=os.getenv("APP_BASE_URL", "http://localhost:8080").strip().rstrip("/"),
+        redirect_uri=os.getenv(
+            "TIKTOK_REDIRECT_URI", "http://127.0.0.1:8080/auth/callback"
+        ).strip(),
+        app_base_url=os.getenv("APP_BASE_URL", "http://127.0.0.1:8080").strip().rstrip("/"),
         demo_mode=demo,
         db_path=os.path.join(db_dir, "studio.db"),
     )

@@ -29,7 +29,14 @@ class TikTokClient:
         self.client_key = client_key
         self.client_secret = client_secret
 
-    def authorize_url(self, redirect_uri: str, state: str, scope: str) -> str:
+    def authorize_url(
+        self,
+        redirect_uri: str,
+        state: str,
+        scope: str,
+        *,
+        code_challenge: str,
+    ) -> str:
         from urllib.parse import urlencode
 
         query = urlencode(
@@ -39,11 +46,15 @@ class TikTokClient:
                 "response_type": "code",
                 "redirect_uri": redirect_uri,
                 "state": state,
+                "code_challenge": code_challenge,
+                "code_challenge_method": "S256",
             }
         )
         return f"{AUTH_URL}?{query}"
 
-    async def exchange_code(self, code: str, redirect_uri: str) -> dict[str, Any]:
+    async def exchange_code(
+        self, code: str, redirect_uri: str, *, code_verifier: str
+    ) -> dict[str, Any]:
         return await self._token_request(
             {
                 "client_key": self.client_key,
@@ -51,6 +62,7 @@ class TikTokClient:
                 "code": code,
                 "grant_type": "authorization_code",
                 "redirect_uri": redirect_uri,
+                "code_verifier": code_verifier,
             }
         )
 

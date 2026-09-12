@@ -24,12 +24,13 @@ async def login(request: Request):
             "Mode démo actif — les comptes fictifs sont déjà chargés.",
         )
 
-    state = new_oauth_state()
+    state, _verifier, code_challenge = new_oauth_state()
     client = request.app.state.tiktok_client
     url = client.authorize_url(
         settings.redirect_uri,
         state,
         settings.oauth_scopes,
+        code_challenge=code_challenge,
     )
     return RedirectResponse(url)
 
@@ -38,7 +39,10 @@ async def login(request: Request):
 async def callback(request: Request, code: str = "", state: str = "", error: str = ""):
     if error:
         return RedirectResponse(f"/?auth_error={error}")
-    if not code or not consume_oauth_state(state):
+    if not code:
+        return RedirectResponse("/?auth_error=missing_code")
+    code_verifier = consume_oauth_state(state)
+    if not code_verifier:
         return RedirectResponse("/?auth_error=invalid_state")
 
     settings = request.app.state.settings
@@ -46,7 +50,9 @@ async def callback(request: Request, code: str = "", state: str = "", error: str
     session_factory = request.app.state.session_factory
 
     try:
-        token_data = await client.exchange_code(code, settings.redirect_uri)
+        token_data = await client.exchange_code(
+            code, settings.redirect_uri, code_verifier=code_verifier
+        )
         access_token = token_data["access_token"]
         user = await client.fetch_user_info(access_token)
         videos = await client.fetch_all_videos(access_token)
