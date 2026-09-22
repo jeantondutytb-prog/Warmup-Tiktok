@@ -40,8 +40,9 @@ pour le debug, mais ce n'est plus le chemin normal.
 
 ## Lancer — le chemin normal
 
-1. Une fois : copier `.env.agent.example` → `.env.agent`, coller `WARMUP_URL`
-   et le même `AGENT_TOKEN` que sur Vercel.
+1. Une fois : copier `.env.agent.example` → `.env.agent`, coller
+   `WARMUP_URL=https://tiktok-warmup-ten.vercel.app` et le même
+   `AGENT_TOKEN` que sur Vercel.
 2. Brancher l'iPhone en USB, le déverrouiller.
 3. Sur le Mac :
 
