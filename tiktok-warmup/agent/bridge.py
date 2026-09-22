@@ -21,7 +21,7 @@ def make_orchestrator():
     )
 
 
-async def handle_job(orch: Orchestrator, job: dict[str, Any]) -> None:
+async def handle_job(orch, job: dict[str, Any]) -> None:
     kind = job.get("type")
     if kind == "start":
         await orch.start_account(str(job.get("username") or ""), force=bool(job.get("force")))
@@ -37,7 +37,12 @@ async def handle_job(orch: Orchestrator, job: dict[str, Any]) -> None:
         raise ValueError(f"job inconnu : {kind}")
 
 
-async def flush_events(orch: Orchestrator, plane: ControlPlane, queue: asyncio.Queue) -> None:
+def _warmup_running(orch) -> bool:
+    task = getattr(orch, "_cycle_task", None)
+    return task is not None and not task.done()
+
+
+async def flush_events(orch, plane: ControlPlane, queue: asyncio.Queue) -> None:
     batch: list[dict[str, Any]] = []
     while True:
         try:
@@ -74,6 +79,7 @@ async def run_bridge(
         while True:
             try:
                 state = await asyncio.to_thread(wda.refresh)
+                state["warmupRunning"] = _warmup_running(orch)
                 await asyncio.to_thread(plane.heartbeat, state)
             except Exception as exc:
                 print(f"[agent] heartbeat: {exc}", flush=True)
@@ -117,7 +123,10 @@ async def run_bridge(
                         {
                             "accounts": orch.get_status(),
                             "pendingFyp": orch.pending_fyp(),
-                            "agent": wda.snapshot(),
+                            "agent": {
+                                **wda.snapshot(),
+                                "warmupRunning": _warmup_running(orch),
+                            },
                         },
                     )
                 except Exception as exc:

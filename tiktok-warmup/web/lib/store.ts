@@ -47,6 +47,7 @@ function emptyStore (): StoreFile {
       wdaReady: false,
       wdaUrl: null,
       message: 'En attente du Mac',
+      warmupRunning: false,
     },
     accounts,
     jobs: [],

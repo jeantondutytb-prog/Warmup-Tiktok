@@ -14,6 +14,7 @@ export async function POST (req: Request) {
     wdaReady: Boolean(body.wdaReady),
     wdaUrl: typeof body.wdaUrl === 'string' ? body.wdaUrl : null,
     message: typeof body.message === 'string' ? body.message : '',
+    warmupRunning: Boolean(body.warmupRunning),
   })
   return Response.json({ ok: true })
 }

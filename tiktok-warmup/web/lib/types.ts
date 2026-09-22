@@ -38,6 +38,7 @@ export interface AgentHeartbeat {
   wdaReady: boolean
   wdaUrl: string | null
   message: string
+  warmupRunning?: boolean
 }
 
 export type JobType = 'start' | 'start-all' | 'stop-all' | 'fyp' | 'protocol-day'

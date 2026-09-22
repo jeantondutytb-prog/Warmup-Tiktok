@@ -38,31 +38,15 @@ Dashboard Vercel  --jobs-->  agent Mac  --WDA-->  iPhone
 Le dashboard FastAPI local (`python -m app.main`, port 8000) existe encore
 pour le debug, mais ce n'est plus le chemin normal.
 
-## Lancer — le chemin normal
+## Lancer — le chemin normal (sans terminal)
 
-1. Une fois : copier `.env.agent.example` → `.env.agent`, coller
-   `WARMUP_URL=https://tiktok-warmup-ten.vercel.app` et le même
-   `AGENT_TOKEN` que sur Vercel.
+1. **Une fois sur le Mac** : dans le Finder, `tiktok-warmup/scripts/` →
+   double-clique **Activer Warmup sur ce Mac.command** (installe venv +
+   agent auto au login).
 2. Brancher l'iPhone en USB, le déverrouiller.
-3. Sur le Mac :
+3. Ouvrir https://tiktok-warmup-ten.vercel.app → **Start Warm Up** ou **Stop**.
 
-```bash
-cd /Users/jean/tiktok-warmup   # ou le clone Warmup-Tiktok/tiktok-warmup
-source venv/bin/activate
-python -m agent
-# équivalent : ./scripts/warmup
-```
-
-4. Ouvrir le dashboard Vercel, entrer le mot de passe, cliquer **Start**.
-
-Pour ne plus jamais relancer l'agent à la main :
-
-```bash
-python -m agent install
-launchctl load ~/Library/LaunchAgents/com.peachtint.warmup.plist
-```
-
-Ensuite : brancher l'iPhone → ouvrir le site → Start.
+C'est tout. Pas de `python`, pas de `venv`, pas de second terminal.
 
 ### Ancien lancement (deux terminaux, localhost)
 
