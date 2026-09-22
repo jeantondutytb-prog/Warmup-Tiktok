@@ -1,12 +1,24 @@
 # TikTok Warmup — Handoff
 
-**Dernière mise à jour : 03.09.2026** — bascule sur le Protocole Peachtint.
+**Dernière mise à jour : 22.09.2026** — cockpit sur Vercel, agent unique sur le Mac.
 
 ## Ce que fait l'app
 
 Warmup de comptes TikTok sur un **iPhone XS physique branché en USB**, piloté
 par WebDriverAgent. L'app exécute le **Protocole Peachtint** : des sessions de
 18 minutes en cinq phases, sous des plafonds d'action volontairement bas.
+
+Le **dashboard** vit sur Vercel (`tiktok-warmup/web`). Le Mac ne lance plus
+FastAPI + xcodebuild à la main : un seul process (`python -m agent`) détecte
+l'iPhone, démarre WDA, et exécute les Start/Stop envoyés depuis le site.
+
+Vercel ne peut pas parler à un iPhone USB. D'où la coupure :
+
+```
+Dashboard Vercel  --jobs-->  agent Mac  --WDA-->  iPhone
+       ^                        |
+       +------- snapshot/events -+
+```
 
 > Le document source dit que le protocole est prévu pour être exécuté à la
 > main, et que l'engagement automatisé sur plusieurs comptes est le motif que
@@ -17,12 +29,41 @@ par WebDriverAgent. L'app exécute le **Protocole Peachtint** : des sessions de
 
 ## Stack
 
+- **Dashboard** : Next.js 15 sur Vercel, état dans Vercel Blob
+- **Agent Mac** : `python -m agent` — WDA + orchestrateur + pont HTTP
 - **Python 3.14**, venv dans `venv/`
-- **FastAPI** + Jinja2 + SSE, dashboard sur le port **8000**
-- **SQLAlchemy** / SQLite (`db/warmup.db`)
-- **WebDriverAgent** en direct, adresse via `WDA_URL` — plus de `webdriver.Remote`
+- **SQLAlchemy** / SQLite local (`db/warmup.db`) — le protocole reste sur le Mac
+- **WebDriverAgent** en direct. L'agent lit `ServerURLHere->` tout seul.
 
-## Lancer
+Le dashboard FastAPI local (`python -m app.main`, port 8000) existe encore
+pour le debug, mais ce n'est plus le chemin normal.
+
+## Lancer — le chemin normal
+
+1. Une fois : copier `.env.agent.example` → `.env.agent`, coller `WARMUP_URL`
+   et le même `AGENT_TOKEN` que sur Vercel.
+2. Brancher l'iPhone en USB, le déverrouiller.
+3. Sur le Mac :
+
+```bash
+cd /Users/jean/tiktok-warmup   # ou le clone Warmup-Tiktok/tiktok-warmup
+source venv/bin/activate
+python -m agent
+# équivalent : ./scripts/warmup
+```
+
+4. Ouvrir le dashboard Vercel, entrer le mot de passe, cliquer **Start**.
+
+Pour ne plus jamais relancer l'agent à la main :
+
+```bash
+python -m agent install
+launchctl load ~/Library/LaunchAgents/com.peachtint.warmup.plist
+```
+
+Ensuite : brancher l'iPhone → ouvrir le site → Start.
+
+### Ancien lancement (deux terminaux, localhost)
 
 ```bash
 # Terminal 1 : WebDriverAgent (voir « L'adresse de WDA change » plus bas)
@@ -40,7 +81,7 @@ source venv/bin/activate
 WDA_URL=http://192.168.1.61:8100 python -m app.main
 ```
 
-Dashboard sur `http://localhost:8000`.
+Dashboard local : `http://localhost:8000`.
 
 ## Calibration — faite le 03.09.2026
 
@@ -195,6 +236,8 @@ Le jour 8 fait basculer le compte à une session par jour.
 ## Architecture
 
 ```
+web/                  - dashboard Next.js déployé sur Vercel
+agent/                - pont Mac : WDA + jobs Vercel + orchestrateur
 app/
   core/
     protocol.py       - LE protocole en logique pure : phases, plafonds,
@@ -212,6 +255,7 @@ config/
   keywords.yaml       - 5 mots-clés FR + 5 EN
   coords.yaml         - tous les points de tap, en % d'écran
 scripts/calibrate.py  - l'outil de calibration
+scripts/warmup        - alias de `python -m agent`
 ```
 
 ## Base de données
