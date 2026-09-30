@@ -22,6 +22,35 @@ HEART_MIN_HEIGHT = 12
 BADGE_MIN_PT, BADGE_MAX_PT = 16, 25
 AVATAR_ABOVE_BADGE = 28
 
+# Textes lus à l'écran (OCR, en minuscules) qui trahissent un écran où il ne
+# faut plus rien taper. Le 30.09 un aperçu de live dans le fil a été pris pour
+# une vidéo : le double-tap du like l'a ouvert et TikTok a aussitôt demandé un
+# CAPTCHA, sur lequel le test a continué de taper à l'aveugle.
+CAPTCHA_TEXTS = ("vérifie pour continuer", "verifie pour continuer", "verify to continue",
+                 "pièce de puzzle", "piece de puzzle", "drag the puzzle", "drag the slider")
+# L'aperçu d'un live dans le fil « Pour toi » : pas de badge rouge, seulement
+# cette invitation — qui n'apparaît qu'une seconde après l'arrivée. Le bandeau
+# produit d'un live shopping (« 96 vendu(s) ») est là dès le début, et une
+# fiche produit (« Ajouter au panier ») n'est pas plus un endroit où taper.
+LIVE_PREVIEW_TEXTS = ("regarder le live", "watch live", "watch the live",
+                      "vendu(s)", "ajouter au panier", "add to cart")
+# Un live ouvert en plein écran.
+LIVE_OPEN_TEXTS = ("classement quotidien", "saisis ton", "a rejoint", "daily ranking")
+
+
+class CaptchaDetected(RuntimeError):
+    """TikTok demande une vérification anti-robot. Personne ne la résout à la
+    place de l'utilisateur : la session s'arrête et le roulement aussi."""
+
+
+# Départ vertical du geste de défilement. Sur un post « Photo » l'image
+# s'arrête vers y=580 : un départ à 600 tombait dans la légende et les points
+# du carrousel, qui avalaient le geste (3 blocages sur la session #68).
+SCROLL_FROM_Y = 480
+
+# Défilements bloqués d'affilée avant d'abandonner la mesure du fil.
+MEASURE_BLOCKS_BEFORE_ABORT = 3
+
 # Aucune coordonnée en dur ici : config/coords.yaml fait foi. Les constantes
 # qui vivaient à cet endroit dataient d'août et pointaient 140 points trop
 # haut ; elles ont fait taper 9 likes dans le vide lors de la session #42.
@@ -90,6 +119,35 @@ class ActionEngine:
             {"fromX": fx, "fromY": fy, "toX": tx, "toY": ty, "duration": ms / 1000},
         )
         await asyncio.sleep(human_delay(0.6, 1.2))
+
+    @staticmethod
+    def _classify(texts: list[str]) -> str | None:
+        """« captcha », « live_preview », « live_open » ou None, d'après les
+        textes lus à l'écran (en minuscules)."""
+        if any(k in t for t in texts for k in CAPTCHA_TEXTS):
+            return "captcha"
+        if any(k in t for t in texts for k in LIVE_PREVIEW_TEXTS):
+            return "live_preview"
+        if any(k in t for t in texts for k in LIVE_OPEN_TEXTS):
+            return "live_open"
+        return None
+
+    async def _guard(self, texts: list[str] | None = None) -> str | None:
+        """Lit l'écran et lève CaptchaDetected s'il affiche une vérification.
+        Renvoie sinon « live_preview », « live_open » ou None."""
+        if texts is None:
+            try:
+                texts = [t.lower() for t, _, _ in await self._screen_text()]
+            except Exception:
+                return None
+        state = self._classify(texts)
+        if state == "captcha":
+            await self._snapshot("captcha")
+            raise CaptchaDetected(
+                "TikTok demande une vérification (CAPTCHA) — session arrêtée. "
+                "Résous-la toi-même dans l'app et laisse le compte au repos."
+            )
+        return state
 
     async def _is_ad_or_live(self) -> str | None:
         try:
@@ -168,11 +226,11 @@ class ActionEngine:
             for attempt in range(3):
                 x = random.randint(120, 240)
                 dur = 0.28 if attempt == 0 else 0.16
-                travel = 380 if attempt == 0 else 520
+                travel = 380 if attempt == 0 else 420
                 await asyncio.to_thread(
                     self.driver.execute_script, "mobile: dragFromToForDuration",
-                    {"fromX": x, "fromY": 600, "toX": x + random.randint(-12, 12),
-                     "toY": 600 - travel, "duration": dur},
+                    {"fromX": x, "fromY": SCROLL_FROM_Y, "toX": x + random.randint(-12, 12),
+                     "toY": SCROLL_FROM_Y - travel, "duration": dur},
                 )
                 await asyncio.sleep(human_delay(0.5, 1.1))
 
@@ -182,6 +240,8 @@ class ActionEngine:
                     break
 
             if not scrolled:
+                # Un CAPTCHA bloque aussi le défilement.
+                await self._guard()
                 content_type = await self._is_ad_or_live()
                 if content_type == "live":
                     await self._escape_live()
@@ -189,6 +249,14 @@ class ActionEngine:
                     continue
                 await self._snapshot("fil-bloque")
                 return "SKIP — le fil ne défile plus après trois tentatives"
+
+            screen = await self._guard()
+            if screen in ("live_preview", "live_open"):
+                skipped.append("live")
+                await self._snapshot("skip-live")
+                if screen == "live_open":
+                    await self._escape_live()
+                continue
 
             content_type = await self._is_ad_or_live()
             if content_type is None:
@@ -227,6 +295,12 @@ class ActionEngine:
         de la géométrie de la barre latérale. Il ne peut qu'ajouter un like,
         jamais en retirer un, ce qui écarte aussi le risque de dé-liker.
         """
+        # Jamais de double-tap sans savoir sur quoi : sur l'aperçu d'un live, il
+        # ouvre le live (et le 30.09, un CAPTCHA).
+        if await self._guard() in ("live_preview", "live_open") or await self._is_ad_or_live():
+            await self._snapshot("like-refuse")
+            return "SKIP — pas une vidéo normale à l'écran (live ou pub), pas de like"
+
         before = await self._heart_is_red()
 
         # Une reprise, pas plus : un geste lancé pendant le chargement de la
@@ -238,6 +312,7 @@ class ActionEngine:
             except Exception:
                 return "SKIP"
             await asyncio.sleep(human_delay(0.8, 1.5))
+            await self._guard()
             after = await self._heart_is_red()
 
             if after is None:
@@ -296,6 +371,7 @@ class ActionEngine:
         """
         texts = await self._screen_text()
         lowered = [(t.lower(), x, y) for t, x, y in texts]
+        await self._guard([t for t, _, _ in lowered])
         if any("limité l'accès aux commentaires" in t for t, _, _ in lowered):
             return "SKIP — commentaires fermés par le créateur"
         bar = next(((x, y) for t, x, y in lowered if "ajouter un commentaire" in t), None)
@@ -484,6 +560,7 @@ class ActionEngine:
         """
         await self._tap_point("result_first")
         await asyncio.sleep(human_delay(1.4, 2.4))
+        await self._guard()
         return "opened first result"
 
     # ----------------------------------------------------- phase profils (10-13')
@@ -509,6 +586,7 @@ class ActionEngine:
         await asyncio.sleep(human_delay(1.5, 2.6))
 
         texts = [t.lower() for t, _, _ in await self._screen_text()]
+        await self._guard(texts)
         if any("follower" in t for t in texts) and any("suivi" in t for t in texts):
             return "opened creator profile"
         await self._snapshot("profil-manque")
@@ -591,6 +669,17 @@ class ActionEngine:
         bouton devient « Message » **à la même position** : taper sans regarder
         ouvrirait une conversation privée avec un inconnu.
         """
+        # La grille vient d'être parcourue : la page est défilée et le gros
+        # « Suivre » est remonté dans la barre du haut. On revient en haut du
+        # profil avant de le lire (session #68 : 0 abonnement sur 3).
+        for _ in range(2):
+            await asyncio.to_thread(
+                self.driver.execute_script, "mobile: swipe",
+                {"direction": "down", "velocity": random.randint(1500, 2500)},
+            )
+            await asyncio.sleep(human_delay(0.5, 0.9))
+        await asyncio.sleep(human_delay(0.6, 1.2))
+
         before = await self._follow_button_is_red()
         if before is False:
             return "SKIP — pas de bouton d'abonnement ici (déjà suivi, ou pas un profil)"
@@ -652,6 +741,7 @@ class ActionEngine:
         await asyncio.sleep(human_delay(3.0, 5.0))
 
         await self._snapshot("retour-fil")
+        await self._guard()
         if await self._keyboard_is_up():
             return "SKIP"
         return "back on feed"
@@ -688,6 +778,9 @@ class ActionEngine:
         os.makedirs(shots_dir, exist_ok=True)
         taken = 0
         hashes: list[int] = []
+        # Un post photo peut bloquer un défilement isolé : on n'abandonne la
+        # mesure qu'après plusieurs blocages d'affilée (#68 : 7 captures sur 20).
+        blocked = 0
         for i in range(protocol.FYP_MEASURE_SCROLLS):
             try:
                 b64 = await asyncio.to_thread(self.driver.get_screenshot_as_base64)
@@ -699,7 +792,11 @@ class ActionEngine:
                 pass
             await asyncio.sleep(human_delay(1.5, 3.5))
             if (await self.scroll_feed()).startswith("SKIP"):
-                break
+                blocked += 1
+                if blocked >= MEASURE_BLOCKS_BEFORE_ABORT:
+                    break
+            else:
+                blocked = 0
         distinct = len({h for h in hashes if h})
         return taken, distinct
 

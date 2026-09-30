@@ -373,3 +373,92 @@ def test_without_badge_the_feed_avatar_point_is_used():
     result, tap, tap_point = _open_profile(None, PROFILE)
     tap_point.assert_awaited_once_with("creator_avatar")
     tap.assert_not_called()
+
+
+# ------------------------------------------------ mesure et abonnement (#68)
+
+def test_one_blocked_scroll_does_not_end_the_fyp_measure(tmp_path):
+    """Régression #68 : un post photo a bloqué un défilement et la mesure s'est
+    arrêtée à 7 captures sur 20."""
+    from app.core import protocol
+    engine = make_engine()
+    engine.driver.get_screenshot_as_base64.return_value = _screenshot_with([])
+    results = ["scrolled feed", "SKIP — bloqué"] + ["scrolled feed"] * 30
+    with (
+        patch("app.core.action_engine.asyncio.sleep", new_callable=AsyncMock),
+        patch.object(ActionEngine, "scroll_feed", new_callable=AsyncMock, side_effect=results),
+    ):
+        taken, _ = asyncio.get_event_loop().run_until_complete(
+            engine.measure_fyp(str(tmp_path)))
+    assert taken == protocol.FYP_MEASURE_SCROLLS
+
+
+def test_follow_scrolls_back_to_the_top_of_the_profile_first():
+    """Régression #68 : après la grille, « Suivre » n'était plus à sa place."""
+    engine = make_engine()
+    order = []
+    engine.driver.execute_script.side_effect = lambda name, args: order.append(("swipe", args["direction"]))
+
+    async def read():
+        order.append(("read",))
+        return False
+
+    with (
+        patch("app.core.action_engine.asyncio.sleep", new_callable=AsyncMock),
+        patch.object(ActionEngine, "_follow_button_is_red", side_effect=read),
+    ):
+        asyncio.get_event_loop().run_until_complete(engine.follow_from_profile())
+    assert order[:3] == [("swipe", "down"), ("swipe", "down"), ("read",)]
+
+
+# ------------------------------------------------- CAPTCHA et lives (30.09)
+
+from app.core.action_engine import CaptchaDetected  # noqa: E402
+
+
+def test_screens_seen_on_the_30_09_are_classified():
+    classify = ActionEngine._classify
+    assert classify(["vérifie pour continuer", "fais glisser la pièce de puzzle"]) == "captcha"
+    assert classify(["appuie pour regarder le live"]) == "live_preview"
+    assert classify(["1 booster pokémon", "96 vendu(s)"]) == "live_preview"
+    assert classify(["pour toi", "322,5 k", "republier pour tes followers"]) is None
+
+
+def _like_on(screen):
+    engine = make_engine()
+    with (
+        patch("app.core.action_engine.asyncio.sleep", new_callable=AsyncMock),
+        patch.object(ActionEngine, "_screen_text", new_callable=AsyncMock,
+                     return_value=[(t, 180, 400) for t in screen]),
+        patch.object(ActionEngine, "_is_ad_or_live", new_callable=AsyncMock, return_value=None),
+        patch.object(ActionEngine, "_heart_is_red", new_callable=AsyncMock, side_effect=[False, True]),
+    ):
+        return engine, asyncio.get_event_loop().run_until_complete(engine.like_video())
+
+
+def test_no_double_tap_on_a_live_preview():
+    """Régression 30.09 : le double-tap a ouvert le live, puis TikTok a demandé un CAPTCHA."""
+    engine, result = _like_on(["Appuie pour regarder le LIVE"])
+    assert result.startswith("SKIP")
+    engine.driver.double_tap.assert_not_called()
+
+
+def test_a_captcha_stops_the_like_instead_of_tapping_on():
+    with pytest.raises(CaptchaDetected):
+        _like_on(["Vérifie pour continuer"])
+
+
+def test_scroll_skips_a_live_preview_and_keeps_scrolling():
+    engine = make_engine()
+    with (
+        patch("app.core.action_engine.asyncio.sleep", new_callable=AsyncMock),
+        patch.object(ActionEngine, "_take_screenshot_hash", new_callable=AsyncMock,
+                     side_effect=[1, 2, 2, 3]),
+        patch.object(ActionEngine, "_screen_text", new_callable=AsyncMock,
+                     side_effect=[[("Appuie pour regarder le LIVE", 180, 400)], []]),
+        patch.object(ActionEngine, "_is_ad_or_live", new_callable=AsyncMock, return_value=None),
+        patch.object(ActionEngine, "_escape_live", new_callable=AsyncMock) as escape,
+    ):
+        result = asyncio.get_event_loop().run_until_complete(engine.scroll_feed())
+    assert result == "scrolled feed (sauté 1 live)"
+    escape.assert_not_awaited()

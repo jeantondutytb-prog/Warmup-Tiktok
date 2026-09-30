@@ -10,7 +10,7 @@ from app.core.anti_detect import human_delay, is_in_activity_window, get_allowed
 from app.core.coords import load_coords, UncalibratedPoint
 from app.core import protocol
 from app.core.appium_driver import AppiumDriverManager
-from app.core.action_engine import ActionEngine
+from app.core.action_engine import ActionEngine, CaptchaDetected
 from app.core.browser_manager import BrowserManager
 import os
 
@@ -274,6 +274,11 @@ class Orchestrator:
                 if outcome == "config":
                     self._rotation["message"] = "arrêté — calibration requise"
                     return
+                if outcome == "captcha":
+                    # Un CAPTCHA vise l'appareil autant que le compte : on ne
+                    # bascule pas sur le suivant pour continuer comme si de rien.
+                    self._rotation["message"] = f"arrêté — CAPTCHA TikTok sur @{name}, à résoudre à la main"
+                    return
                 if outcome == "device":
                     device_failures += 1
                     await self._rotation_wait(
@@ -331,7 +336,7 @@ class Orchestrator:
             })
 
     async def _run_cycle(self, target_username: str | None = None, force: bool = False) -> str:
-        """Une session iPhone. Renvoie ok, refused, config, device, switch ou error."""
+        """Une session iPhone. Renvoie ok, refused, config, device, switch, captcha ou error."""
         if target_username:
             acc_cfg = next((a for a in self.accounts_config if a["username"] == target_username), None)
         else:
@@ -421,6 +426,9 @@ class Orchestrator:
 
         except asyncio.CancelledError:
             return "error"
+        except CaptchaDetected as e:
+            await self._set_error(username, str(e))
+            return "captcha"
         except Exception as e:
             await self._set_error(username, str(e))
             return "device" if isinstance(e, (ConnectionError, OSError)) else "error"
@@ -610,8 +618,9 @@ class Orchestrator:
                 )
             else:
                 completed = not stop.is_set()
-        except asyncio.CancelledError:
-            # stop_all annule la tâche : la session est écourtée, pas finie.
+        except BaseException:
+            # Annulée par stop_all, ou interrompue par une erreur (CAPTCHA…) :
+            # la session est écourtée, pas finie.
             completed = False
             raise
         finally:

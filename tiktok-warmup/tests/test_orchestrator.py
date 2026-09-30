@@ -632,3 +632,35 @@ def test_a_manually_advanced_day_is_never_pulled_back():
     _session_days_ago(orch, "warm", 1)
     orch.advance_protocol_day("warm", 6)
     assert orch.get_status()["warm"]["protocol_day"] == 6
+
+
+def test_rotation_stops_on_a_captcha_instead_of_moving_to_the_next_account():
+    orch = _orch_with_accounts([_named("a"), _named("b")])
+    loop = asyncio.new_event_loop()
+    with (
+        patch.object(orch, "_run_cycle", new_callable=AsyncMock, return_value="captcha") as cycle,
+        patch("app.core.orchestrator.protocol.ROTATION_START_HOUR", 0),
+        patch("app.core.orchestrator.protocol.ROTATION_END_HOUR", 24),
+    ):
+        loop.run_until_complete(asyncio.wait_for(orch._run_rotation(), 5))
+    assert cycle.await_count == 1
+    assert "CAPTCHA" in orch.rotation_status()["message"]
+    loop.close()
+
+
+@pytest.mark.asyncio
+async def test_a_session_cut_by_a_captcha_is_not_marked_completed():
+    from app.core.action_engine import CaptchaDetected
+    from app.core import protocol
+    from app.models.models import WarmupSession
+    orch, engine, budget, session_id = _search_phase_harness([])
+
+    async def boom(**_):
+        raise CaptchaDetected("captcha")
+
+    with patch.object(orch, "_phase_fyp_entry", side_effect=boom):
+        with pytest.raises(CaptchaDetected):
+            await orch._warmup_account("warm", engine, MagicMock())
+    with orch.Session() as db:
+        last = db.query(WarmupSession).order_by(WarmupSession.id.desc()).first()
+        assert last.completed is False

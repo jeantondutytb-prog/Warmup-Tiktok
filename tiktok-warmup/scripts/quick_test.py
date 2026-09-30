@@ -22,7 +22,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
 from app.config import load_accounts, load_comments, load_keywords  # noqa: E402
-from app.core.action_engine import ActionEngine  # noqa: E402
+from app.core.action_engine import ActionEngine, CaptchaDetected  # noqa: E402
 from app.core.appium_driver import AppiumDriverManager  # noqa: E402
 from app.core.coords import load_coords  # noqa: E402
 from app.core import protocol  # noqa: E402
@@ -62,6 +62,11 @@ async def main(username: str, do_comment: bool, do_follow: bool) -> None:
         await shot(f"{name}-avant")
         try:
             res = await coro
+        except CaptchaDetected as e:
+            await shot(f"{name}-captcha")
+            report.append((name, f"CAPTCHA — {e}"))
+            print(f"\n⛔ {name} : {e}", flush=True)
+            raise
         except Exception as e:  # noqa: BLE001
             res = f"EXCEPTION {type(e).__name__}: {e}"
         await shot(f"{name}-apres")
@@ -93,8 +98,12 @@ async def main(username: str, do_comment: bool, do_follow: bool) -> None:
             await step("commentaire", engine.comment_on_video())
         await step("profil", engine.open_creator_profile())
         if do_follow:
+            # Même ordre que la phase profils : la grille d'abord, puis l'abonnement.
+            await step("grille", engine.browse_profile_grid())
             await step("follow", engine.follow_from_profile())
         await step("retour_fil2", engine.return_to_feed())
+    except CaptchaDetected:
+        pass
     finally:
         print(f"\nCaptures : {out}  ({time.monotonic() - t0:.0f}s)")
         with open(os.path.join(out, "rapport.txt"), "w") as f:
