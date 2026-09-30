@@ -34,7 +34,9 @@ points:
   result_first:        {x: 0.253, y: 0.341, calibrated: true}
 
   # --- phase profils (vérifiés) ---
-  # L'avatar du créateur dans la colonne de droite. Ouvre son profil.
+  # L'avatar du créateur dans la colonne de droite, sur le fil. Repli
+  # seulement : open_creator_profile vise 28 pt au-dessus du + rouge, car sur
+  # une vidéo ouverte depuis la recherche ce point tombe sur le + (abonnement).
   creator_avatar:      {x: 0.920, y: 0.429, calibrated: true}
   # Le bouton « Suivre » d'une page de profil. C'est celui-ci qu'il faut taper
   # depuis un profil — le + de la barre latérale n'existe que sur une vidéo.
@@ -64,9 +66,12 @@ points:
   # occupait cette position et la session #42 a fini dans TikTok Shop.
   # Aucune coordonnée fixe ne peut désigner « Vidéos ».
   tab_videos:          {x: 0.509, y: 0.135, calibrated: false}
-  # Ouvre le sélecteur de compte depuis le profil. La bascule automatique
-  # entre comptes a été abandonnée en août ; ce point n'a pas été revérifié.
-  display_name:        {x: 0.400, y: 0.160, calibrated: false}
+  # Le nom du compte avec sa flèche, en haut à gauche de la page profil. Ouvre
+  # la feuille « Changer de compte ». Repli seulement : la bascule lit le nom à
+  # l'écran, car sa place change avec la mise en page (centré à y=0.248 le
+  # 28.09, où il tombe désormais sur le compteur « J'aime »). Vérifié le
+  # 30.09.2026 sur margaux.fgts et antoine.ckts.
+  display_name:        {x: 0.250, y: 0.148, calibrated: true}
   # Repères géométriques, sans mesure nécessaire.
   screen_center:       {x: 0.500, y: 0.500, calibrated: true}
   close_panel:         {x: 0.500, y: 0.120, calibrated: true}

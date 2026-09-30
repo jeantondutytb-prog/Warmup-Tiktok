@@ -24,9 +24,9 @@ def session_duration_seconds() -> int:
 
 
 _RAMP_UP_SCHEDULE = {
-    (1, 2): ["scroll", "watch"],
-    (3, 4): ["scroll", "watch", "like"],
-    (5, 7): ["scroll", "watch", "like", "follow", "visit_profile"],
+    (1, 2): ["scroll", "watch", "like", "follow", "visit_profile", "comment"],
+    (3, 4): ["scroll", "watch", "like", "follow", "visit_profile", "comment"],
+    (5, 7): ["scroll", "watch", "like", "follow", "visit_profile", "comment"],
     (8, 10): ["scroll", "watch", "like", "follow", "visit_profile", "comment"],
 }
 _ALL_ACTIONS = ["scroll", "watch", "like", "follow", "visit_profile", "comment"]
@@ -43,10 +43,13 @@ def get_allowed_actions(ramp_up_day: int) -> list[str]:
 
 def get_action_limits(ramp_up_day: int) -> dict[str, int]:
     if ramp_up_day <= 2:
-        return {"scroll": 999, "watch": 999, "like": 0, "follow": 0, "visit_profile": 0, "comment": 0}
+        likes = random.randint(5, 10)
+        follows = random.randint(1, 3)
+        return {"scroll": 999, "watch": 999, "like": likes, "follow": follows, "visit_profile": follows + 2, "comment": 0}
     if ramp_up_day <= 4:
         likes = random.randint(5, 10)
-        return {"scroll": 999, "watch": 999, "like": likes, "follow": 0, "visit_profile": 0, "comment": 0}
+        follows = random.randint(1, 3)
+        return {"scroll": 999, "watch": 999, "like": likes, "follow": follows, "visit_profile": follows + 2, "comment": 0}
     if ramp_up_day <= 7:
         likes = random.randint(5, 10)
         follows = random.randint(1, 3)

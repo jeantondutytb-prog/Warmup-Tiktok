@@ -341,6 +341,7 @@ def _search_phase_harness(like_results):
     engine.return_to_feed = AsyncMock(return_value="back on feed")
     engine.scroll_feed = AsyncMock(return_value="scrolled feed")
     engine.like_video = AsyncMock(side_effect=like_results)
+    engine.comment_on_video = AsyncMock(return_value="SKIP — pas de barre de commentaire sur cet écran")
 
     budget = protocol.SessionBudget(like_cap=25, follow_cap=12, comment_cap=2)
     return orch, engine, budget, session_id
@@ -519,3 +520,115 @@ async def test_the_entry_phase_never_replays_off_niche_videos():
 
     engine.watch_fully.assert_not_awaited()
     assert engine.watch_briefly.await_count >= 1
+
+
+# ------------------------------------------------------------------ roulement
+
+def _named(name, **extra):
+    return {"username": name, "device_profile": "iphone_xs", "comment_style": "casual", **extra}
+
+
+def test_rotation_never_picks_a_protected_account():
+    orch = _orch_with_accounts([_LOCKED, _WARM])
+    name, _, _ = orch._next_rotation_account()
+    assert name == "warm"
+
+
+def test_rotation_goes_round_robin():
+    orch = _orch_with_accounts([_named("a"), _named("b"), _named("c")])
+    picked = [orch._next_rotation_account()[0] for _ in range(4)]
+    assert picked == ["a", "b", "c", "a"]
+
+
+def test_rotation_sets_aside_an_account_that_keeps_failing_to_switch():
+    from app.core.orchestrator import MAX_SWITCH_FAILURES
+    orch = _orch_with_accounts([_named("a"), _named("b")])
+    orch._switch_failures["a"] = MAX_SWITCH_FAILURES
+    assert orch._next_rotation_account()[0] == "b"
+    assert orch._next_rotation_account()[0] == "b"
+
+
+def test_rotation_waits_for_the_shortest_cadence_gap():
+    from app.models.models import Account, WarmupSession
+    orch = _orch_with_accounts([_named("a"), _named("b")])
+    with orch.Session() as db:
+        account = db.query(Account).filter_by(username="a").first()
+        db.add(WarmupSession(
+            account_id=account.id,
+            started_at=datetime.datetime.now() - datetime.timedelta(minutes=10),
+        ))
+        db.commit()
+    name, wait, _ = orch._next_rotation_account()
+    assert name is None
+    assert datetime.timedelta(minutes=19) < wait <= datetime.timedelta(minutes=20)
+
+
+def test_rotation_stops_when_calibration_is_missing():
+    orch = _orch_with_accounts([_named("a")])
+    loop = asyncio.new_event_loop()
+    with (
+        patch.object(orch, "_run_cycle", new_callable=AsyncMock, return_value="config"),
+        patch("app.core.orchestrator.protocol.ROTATION_START_HOUR", 0),
+        patch("app.core.orchestrator.protocol.ROTATION_END_HOUR", 24),
+    ):
+        loop.run_until_complete(asyncio.wait_for(orch._run_rotation(), 5))
+    assert orch.rotation_status()["running"] is False
+    assert "calibration" in orch.rotation_status()["message"]
+    loop.close()
+
+
+@pytest.mark.asyncio
+async def test_search_phase_comments_within_the_daily_budget():
+    from app.core import protocol
+    orch, engine, budget, session_id = _search_phase_harness(["liked video"] * 50)
+    engine.comment_on_video = AsyncMock(return_value="commented: Top")
+    budget = protocol.SessionBudget(like_cap=25, follow_cap=12, comment_cap=1)
+    phase = protocol.PHASES[1]
+    with (
+        patch("app.core.orchestrator.protocol.should_comment_in_search", return_value=True),
+        patch("app.core.orchestrator.protocol.should_like_in_search", return_value=False),
+    ):
+        await orch._phase_search(
+            username="warm", session_id=session_id, engine=engine, budget=budget,
+            keyword="filtre pellicule", phase=phase, elapsed=_ticking(phase, step=60),
+            allowed={"scroll", "watch", "like", "comment"},
+        )
+    assert engine.comment_on_video.await_count == 1
+    assert budget.comments_24h == 1
+
+
+# ------------------------------------------------------------ jour de protocole
+
+def _session_days_ago(orch, username, days):
+    from app.models.models import Account, WarmupSession
+    with orch.Session() as db:
+        account = db.query(Account).filter_by(username=username).first()
+        db.add(WarmupSession(
+            account_id=account.id,
+            started_at=datetime.datetime.now() - datetime.timedelta(days=days),
+        ))
+        db.commit()
+
+
+def test_protocol_day_counts_from_the_first_session():
+    orch = _orch_with_accounts([_WARM])
+    _session_days_ago(orch, "warm", 3)
+    assert orch.get_status()["warm"]["protocol_day"] == 4
+
+
+def test_protocol_day_stays_at_one_before_any_session():
+    orch = _orch_with_accounts([_WARM])
+    assert orch.get_status()["warm"]["protocol_day"] == 1
+
+
+def test_protocol_day_caps_at_the_end_of_the_protocol():
+    orch = _orch_with_accounts([_WARM])
+    _session_days_ago(orch, "warm", 40)
+    assert orch.get_status()["warm"]["protocol_day"] == 14
+
+
+def test_a_manually_advanced_day_is_never_pulled_back():
+    orch = _orch_with_accounts([_WARM])
+    _session_days_ago(orch, "warm", 1)
+    orch.advance_protocol_day("warm", 6)
+    assert orch.get_status()["warm"]["protocol_day"] == 6

@@ -49,4 +49,6 @@ if [[ "$(uname)" == "Darwin" ]]; then
 fi
 
 export WDA_URL
-exec python -m app.main
+# Le roulement tourne toute la journée : sans ça le Mac s'endort pendant une
+# pause entre deux comptes. Ne protège pas d'un écran de MacBook refermé.
+exec caffeinate -is python -m app.main

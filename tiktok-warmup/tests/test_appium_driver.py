@@ -36,6 +36,7 @@ def test_create_session_opens_a_wda_session_and_launches_tiktok():
 
     with (
         patch.object(manager, "_ensure_wda_running"),
+        patch.object(manager, "_unlock_if_locked"),
         patch("app.core.appium_driver.urllib.request.urlopen", side_effect=responses) as urlopen,
         patch.object(WDADriver, "get_window_size", return_value={"width": 375, "height": 812}),
         patch.object(WDADriver, "activate_app") as activate,
@@ -79,3 +80,17 @@ def test_close_session_quits_driver():
     mock_driver = MagicMock()
     manager.close_session(mock_driver)
     mock_driver.quit.assert_called_once()
+
+
+def test_a_passcode_locked_iphone_is_reported_not_silently_skipped():
+    """Entre deux comptes l'écran se verrouille ; un code empêche WDA de le
+    rouvrir, et le roulement doit le dire au lieu de taper dans le vide."""
+    import pytest
+    manager = AppiumDriverManager()
+    with (
+        patch.object(manager, "_is_locked", return_value=True),
+        patch("app.core.appium_driver.urllib.request.urlopen"),
+        patch("app.core.appium_driver.time.sleep"),
+    ):
+        with pytest.raises(RuntimeError, match="Jamais"):
+            manager._unlock_if_locked()

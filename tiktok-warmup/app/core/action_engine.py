@@ -17,6 +17,11 @@ TIKTOK_BUNDLE_ID = "com.zhiliaoapp.musically"
 # le + d'abonnement. Mesuré sur les captures : cœur 20 pt, + 7 pt.
 HEART_MIN_HEIGHT = 12
 
+# Le + d'abonnement sous l'avatar du créateur : 22 pt de côté, et l'avatar
+# centré 28 pt au-dessus de son centre. Mesuré le 30.09.2026 sur iPhone XS.
+BADGE_MIN_PT, BADGE_MAX_PT = 16, 25
+AVATAR_ABOVE_BADGE = 28
+
 # Aucune coordonnée en dur ici : config/coords.yaml fait foi. Les constantes
 # qui vivaient à cet endroit dataient d'août et pointaient 140 points trop
 # haut ; elles ont fait taper 9 likes dans le vide lors de la session #42.
@@ -41,6 +46,7 @@ class ActionEngine:
         self.trace_dir = trace_dir
         self._trace_n = 0
         self.used_comments_today: set[str] = set()
+        self._profile_texts: list[tuple[str, int, int]] = []
 
     async def _snapshot(self, label: str) -> None:
         if not self.trace_dir:
@@ -89,80 +95,114 @@ class ActionEngine:
         try:
             b64 = await asyncio.to_thread(self.driver.get_screenshot_as_base64)
             img = Image.open(io.BytesIO(base64.b64decode(b64)))
-            # Lives have a red "LIVE" badge in the top-left area
-            # Check a region around (50-120, 60-90) for bright red pixels
-            region = img.crop((100, 120, 300, 200))
-            pixels = list(region.getdata())
-            red_count = sum(1 for r, g, b, *_ in pixels if r > 200 and g < 80 and b < 80)
-            red_ratio = red_count / len(pixels) if pixels else 0
-            if red_ratio > 0.02:
+            w, h = img.size
+
+            live_zone = img.crop((int(w * 0.02), int(h * 0.04),
+                                  int(w * 0.55), int(h * 0.15)))
+            live_px = list(live_zone.getdata())
+            red = sum(1 for r, g, b, *_ in live_px
+                      if r > 200 and g < 80 and b < 80)
+            if live_px and red / len(live_px) > 0.012:
                 return "live"
+
+            ad_zone = img.crop((int(w * 0.10), int(h * 0.82),
+                                int(w * 0.90), int(h * 0.90)))
+            ad_px = list(ad_zone.getdata())
+            blue = sum(1 for r, g, b, *_ in ad_px
+                       if b > 170 and b - r > 40 and b - g > 25)
+            if ad_px and blue / len(ad_px) > 0.08:
+                return "ad"
+
+            return None
         except Exception:
-            pass
-        return None
+            return None
 
     async def _escape_live(self) -> None:
-        """Press back/close to exit a Live and return to the feed."""
-        # Tap the X / close button (top-left on Lives)
-        await asyncio.to_thread(
-            self.driver.execute_script, "mobile: tap",
-            {"x": 20, "y": 60}
-        )
+        """Ferme un live et retourne au fil. Tap X puis balayage arrière."""
+        await self._tap(int(W * 0.06), int(H * 0.065))
         await asyncio.sleep(1.0)
-        # If still stuck, swipe down to dismiss
         await asyncio.to_thread(
-            self.driver.execute_script, "mobile: swipe",
-            {"direction": "down", "velocity": 1500}
+            self.driver.execute_script, "mobile: dragFromToForDuration",
+            {"fromX": 5, "fromY": H // 2, "toX": int(W * 0.6),
+             "toY": H // 2, "duration": 0.2},
         )
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(0.8)
 
     async def _take_screenshot_hash(self) -> int:
-        """Quick perceptual hash of current screen to detect stuck state."""
+        """Hash de la colonne d'actions + légende pour détecter un changement de vidéo.
+
+        Le hash de l'écran entier changeait à chaque frame de la vidéo, rendant
+        la détection de scroll inutile (toujours « changé »). La bande droite
+        (avatar, cœur, commentaire, partage) et la bande basse (pseudo, légende)
+        ne changent qu'au passage à une autre vidéo.
+        """
         try:
             b64 = await asyncio.to_thread(self.driver.get_screenshot_as_base64)
             img = Image.open(io.BytesIO(base64.b64decode(b64)))
-            small = img.resize((8, 8)).convert("L")
-            return hash(small.tobytes())
+            w, h = img.size
+            sidebar = img.crop((int(w * 0.82), int(h * 0.25), w, int(h * 0.85)))
+            bottom = img.crop((0, int(h * 0.85), int(w * 0.75), h))
+            sidebar_small = sidebar.resize((6, 12)).convert("L")
+            bottom_small = bottom.resize((12, 4)).convert("L")
+            return hash(sidebar_small.tobytes() + bottom_small.tobytes())
         except Exception:
             return 0
 
     async def scroll_feed(self) -> str:
-        """Fait défiler le fil d'une vidéo, et vérifie que ça a bougé.
+        """Fait défiler le fil d'une vidéo, en sautant les lives et pubs.
 
-        Le geste part d'un point tiré dans une zone sûre plutôt que de laisser
-        `mobile: swipe` choisir : ses points par défaut peuvent tomber sur la
-        légende, la colonne d'actions ou la barre du bas, qui absorbent le
-        glissement. Sur la session #46, le fil est resté bloqué sur un post
-        `#republication` pendant huit captures consécutives, toutes comptées
-        comme des vidéos différentes.
-
-        Renvoie SKIP si le fil refuse d'avancer après trois tentatives, au
-        lieu de prétendre avoir scrollé.
+        Après chaque scroll réussi, vérifie si la nouvelle vidéo est un live
+        ou une pub. Un live bloque le geste de scroll (les commentaires
+        captent le geste) ; une pub gaspille le budget de visionnage. Dans
+        les deux cas, on saute et on re-scrolle jusqu'à un contenu normal.
         """
-        before = await self._take_screenshot_hash()
+        skipped = []
 
-        for attempt in range(3):
-            # Zone sûre : à gauche de la colonne d'actions (x < 320), sous la
-            # barre d'onglets et au-dessus de la légende.
-            x = random.randint(120, 240)
-            duration = 0.28 if attempt == 0 else 0.16
-            travel = 380 if attempt == 0 else 520
-            await asyncio.to_thread(
-                self.driver.execute_script, "mobile: dragFromToForDuration",
-                {"fromX": x, "fromY": 600, "toX": x + random.randint(-12, 12),
-                 "toY": 600 - travel, "duration": duration},
-            )
-            await asyncio.sleep(human_delay(0.5, 1.1))
+        for _ in range(6):
+            before = await self._take_screenshot_hash()
+            scrolled = False
 
-            after = await self._take_screenshot_hash()
-            if before == 0 or after != before:
-                pause = should_micro_pause(0.05)
-                if pause > 0:
-                    await asyncio.sleep(pause)
-                return "scrolled feed" if attempt == 0 else f"scrolled feed ({attempt + 1}e essai)"
+            for attempt in range(3):
+                x = random.randint(120, 240)
+                dur = 0.28 if attempt == 0 else 0.16
+                travel = 380 if attempt == 0 else 520
+                await asyncio.to_thread(
+                    self.driver.execute_script, "mobile: dragFromToForDuration",
+                    {"fromX": x, "fromY": 600, "toX": x + random.randint(-12, 12),
+                     "toY": 600 - travel, "duration": dur},
+                )
+                await asyncio.sleep(human_delay(0.5, 1.1))
 
-        await self._snapshot("fil-bloque")
-        return "SKIP — le fil ne défile plus après trois tentatives"
+                after = await self._take_screenshot_hash()
+                if before == 0 or after != before:
+                    scrolled = True
+                    break
+
+            if not scrolled:
+                content_type = await self._is_ad_or_live()
+                if content_type == "live":
+                    await self._escape_live()
+                    skipped.append("live")
+                    continue
+                await self._snapshot("fil-bloque")
+                return "SKIP — le fil ne défile plus après trois tentatives"
+
+            content_type = await self._is_ad_or_live()
+            if content_type is None:
+                break
+
+            skipped.append(content_type)
+            await self._snapshot(f"skip-{content_type}")
+            if content_type == "live":
+                await self._escape_live()
+
+        pause = should_micro_pause(0.05)
+        if pause > 0:
+            await asyncio.sleep(pause)
+
+        if skipped:
+            return f"scrolled feed (sauté {len(skipped)} {'/'.join(skipped)})"
+        return "scrolled feed"
 
     async def watch_video(self) -> str:
         duration = watch_duration(30)
@@ -203,37 +243,31 @@ class ActionEngine:
             await asyncio.sleep(human_delay(0.8, 1.6))
 
         await self._snapshot("like-manque")
-        return "SKIP — le cœur n'a pas changé après deux taps"
+        return "SKIP — cœur toujours blanc après deux taps"
 
     async def _heart_is_red(self) -> bool | None:
-        """Vrai si un cœur liké (rouge) est présent dans la colonne d'actions.
-
-        On balaie toute la colonne au lieu de lire un point : la barre
-        latérale glisse verticalement selon le post. Le + d'abonnement est
-        rouge lui aussi, d'où la mesure par **hauteur** de la tache — le cœur
-        fait une vingtaine de points de haut, le + moins de dix. Mesuré sur
-        les captures de calibration : 20 pt liké contre 7 pt non liké.
-        """
+        """Vrai si un cœur liké (rouge) est présent dans la colonne d'actions."""
         try:
             b64 = await asyncio.to_thread(self.driver.get_screenshot_as_base64)
             img = Image.open(io.BytesIO(base64.b64decode(b64))).convert("RGB")
-            scale = img.width / W
-            col = img.crop((int(328 * scale), int(170 * scale),
-                            int(362 * scale), int(700 * scale)))
-            w, h = col.size
+            w, h = img.size
+            col = img.crop((int(w * 0.84), int(h * 0.20),
+                            int(w * 0.99), int(h * 0.78)))
+            cw, ch = col.size
             px = col.load()
             best = run = 0
-            for y in range(h):
+            for y in range(ch):
                 red = 0
-                for x in range(w):
+                for x in range(cw):
                     r, g, b = px[x, y]
-                    if r > 170 and r - g > 80 and r - b > 80:
+                    if r > 170 and r - g > 70 and r - b > 60:
                         red += 1
-                if red / w > 0.45:
+                if red / cw > 0.25:
                     run += 1
                     best = max(best, run)
                 else:
                     run = 0
+            scale = w / W
             return best / scale > HEART_MIN_HEIGHT
         except Exception:
             return None
@@ -247,91 +281,126 @@ class ActionEngine:
             return "SKIP"
 
     async def comment_on_video(self) -> str:
+        """Commente depuis la barre « Ajouter un commentaire… », lue à l'écran.
+
+        TikTok n'expose pas son champ dans l'arbre d'accessibilité : l'ancienne
+        version le cherchait par XCUITest et échouait à tous les coups. La
+        barre n'existe que sous une vidéo ouverte depuis une recherche, ce qui
+        tombe bien : c'est là que sont les vidéos de la niche.
+        """
+        texts = await self._screen_text()
+        lowered = [(t.lower(), x, y) for t, x, y in texts]
+        if any("limité l'accès aux commentaires" in t for t, _, _ in lowered):
+            return "SKIP — commentaires fermés par le créateur"
+        bar = next(((x, y) for t, x, y in lowered if "ajouter un commentaire" in t), None)
+        if bar is None:
+            return "SKIP — pas de barre de commentaire sur cet écran"
+
         comment_text = pick_comment(self.comments, self.comment_style, self.used_comments_today)
-        self.used_comments_today.add(comment_text)
-        try:
-            await asyncio.to_thread(
-                self.driver.execute_script, "mobile: tap",
-                self.coords.px("btn_comment") and
-                {"x": self.coords.px("btn_comment")[0], "y": self.coords.px("btn_comment")[1]}
-            )
-            await asyncio.sleep(human_delay(1.5, 3.0))
+        await self._tap(*bar)
+        await asyncio.sleep(human_delay(1.2, 2.0))
+        await asyncio.to_thread(self.driver.type_text, comment_text)
+        await asyncio.sleep(human_delay(0.8, 1.6))
+        await asyncio.to_thread(self.driver.type_text, "\n")
+        await asyncio.sleep(human_delay(1.5, 2.5))
+        await self._snapshot("commentaire")
 
-            field = await asyncio.to_thread(
-                self.driver.find_element, "ios class chain",
-                '**/XCUIElementTypeTextView',
-            )
-            for char in comment_text:
-                await asyncio.to_thread(field.send_keys, char)
-                await asyncio.sleep(random.uniform(0.05, 0.15))
-            await asyncio.sleep(human_delay(0.5, 1.5))
+        after = [t.lower() for t, _, _ in await self._screen_text()]
+        if any("ajouter un commentaire" in t for t in after):
+            self.used_comments_today.add(comment_text)
+            return f"commented: {comment_text}"
+        return "SKIP — commentaire tapé mais pas envoyé"
 
-            send_labels = ["Publier", "Envoyer", "Post", "Send"]
-            sent = False
-            for label in send_labels:
-                try:
-                    send_btn = await asyncio.to_thread(
-                        self.driver.find_element, "ios predicate string",
-                        f'label == "{label}"',
-                    )
-                    await asyncio.to_thread(send_btn.click)
-                    sent = True
+    # ------------------------------------------------------- compte actif
+
+    async def _screen_text(self) -> list[tuple[str, int, int]]:
+        """Texte lu à l'écran par l'OCR de macOS : (texte, x, y) en points."""
+        from ocrmac import ocrmac
+        b64 = await asyncio.to_thread(self.driver.get_screenshot_as_base64)
+        img = Image.open(io.BytesIO(base64.b64decode(b64)))
+        found = await asyncio.to_thread(
+            lambda: ocrmac.OCR(img, language_preference=["fr-FR", "en-US"]).recognize()
+        )
+        # Vision renvoie des boîtes normalisées, origine en bas à gauche.
+        return [
+            (text, int((x + w / 2) * W), int((1 - (y + h / 2)) * H))
+            for text, _conf, (x, y, w, h) in found
+        ]
+
+    @staticmethod
+    def _norm(text: str) -> str:
+        # Un nom TikTok n'a jamais de majuscule : le « I » que l'OCR lit dans
+        # « @mateo.ltpr » est toujours un « l ».
+        return text.replace("I", "l").replace("|", "l").lower().replace("@", "").replace(" ", "")
+
+    async def current_account(self, known: list[str]) -> str | None:
+        """Le compte TikTok ouvert, lu sur la page profil. None si ambigu."""
+        await self._tap_point("profile_tab")
+        await asyncio.sleep(human_delay(2.0, 3.0))
+        self._profile_texts = await self._screen_text()
+        texts = [self._norm(t) for t, _, _ in self._profile_texts]
+        matches = {u for u in known if any(self._norm(u) == t for t in texts)}
+        await self._snapshot("compte-actif")
+        return matches.pop() if len(matches) == 1 else None
+
+    async def switch_tiktok_account(self, target: str, known: list[str]) -> str:
+        """Bascule sur `target` et le vérifie. Renvoie "" si c'est fait, sinon le motif.
+
+        Aucune session ne doit tourner sur un compte qu'on n'a pas lu à
+        l'écran : un tap de travers dans le sélecteur ferait chauffer un
+        compte protégé à la place du bon.
+        """
+        current = await self.current_account(known)
+        if current == target:
+            return ""
+
+        # Le nom en gros (pas le @pseudo en dessous) ouvre le sélecteur. Sa
+        # place change avec la mise en page : centré sous l'avatar à y≈201 le
+        # 28.09, en haut à gauche à y≈120 le 30.09 — où l'ancien point tapait
+        # le compteur « J'aime ». On le lit donc à l'écran.
+        name = None
+        if current:
+            candidates = [
+                (y, x) for t, x, y in self._profile_texts
+                if not t.strip().startswith("@") and self._norm(t).startswith(self._norm(current))
+            ]
+            if candidates:
+                y, x = min(candidates)
+                name = (x, y)
+        if name:
+            await self._tap(*name)
+            await asyncio.sleep(0.8)
+        else:
+            await self._tap_point("display_name")
+        await asyncio.sleep(human_delay(1.5, 2.5))
+        await self._snapshot("selecteur-comptes")
+
+        row = None
+        for attempt in range(2):
+            for text, x, y in await self._screen_text():
+                if self._norm(target) in self._norm(text):
+                    row = (x, y)
                     break
-                except Exception:
-                    continue
-
-            await asyncio.sleep(human_delay(1.0, 2.0))
-            # Close comment panel by tapping above it
+            if row or attempt:
+                break
             await asyncio.to_thread(
-                self.driver.execute_script, "mobile: tap",
-                {"x": 187, "y": 100}
+                self.driver.execute_script, "mobile: dragFromToForDuration",
+                {"fromX": W // 2, "fromY": int(H * 0.85), "toX": W // 2,
+                 "toY": int(H * 0.55), "duration": 0.4},
             )
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(1.0)
 
-            if sent:
-                return f"commented: {comment_text}"
-            return "SKIP"
-        except Exception:
-            try:
-                # Close comment panel by tapping above it
-                await asyncio.to_thread(
-                    self.driver.execute_script, "mobile: tap",
-                    {"x": 187, "y": 100}
-                )
-                await asyncio.sleep(0.5)
-            except Exception:
-                pass
-            return "SKIP"
+        if row is None:
+            await self.go_back()
+            return f"@{target} absent du sélecteur de comptes de l'app"
 
-    async def switch_tiktok_account(self, target_username: str, row_index: int = 0) -> bool:
-        try:
-            await asyncio.to_thread(
-                self.driver.execute_script, "mobile: tap",
-                {"x": int(W * 0.90), "y": int(H * 0.97)}
-            )
-            await asyncio.sleep(human_delay(2.0, 3.5))
+        await self._tap(*row)
+        await asyncio.sleep(human_delay(5.0, 7.0))
 
-            await asyncio.to_thread(
-                self.driver.execute_script, "mobile: tap",
-                {"x": int(W * 0.40), "y": int(H * 0.16)}
-            )
-            await asyncio.sleep(human_delay(1.5, 2.5))
-
-            row_y = 0.65 + row_index * 0.085
-            await asyncio.to_thread(
-                self.driver.execute_script, "mobile: tap",
-                {"x": int(W * 0.40), "y": int(H * row_y)}
-            )
-            await asyncio.sleep(human_delay(2.0, 4.0))
-
-            await asyncio.to_thread(
-                self.driver.execute_script, "mobile: tap",
-                {"x": int(W * 0.10), "y": int(H * 0.97)}
-            )
-            await asyncio.sleep(human_delay(1.0, 2.0))
-            return True
-        except Exception:
-            return False
+        now = await self.current_account(known)
+        if now != target:
+            return f"après bascule, compte lu à l'écran : {now or 'illisible'}"
+        return ""
 
 
     # ------------------------------------------------------- phase FYP (0-2')
@@ -345,6 +414,9 @@ class ActionEngine:
         la mauvaise direction. Un humain qui tombe sur ce qui ne l'intéresse
         pas scrolle vite — il ne le regarde pas en boucle.
         """
+        content_type = await self._is_ad_or_live()
+        if content_type:
+            return f"SKIP — {content_type} détecté"
         duration = random.randint(2, 5)
         await asyncio.sleep(duration)
         return f"watched {duration}s (bref, sans replay)"
@@ -355,6 +427,9 @@ class ActionEngine:
         Le replay passe devant la vue complète dans l'échelle des signaux du
         protocole : c'est le geste le plus rentable de toute la session.
         """
+        content_type = await self._is_ad_or_live()
+        if content_type:
+            return f"SKIP — {content_type} détecté"
         duration = watch_duration(30)
         await asyncio.sleep(duration)
         if protocol.should_replay(duration):
@@ -369,13 +444,24 @@ class ActionEngine:
         await self._tap_point("search_icon")
         await asyncio.sleep(human_delay(1.2, 2.2))
 
-        # Frappe caractère par caractère : un mot-clé collé d'un bloc n'a pas
-        # de cadence de frappe. Le champ est déjà focalisé par la vue.
-        for char in keyword:
-            await asyncio.to_thread(self.driver.type_text, char)
-            await asyncio.sleep(random.uniform(0.06, 0.19))
-        await asyncio.sleep(human_delay(0.4, 1.1))
-        await asyncio.to_thread(self.driver.type_text, "\n")
+        # Frappe par groupes de 3-5 caractères : un par un est trop lent (6s
+        # pour 32 chars) et les suggestions d'autocomplétion de TikTok peuvent
+        # avaler des caractères ; un bloc entier n'a pas de cadence humaine.
+        i = 0
+        while i < len(keyword):
+            chunk = random.randint(3, 5)
+            text = keyword[i:i + chunk]
+            await asyncio.to_thread(self.driver.type_text, text)
+            i += len(text)
+            if i < len(keyword):
+                await asyncio.sleep(random.uniform(0.12, 0.35))
+        await asyncio.sleep(human_delay(0.6, 1.2))
+        await self._snapshot("avant-rechercher")
+
+        # Le bouton « rechercher » du clavier iOS. type_text("\n") n'envoie
+        # qu'un caractère, pas la touche Return — il faut taper le bouton.
+        # Mesuré sur capture : centre à x=87.5%, y=87% (iPhone XS).
+        await self._tap(int(W * 0.875), int(H * 0.87))
         await asyncio.sleep(human_delay(2.0, 3.4))
         await self._snapshot("apres-recherche")
         return f"searched: {keyword}"
@@ -397,9 +483,74 @@ class ActionEngine:
     # ----------------------------------------------------- phase profils (10-13')
 
     async def open_creator_profile(self) -> str:
-        await self._tap_point("creator_avatar")
+        """Tape l'avatar du créateur, repéré par le + rouge qu'il porte, et
+        vérifie qu'un profil s'est bien ouvert.
+
+        L'avatar n'a pas de position fixe : sur une vidéo ouverte depuis la
+        recherche, la colonne remonte de 36 pt. Le `creator_avatar` calibré sur
+        le fil tombait alors pile sur le + : le 30.09 le test rapide a abonné
+        margaux.fgts sans ouvrir de profil, tout en journalisant « opened
+        creator profile ». D'où les 12 abonnements d'antoine.ckts.
+        """
+        badge = await self._follow_badge()
+        if badge:
+            await self._tap(badge[0], badge[1] - AVATAR_ABOVE_BADGE)
+            await asyncio.sleep(0.8)
+            await self._snapshot("tap-avatar")
+        else:
+            # Pas de + : créateur déjà suivi, le point du fil ne risque rien.
+            await self._tap_point("creator_avatar")
         await asyncio.sleep(human_delay(1.5, 2.6))
-        return "opened creator profile"
+
+        texts = [t.lower() for t, _, _ in await self._screen_text()]
+        if any("follower" in t for t in texts) and any("suivi" in t for t in texts):
+            return "opened creator profile"
+        await self._snapshot("profil-manque")
+        return "SKIP — le profil du créateur ne s'est pas ouvert"
+
+    async def _follow_badge(self) -> tuple[int, int] | None:
+        """Centre, en points, du + rouge sous l'avatar du créateur. None s'il
+        n'y en a pas (créateur déjà suivi, live, pub).
+
+        Mesuré le 30.09 : + de 22×22 pt centré sur x≈345. Le cœur liké, dans la
+        même colonne et de la même couleur, fait 27×29 pt : la taille suffit à
+        les distinguer.
+        """
+        try:
+            b64 = await asyncio.to_thread(self.driver.get_screenshot_as_base64)
+            img = Image.open(io.BytesIO(base64.b64decode(b64))).convert("RGB")
+            w, h = img.size
+            scale = w / W
+            x0, x1 = int(w * 0.84), int(w * 0.99)
+            px = img.load()
+
+            def red_xs(y: int) -> list[int]:
+                out = []
+                for x in range(x0, x1):
+                    r, g, b = px[x, y]
+                    if r > 170 and r - g > 70 and r - b > 60:
+                        out.append(x)
+                return out
+
+            start = None
+            xs: list[int] = []
+            for y in range(int(h * 0.25), int(h * 0.65)):
+                row = red_xs(y)
+                if len(row) >= 3:
+                    if start is None:
+                        start, xs = y, []
+                    xs.extend(row)
+                    continue
+                if start is not None:
+                    bh = (y - start) / scale
+                    bw = (max(xs) - min(xs)) / scale
+                    if BADGE_MIN_PT <= bh <= BADGE_MAX_PT and BADGE_MIN_PT <= bw <= BADGE_MAX_PT:
+                        return (int((min(xs) + max(xs)) / 2 / scale),
+                                int((start + y) / 2 / scale))
+                    start = None
+            return None
+        except Exception:
+            return None
 
     async def browse_profile_grid(self) -> str:
         """Scrolle la grille d'un profil puis ouvre une ou deux vidéos.
@@ -454,11 +605,8 @@ class ActionEngine:
         return "followed from profile"
 
     async def _follow_button_is_red(self) -> bool | None:
-        """Vrai si une pastille d'abonnement rouge occupe `btn_follow_profile`.
-
-        « Suivre » et « Suivre en retour » sont de larges pastilles rouges ;
-        une fois abonné, le bouton devient « Message », gris. Mesuré sur les
-        captures de calibration : 89-95 % de rouge avant, 0 % après.
+        """Vrai si le bouton « Suivre » rouge est visible, False si « Message »
+        gris (déjà suivi), None si incertain (bouton décalé par une bio longue).
         """
         if self.coords is None:
             return None
@@ -467,12 +615,17 @@ class ActionEngine:
             b64 = await asyncio.to_thread(self.driver.get_screenshot_as_base64)
             img = Image.open(io.BytesIO(base64.b64decode(b64))).convert("RGB")
             scale = img.width / self.coords.width
-            bw, bh = int(70 * scale), int(12 * scale)
+            bw, bh = int(90 * scale), int(22 * scale)
             cx, cy = int(x * scale), int(y * scale)
             box = img.crop((cx - bw, cy - bh, cx + bw, cy + bh))
             pixels = list(box.getdata())
             red = sum(1 for r, g, b in pixels if r > 170 and r - g > 70 and r - b > 60)
-            return red / len(pixels) > 0.55
+            ratio = red / len(pixels)
+            if ratio > 0.30:
+                return True
+            if ratio < 0.05:
+                return False
+            return None
         except Exception:
             return None
 

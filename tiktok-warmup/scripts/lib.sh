@@ -96,7 +96,7 @@ check_iphone() {
 
 wda_ready() {
     local url="$1"
-    curl -sf --max-time 2 "${url%/}/status" 2>/dev/null | grep -q '"ready":true'
+    curl -sf --max-time 2 "${url%/}/status" 2>/dev/null | grep -Eq '"ready" *: *true'
 }
 
 detect_wda_url() {

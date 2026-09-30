@@ -164,6 +164,59 @@
             letter-spacing: 0.04em;
         }
 
+        .add-account-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .add-account-row input, .add-account-row select {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #1c1c1c;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .add-account-row input:focus, .add-account-row select:focus {
+            border-color: var(--accent);
+        }
+
+        .add-btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 10px;
+            background: var(--ok);
+            color: #000;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .add-btn:hover { opacity: 0.85; }
+
+        .del-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 50%;
+            background: transparent;
+            color: var(--muted);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .del-btn:hover { color: var(--danger); background: rgba(255,68,68,0.12); }
+
         .check-row {
             display: flex;
             align-items: flex-start;
@@ -337,6 +390,64 @@
 
         .setup-panel { display: block; }
         .setup-panel.hidden { display: none; }
+
+        .mode-toggle {
+            display: flex;
+            gap: 0;
+            margin-bottom: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 4px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mode-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .login-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            background: #1c1c1c;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .login-row .account-name { font-size: 14px; font-weight: 600; }
+        .login-row .login-status { font-size: 12px; color: var(--muted); }
+        .login-row .login-status.ok { color: var(--ok); }
+
+        .login-btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 8px;
+            background: var(--accent);
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .login-btn:hover { opacity: 0.85; }
+        .login-btn.save { background: var(--ok); color: #000; }
+        .login-btn:disabled { opacity: 0.4; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -347,7 +458,12 @@
     </header>
 
     <div id="setupPanel" class="setup-panel">
-        <section class="step">
+        <div class="mode-toggle">
+            <button class="mode-btn active" data-mode="iphone" id="modeIphone">iPhone</button>
+            <button class="mode-btn" data-mode="browser" id="modeBrowser">Navigateur PC</button>
+        </div>
+
+        <section class="step" id="stepIphone">
             <div class="step-head">
                 <div class="step-num" id="step1Num">1</div>
                 <div class="step-title">Branche ton iPhone</div>
@@ -365,12 +481,32 @@
             </div>
         </section>
 
+        <section class="step" id="stepBrowserLogin" style="display:none">
+            <div class="step-head">
+                <div class="step-num" id="step1BrowserNum">1</div>
+                <div class="step-title">Connecte-toi à TikTok</div>
+            </div>
+            <div id="browserLoginList"></div>
+            <div class="status-detail">
+                Clique « Se connecter » pour ouvrir un navigateur. Connecte-toi à TikTok, puis clique « Sauvegarder ».
+            </div>
+        </section>
+
         <section class="step">
             <div class="step-head">
                 <div class="step-num" id="step2Num">2</div>
                 <div class="step-title">Choisis le compte</div>
             </div>
             <div class="accounts" id="accountsList"></div>
+            <div class="add-account-row">
+                <input type="text" id="newUsername" placeholder="@nom_tiktok">
+                <select id="newRole">
+                    <option value="flagship">flagship</option>
+                    <option value="second">second</option>
+                    <option value="lab">lab</option>
+                </select>
+                <button class="add-btn" id="addAccountBtn">+ Ajouter</button>
+            </div>
         </section>
 
         <section class="step">
@@ -388,9 +524,10 @@
         </section>
 
         <button class="launch-btn" id="launchBtn" disabled>Lancer le warmup</button>
+        <button class="launch-btn" id="launchAllBtn" style="margin-top:8px;background:var(--border);color:var(--text)">Roulement automatique (tous les comptes)</button>
         <div class="toast" id="toast"></div>
         <button class="force-link" id="forceBtn">Forcer le lancement quand même</button>
-        <p class="hint">Session de 18 min · Protocole Peachtint · <a href="/dashboard">Vue avancée</a></p>
+        <p class="hint">Session de 18 min · Protocole Anyloc · <a href="/dashboard">Vue avancée</a></p>
     </div>
 
     <div class="running-panel" id="runningPanel">
@@ -416,6 +553,8 @@
     let sessionStart = null;
     let timerInterval = null;
     let lastRefusal = null;
+    const runningAccounts = new Set();
+    let rotationMode = false;
 
     const els = {
         iphoneDot: document.getElementById('iphoneDot'),
@@ -439,6 +578,10 @@
         step1Num: document.getElementById('step1Num'),
         step2Num: document.getElementById('step2Num'),
         step3Num: document.getElementById('step3Num'),
+        statVideos: document.getElementById('statVideos'),
+        statLikes: document.getElementById('statLikes'),
+        statFollows: document.getElementById('statFollows'),
+        statComments: document.getElementById('statComments'),
     };
 
     function showToast(msg, type = 'error') {
@@ -453,11 +596,16 @@
     }
 
     function updateLaunchBtn() {
-        const ok = deviceReady && selectedAccount && feedReady;
+        let ok;
+        if (currentMode === 'browser') {
+            ok = selectedAccount;
+        } else {
+            ok = deviceReady && selectedAccount && feedReady;
+            els.step1Num.className = 'step-num' + (deviceReady ? ' done' : ' active');
+            els.step3Num.className = 'step-num' + (feedReady ? ' done' : '');
+        }
         els.launchBtn.disabled = !ok;
-        els.step1Num.className = 'step-num' + (deviceReady ? ' done' : ' active');
         els.step2Num.className = 'step-num' + (selectedAccount ? ' done' : '');
-        els.step3Num.className = 'step-num' + (feedReady ? ' done' : '');
     }
 
     async function refreshDevice() {
@@ -497,17 +645,35 @@
                     <div class="account-meta">Jour ${acc.protocol_day}/14 · ${acc.role}</div>
                 </div>
                 <span class="account-badge">${acc.status === 'running' ? 'en cours' : acc.can_start ? 'prêt' : 'attente'}</span>
+                <button class="del-btn" data-del="${acc.username}" title="Supprimer">&times;</button>
             </label>
         `).join('');
 
         els.accountsList.querySelectorAll('.account').forEach(el => {
-            el.addEventListener('click', () => {
+            el.addEventListener('click', (e) => {
+                if (e.target.closest('.del-btn')) return;
                 selectedAccount = el.dataset.username;
                 els.accountsList.querySelectorAll('.account').forEach(a => a.classList.remove('selected'));
                 el.classList.add('selected');
                 el.querySelector('input').checked = true;
                 hideToast();
                 updateLaunchBtn();
+            });
+        });
+
+        els.accountsList.querySelectorAll('.del-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const username = btn.dataset.del;
+                if (!confirm(`Supprimer @${username} ?`)) return;
+                const r = await fetch(`/api/accounts/${username}`, { method: 'DELETE' });
+                if (r.ok) {
+                    if (selectedAccount === username) selectedAccount = null;
+                    loadAccounts();
+                } else {
+                    const data = await r.json();
+                    showToast(data.detail || 'Impossible de supprimer ce compte', 'error');
+                }
             });
         });
 
@@ -522,6 +688,30 @@
         }
         updateLaunchBtn();
     }
+
+    document.getElementById('addAccountBtn').addEventListener('click', async () => {
+        const input = document.getElementById('newUsername');
+        const role = document.getElementById('newRole').value;
+        let username = input.value.trim().replace(/^@/, '');
+        if (!username) return;
+        const resp = await fetch('/api/accounts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, role }),
+        });
+        if (resp.ok) {
+            input.value = '';
+            selectedAccount = username;
+            loadAccounts();
+        } else {
+            const data = await resp.json();
+            showToast(data.detail || 'Erreur', 'error');
+        }
+    });
+
+    document.getElementById('newUsername').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') document.getElementById('addAccountBtn').click();
+    });
 
     els.feedReady.addEventListener('change', () => {
         feedReady = els.feedReady.checked;
@@ -554,10 +744,35 @@
     function showRunning(username) {
         els.setupPanel.classList.add('hidden');
         els.runningPanel.classList.add('visible');
-        els.runningAccount.textContent = `@${username}`;
-        els.runningPhase.textContent = 'Connexion à l\'iPhone...';
-        els.miniLogs.innerHTML = '';
+        runningAccounts.add(username);
+        if (rotationMode) {
+            els.runningAccount.textContent = `Roulement · @${username}`;
+            els.runningPhase.textContent = 'Bascule de compte sur l\'iPhone...';
+            startTimer();
+            return;
+        }
+        if (runningAccounts.size > 1) {
+            els.runningAccount.textContent = `${runningAccounts.size} comptes en parallèle`;
+        } else {
+            els.runningAccount.textContent = `@${username}`;
+        }
+        els.runningPhase.textContent = currentMode === 'browser'
+            ? 'Lancement du navigateur...'
+            : 'Connexion à l\'iPhone...';
+        if (runningAccounts.size <= 1) els.miniLogs.innerHTML = '';
         startTimer();
+    }
+
+    function enterRotation() {
+        rotationMode = true;
+        runningAccounts.clear();
+        els.setupPanel.classList.add('hidden');
+        els.runningPanel.classList.add('visible');
+        els.runningAccount.textContent = 'Roulement automatique';
+        els.runningPhase.textContent = 'Démarrage...';
+        els.miniLogs.innerHTML = '';
+        clearInterval(timerInterval);
+        els.runningTimer.textContent = '--:--';
     }
 
     function showSetup() {
@@ -565,6 +780,8 @@
         els.runningPanel.classList.remove('visible');
         clearInterval(timerInterval);
         sessionStart = null;
+        runningAccounts.clear();
+        rotationMode = false;
         loadAccounts();
     }
 
@@ -602,21 +819,68 @@
     });
 
     els.stopBtn.addEventListener('click', async () => {
-        if (!selectedAccount) return;
         els.stopBtn.disabled = true;
-        await fetch(`/api/stop/${selectedAccount}`, { method: 'POST' });
+        if (rotationMode || runningAccounts.size > 1) {
+            await fetch('/api/stop-all', { method: 'POST' });
+        } else if (selectedAccount) {
+            await fetch(`/api/stop/${selectedAccount}`, { method: 'POST' });
+        }
         showSetup();
         els.stopBtn.disabled = false;
     });
 
     async function refreshStats() {
-        if (!selectedAccount || !els.runningPanel.classList.contains('visible')) return;
+        if (!els.runningPanel.classList.contains('visible')) return;
+        if (rotationMode) {
+            const rot = await fetch('/api/rotation').then(r => r.json());
+            if (!rot.running) { showSetup(); return; }
+        }
         const resp = await fetch('/api/status');
         const data = await resp.json();
+
+        if (rotationMode) {
+            let videos = 0, likes = 0, follows = 0, comments = 0;
+            for (const info of Object.values(data)) {
+                if (info.protected) continue;
+                videos += info.counters.videos_watched || 0;
+                likes += info.counters.likes || 0;
+                follows += info.counters.follows || 0;
+                comments += info.counters.comments || 0;
+            }
+            els.statVideos.textContent = videos;
+            els.statLikes.textContent = likes;
+            els.statFollows.textContent = follows;
+            els.statComments.textContent = comments;
+            return;
+        }
+
+        if (runningAccounts.size > 0) {
+            let videos = 0, likes = 0, follows = 0, comments = 0;
+            let allIdle = true;
+            for (const u of runningAccounts) {
+                const info = data[u];
+                if (!info) continue;
+                if (info.status !== 'idle') allIdle = false;
+                videos += info.counters.videos_watched || 0;
+                likes += info.counters.likes || 0;
+                follows += info.counters.follows || 0;
+                comments += info.counters.comments || 0;
+            }
+            if (allIdle) {
+                showSetup();
+                return;
+            }
+            els.statVideos.textContent = videos;
+            els.statLikes.textContent = likes;
+            els.statFollows.textContent = follows;
+            els.statComments.textContent = comments;
+            return;
+        }
+
         const info = data[selectedAccount];
         if (!info) return;
 
-        if (info.status === 'idle' && els.runningPanel.classList.contains('visible')) {
+        if (info.status === 'idle') {
             showSetup();
             return;
         }
@@ -629,54 +893,265 @@
 
     const evtSource = new EventSource('/api/events');
 
+    function isRelevant(username) {
+        if (rotationMode) return true;
+        return runningAccounts.size > 1
+            ? runningAccounts.has(username)
+            : username === selectedAccount;
+    }
+    function prefix(username, text) {
+        return (rotationMode || runningAccounts.size > 1) ? `@${username} · ${text}` : text;
+    }
+
+    evtSource.addEventListener('rotation', (e) => {
+        const event = JSON.parse(e.data);
+        if (!rotationMode) return;
+        const time = event.timestamp.slice(11, 16);
+        els.runningAccount.textContent = 'Roulement automatique';
+        els.runningPhase.textContent = event.data;
+        addLog(`${time} · ${event.data}`);
+        if (event.data === 'roulement arrêté') showSetup();
+    });
+
     evtSource.addEventListener('phase', (e) => {
         const event = JSON.parse(e.data);
-        if (event.username !== selectedAccount) return;
-        els.runningPhase.textContent = event.data;
-        addLog(event.data);
+        if (!isRelevant(event.username)) return;
+        els.runningPhase.textContent = prefix(event.username, event.data);
+        addLog(prefix(event.username, event.data));
     });
 
     evtSource.addEventListener('action', (e) => {
         const event = JSON.parse(e.data);
-        if (event.username !== selectedAccount) return;
+        if (!isRelevant(event.username)) return;
         const time = event.timestamp.slice(11, 19);
-        addLog(`${time} · ${event.data}`);
+        addLog(prefix(event.username, `${time} · ${event.data}`));
         refreshStats();
     });
 
     evtSource.addEventListener('status', (e) => {
         const event = JSON.parse(e.data);
-        if (event.username === selectedAccount && event.data === 'running') {
-            showRunning(selectedAccount);
+        if (event.data === 'running' && (rotationMode || event.username === selectedAccount || runningAccounts.size > 0)) {
+            showRunning(event.username);
+        } else if (event.data === 'idle' && runningAccounts.has(event.username)) {
+            runningAccounts.delete(event.username);
+            if (rotationMode) {
+                clearInterval(timerInterval);
+            } else if (runningAccounts.size === 0) {
+                showSetup();
+            } else {
+                els.runningAccount.textContent = runningAccounts.size > 1
+                    ? `${runningAccounts.size} comptes en parallèle`
+                    : `@${[...runningAccounts][0]}`;
+            }
         }
         refreshStats();
     });
 
     evtSource.addEventListener('refused', (e) => {
         const event = JSON.parse(e.data);
-        if (event.username !== selectedAccount) return;
-        lastRefusal = event.data;
-        showToast(`Session refusée : ${event.data}`, 'warn');
-        els.forceBtn.classList.add('visible');
+        if (!isRelevant(event.username)) return;
+        if (!rotationMode && runningAccounts.size <= 1) {
+            lastRefusal = event.data;
+            showSetup();
+            showToast(`Session refusée : ${event.data}`, 'warn');
+            els.forceBtn.classList.add('visible');
+        } else {
+            addLog(prefix(event.username, `REFUSÉ : ${event.data}`));
+        }
     });
 
     evtSource.addEventListener('error_event', (e) => {
         const event = JSON.parse(e.data);
-        if (event.username !== selectedAccount) return;
-        showToast(event.data, 'error');
-        showSetup();
+        if (!isRelevant(event.username)) return;
+        if (!rotationMode && runningAccounts.size <= 1) {
+            showToast(event.data, 'error');
+            showSetup();
+        } else {
+            addLog(prefix(event.username, `ERREUR : ${event.data}`));
+        }
     });
 
     evtSource.addEventListener('session', (e) => {
         const event = JSON.parse(e.data);
-        if (event.username !== selectedAccount) return;
-        addLog(event.data);
+        if (!isRelevant(event.username)) return;
+        addLog(prefix(event.username, event.data));
+    });
+
+    // --------------------------------------------------------- mode toggle
+    let currentMode = 'iphone';
+
+    function setMode(mode) {
+        currentMode = mode;
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+
+        const isIphone = mode === 'iphone';
+        document.getElementById('stepIphone').style.display = isIphone ? '' : 'none';
+        document.getElementById('stepBrowserLogin').style.display = isIphone ? 'none' : '';
+        document.getElementById('feedCheckRow').closest('.step').style.display = isIphone ? '' : 'none';
+
+        document.getElementById('launchAllBtn').textContent = isIphone
+            ? 'Roulement automatique (tous les comptes)'
+            : 'Lancer tous les comptes';
+
+        if (!isIphone) {
+            feedReady = true;
+            deviceReady = true;
+            refreshBrowserStatus();
+        } else {
+            feedReady = els.feedReady.checked;
+            refreshDevice();
+        }
+        updateLaunchBtn();
+    }
+
+    document.getElementById('modeIphone').addEventListener('click', () => setMode('iphone'));
+    document.getElementById('modeBrowser').addEventListener('click', () => setMode('browser'));
+
+    // --------------------------------------------------------- browser login
+
+    async function refreshBrowserStatus() {
+        try {
+            const resp = await fetch('/api/browser/status');
+            const data = await resp.json();
+            const list = document.getElementById('browserLoginList');
+            list.innerHTML = '';
+
+            for (const [username, info] of Object.entries(data)) {
+                const row = document.createElement('div');
+                row.className = 'login-row';
+
+                if (info.logging_in) {
+                    row.innerHTML = `
+                        <div>
+                            <div class="account-name">@${username}</div>
+                            <div class="login-status">Navigateur ouvert — connecte-toi...</div>
+                        </div>
+                        <button class="login-btn save" onclick="saveBrowserLogin('${username}')">Sauvegarder</button>
+                    `;
+                } else if (info.has_cookies) {
+                    row.innerHTML = `
+                        <div>
+                            <div class="account-name">@${username}</div>
+                            <div class="login-status ok">Connecté ✓</div>
+                        </div>
+                        <button class="login-btn" onclick="startBrowserLogin('${username}')" style="background:var(--border);color:var(--text)">Reconnecter</button>
+                    `;
+                } else {
+                    row.innerHTML = `
+                        <div>
+                            <div class="account-name">@${username}</div>
+                            <div class="login-status">Non connecté</div>
+                        </div>
+                        <button class="login-btn" onclick="startBrowserLogin('${username}')">Se connecter</button>
+                    `;
+                }
+                list.appendChild(row);
+            }
+
+            const allConnected = Object.values(data).every(i => i.has_cookies);
+            const num = document.getElementById('step1BrowserNum');
+            num.className = 'step-num' + (allConnected ? ' done' : ' active');
+        } catch (e) {
+            console.error('browser status error', e);
+        }
+    }
+
+    async function startBrowserLogin(username) {
+        try {
+            await fetch(`/api/browser/login/${username}`, { method: 'POST' });
+            refreshBrowserStatus();
+        } catch (e) {
+            showToast('Erreur lors de l\'ouverture du navigateur', 'error');
+        }
+    }
+
+    async function saveBrowserLogin(username) {
+        try {
+            const resp = await fetch(`/api/browser/login/${username}/save`, { method: 'POST' });
+            if (resp.ok) {
+                refreshBrowserStatus();
+            } else {
+                const data = await resp.json();
+                showToast(data.detail || 'Erreur', 'error');
+            }
+        } catch (e) {
+            showToast('Erreur lors de la sauvegarde', 'error');
+        }
+    }
+
+    // --------------------------------------------------------- launch override
+
+    const originalLaunch = launch;
+    launch = async function(force) {
+        if (currentMode === 'browser') {
+            if (!selectedAccount) return;
+            hideToast();
+            els.launchBtn.disabled = true;
+            els.launchBtn.textContent = 'Démarrage...';
+            try {
+                const url = force
+                    ? `/api/start-browser/${selectedAccount}?force=1`
+                    : `/api/start-browser/${selectedAccount}`;
+                const resp = await fetch(url, { method: 'POST' });
+                if (!resp.ok) {
+                    const data = await resp.json().catch(() => ({}));
+                    throw new Error(data.detail || 'Erreur serveur');
+                }
+                showRunning(selectedAccount);
+            } catch (e) {
+                showToast(e.message || 'Impossible de démarrer la session navigateur.');
+            } finally {
+                els.launchBtn.textContent = 'Lancer le warmup';
+                updateLaunchBtn();
+            }
+        } else {
+            return originalLaunch(force);
+        }
+    };
+
+    // --------------------------------------------------------- lancer tous
+    const launchAllBtn = document.getElementById('launchAllBtn');
+    launchAllBtn.addEventListener('click', async () => {
+        if (currentMode === 'iphone') {
+            hideToast();
+            if (!deviceReady) {
+                showToast('iPhone ou WebDriverAgent pas prêt — voir l\'étape 1.');
+                return;
+            }
+            await fetch('/api/start-all', { method: 'POST' });
+            enterRotation();
+            return;
+        }
+        launchAllBtn.disabled = true;
+        launchAllBtn.textContent = 'Démarrage de tous les comptes...';
+        try {
+            const resp = await fetch('/api/start-all-browser?force=1', { method: 'POST' });
+            const data = await resp.json();
+            if (!resp.ok) throw new Error(data.detail || 'Erreur serveur');
+            if (data.started && data.started.length > 0) {
+                data.started.forEach(u => showRunning(u));
+                showToast(`${data.count} compte(s) lancé(s) en parallèle`);
+            } else {
+                showToast('Aucun compte à lancer (pas de cookies ou déjà en cours).');
+            }
+        } catch (e) {
+            showToast(e.message || 'Erreur lors du lancement.');
+        } finally {
+            launchAllBtn.disabled = false;
+            launchAllBtn.textContent = 'Lancer tous les comptes';
+        }
+    });
+
+    fetch('/api/rotation').then(r => r.json()).then(rot => {
+        if (rot.running) enterRotation();
     });
 
     refreshDevice();
     loadAccounts();
     setInterval(refreshDevice, 4000);
     setInterval(refreshStats, 5000);
+    setInterval(() => { if (currentMode === 'browser') refreshBrowserStatus(); }, 3000);
 </script>
 </body>
 </html>

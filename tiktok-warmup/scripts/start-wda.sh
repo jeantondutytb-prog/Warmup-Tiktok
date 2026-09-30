@@ -19,7 +19,7 @@ if ! check_iphone; then
 fi
 echo "✅ iPhone détecté"
 
-if [[ ! -f "$WDA_PROJECT" ]]; then
+if [[ ! -d "$WDA_PROJECT" ]]; then
     echo "❌ Projet WDA introuvable : $WDA_PROJECT"
     echo ""
     echo "Lance d'abord :"

@@ -1,17 +1,19 @@
-# Mots-clés de la phase de recherche, tirés du Protocole Peachtint.
+# Mots-clés de la phase de recherche, tirés du Protocole Anyloc.
 #
 # Un seul mot-clé par session, en rotation d'une session à l'autre : enchaîner
 # la liste entière dans une même session est un motif non humain.
+#
+# Niche : GPS spoofing / fake location (anyloc.io)
 keywords:
   fr:
-    - "filtre digicam"
-    - "effet appareil photo numérique"
-    - "retouche photo esthétique"
-    - "filtre pellicule"
-    - "photo années 2000"
+    - "changer localisation snapchat"
+    - "fausse localisation iphone"
+    - "fake gps snap"
+    - "spoof gps iphone"
+    - "modifier position gps"
   en:
-    - "digicam filter"
-    - "g7x filter"
-    - "film camera filter"
-    - "camera roll aesthetic"
-    - "flash photography edit"
+    - "fake location iphone"
+    - "gps spoofer snapchat"
+    - "change location snap map"
+    - "fake gps without jailbreak"
+    - "location changer ios"

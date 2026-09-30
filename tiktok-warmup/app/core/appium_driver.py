@@ -21,20 +21,28 @@ class WDADriver:
         self.wda_url = wda_url.rstrip("/")
         self.session_id = session_id
 
-    def _req(self, method, path, data=None, timeout=15):
+    def _req(self, method, path, data=None, timeout=15, _retries=2):
         url = f"{self.wda_url}{path}"
         if data is not None:
-            req = urllib.request.Request(
-                url, data=json.dumps(data).encode(),
-                headers={"Content-Type": "application/json"}, method=method,
-            )
+            body = json.dumps(data).encode()
         else:
-            req = urllib.request.Request(url, method=method)
-        try:
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                return json.loads(resp.read())
-        except (urllib.error.URLError, TimeoutError, OSError):
-            raise ConnectionError("WDA not responding")
+            body = None
+        for attempt in range(_retries + 1):
+            if body is not None:
+                req = urllib.request.Request(
+                    url, data=body,
+                    headers={"Content-Type": "application/json"}, method=method,
+                )
+            else:
+                req = urllib.request.Request(url, method=method)
+            try:
+                with urllib.request.urlopen(req, timeout=timeout) as resp:
+                    return json.loads(resp.read())
+            except (urllib.error.URLError, TimeoutError, OSError):
+                if attempt < _retries:
+                    time.sleep(1.5)
+                    continue
+                raise ConnectionError("WDA not responding")
 
     def get_window_size(self):
         r = self._req("GET", f"/session/{self.session_id}/window/size")
@@ -112,6 +120,27 @@ class WDADriver:
                 }],
             })
 
+        elif script == "mobile: dragFromToForDuration":
+            p = args if isinstance(args, dict) else (args[0] if args else {})
+            fx = int(p.get("fromX", 187))
+            fy = int(p.get("fromY", 600))
+            tx = int(p.get("toX", 187))
+            ty = int(p.get("toY", 200))
+            dur = float(p.get("duration", 0.3))
+            move_ms = max(100, int(dur * 1000))
+            self._req("POST", f"/session/{self.session_id}/actions", {
+                "actions": [{
+                    "type": "pointer", "id": "finger1",
+                    "parameters": {"pointerType": "touch"},
+                    "actions": [
+                        {"type": "pointerMove", "duration": 0, "x": fx, "y": fy},
+                        {"type": "pointerDown", "button": 0},
+                        {"type": "pointerMove", "duration": move_ms, "x": tx, "y": ty, "origin": "viewport"},
+                        {"type": "pointerUp", "button": 0},
+                    ],
+                }],
+            })
+
         elif script == "mobile: pressButton":
             p = args if isinstance(args, dict) else (args[0] if args else {})
             name = p.get("name", "home")
@@ -130,22 +159,14 @@ class WDADriver:
         return WDAElement(self, eid)
 
     def double_tap(self, x: int, y: int):
-        """Double-tap à (x, y), les deux taps dans une seule chaîne W3C.
+        """Double-tap natif de WDA, exécuté d'un bloc sur l'appareil.
 
-        Envoyer deux requêtes HTTP séparées laisserait passer trop de temps
-        entre les taps pour que TikTok les lise comme un double-tap. La pause
-        est donc décrite dans la chaîne et exécutée sur l'appareil.
+        La chaîne W3C à deux taps n'est plus lue comme un double-tap par
+        TikTok avec WDA 16 : le 28.09 elle ne likait plus rien, alors que
+        /wda/doubleTap a rougi le cœur du premier coup.
         """
-        touch = lambda: [
-            {"type": "pointerMove", "duration": 0, "x": x, "y": y},
-            {"type": "pointerDown", "button": 0},
-            {"type": "pause", "duration": 40},
-            {"type": "pointerUp", "button": 0},
-        ]
-        return self._req("POST", f"/session/{self.session_id}/actions", {"actions": [{
-            "type": "pointer", "id": "finger", "parameters": {"pointerType": "touch"},
-            "actions": touch() + [{"type": "pause", "duration": 90}] + touch(),
-        }]})
+        return self._req("POST", f"/session/{self.session_id}/wda/doubleTap",
+                         {"x": x, "y": y})
 
     def type_text(self, text: str):
         """Tape du texte dans l'élément actuellement focalisé.
@@ -254,8 +275,32 @@ class AppiumDriverManager:
             time.sleep(2)
         raise RuntimeError("WDA failed to start within 120s")
 
+    def _is_locked(self) -> bool:
+        with urllib.request.urlopen(f"{self.wda_url}/wda/locked", timeout=10) as resp:
+            return bool(json.loads(resp.read()).get("value"))
+
+    def _unlock_if_locked(self) -> None:
+        """Réveille l'iPhone, qui se verrouille pendant les pauses entre comptes."""
+        if not self._is_locked():
+            return
+        req = urllib.request.Request(
+            f"{self.wda_url}/wda/unlock", data=b"{}",
+            headers={"Content-Type": "application/json"}, method="POST",
+        )
+        try:
+            urllib.request.urlopen(req, timeout=20)
+            time.sleep(1.5)
+        except urllib.error.HTTPError:
+            pass
+        if self._is_locked():
+            raise RuntimeError(
+                "iPhone verrouillé par un code — retire le code ou règle "
+                "le verrouillage automatique sur « Jamais »"
+            )
+
     def create_session(self, device_profile: dict, account_name: str) -> WDADriver:
         self._ensure_wda_running()
+        self._unlock_if_locked()
 
         req = urllib.request.Request(
             f"{self.wda_url}/session",

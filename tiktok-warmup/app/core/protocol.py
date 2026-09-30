@@ -1,11 +1,11 @@
-"""Le Protocole Peachtint, en logique pure.
+"""Le Protocole Anyloc, en logique pure.
 
 Ce module ne connaît ni Appium, ni WDA, ni la base : il ne fait que répondre
 aux questions « quelle phase maintenant ? », « ai-je le droit de liker ? »,
 « puis-je démarrer une session ? ». C'est ce qui le rend testable sans
 iPhone branché.
 
-Les chiffres viennent du document « Protocole Peachtint » (03.09.2026).
+Les chiffres viennent du document « Protocole Anyloc » (03.09.2026).
 """
 
 import random
@@ -130,6 +130,10 @@ def keyword_for_session(keywords: dict[str, list[str]], session_index: int) -> s
 # Cadence
 # --------------------------------------------------------------------------
 
+# Durée du protocole. Le jour d'un compte se compte depuis sa première
+# session et plafonne ici : au-delà, il reste en entretien.
+PROTOCOL_DAYS = 14
+
 # Deux sessions par jour pendant sept jours, puis une seule en entretien.
 RAMP_DAYS = 7
 SESSIONS_PER_DAY_RAMP = 2
@@ -141,6 +145,16 @@ MIN_GAP_SAME_ACCOUNT = timedelta(hours=4)
 # Espacement minimum entre deux comptes sur le même appareil. Basculer entre
 # trois comptes en vingt minutes est un des motifs listés par le protocole.
 MIN_GAP_BETWEEN_ACCOUNTS = timedelta(minutes=30)
+
+
+# Le roulement automatique ne lance rien hors de cette plage : un compte qui
+# scrolle à 4 h du matin tous les jours n'a rien d'humain.
+ROTATION_START_HOUR = 9
+ROTATION_END_HOUR = 23
+
+# Pause ajoutée au hasard entre deux comptes, au-delà du minimum de 30 min,
+# pour que les sessions ne tombent pas à heure fixe d'un jour à l'autre.
+ROTATION_JITTER = (timedelta(minutes=0), timedelta(minutes=25))
 
 
 def sessions_allowed_today(protocol_day: int) -> int:
@@ -221,6 +235,16 @@ def should_replay(video_seconds: int) -> bool:
 def should_like_in_search(rng: random.Random | None = None) -> bool:
     r = rng or random
     return r.random() < SEARCH_LIKE_RATE
+
+
+# En phase de recherche : commenter environ une vidéo de la niche sur dix. Le
+# plafond de 0 à 3 commentaires par 24 h reste la vraie limite.
+SEARCH_COMMENT_RATE = 0.10
+
+
+def should_comment_in_search(rng: random.Random | None = None) -> bool:
+    r = rng or random
+    return r.random() < SEARCH_COMMENT_RATE
 
 
 # --------------------------------------------------------------------------

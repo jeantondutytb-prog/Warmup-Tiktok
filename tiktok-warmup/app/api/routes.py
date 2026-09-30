@@ -45,6 +45,11 @@ async def start_all(request: Request):
     return {"ok": True}
 
 
+@router.get("/api/rotation")
+async def rotation_status(request: Request):
+    return request.app.state.orchestrator.rotation_status()
+
+
 @router.post("/api/stop-all")
 async def stop_all(request: Request):
     await request.app.state.orchestrator.stop_all()
@@ -102,6 +107,91 @@ async def set_protocol_day(username: str, request: Request):
         return request.app.state.orchestrator.advance_protocol_day(username, day)
     except KeyError as e:
         raise HTTPException(404, str(e))
+
+
+@router.post("/api/accounts")
+async def add_account(request: Request):
+    body = await request.json()
+    username = body.get("username", "").strip()
+    if not username:
+        raise HTTPException(400, "username requis")
+    role = body.get("role", "flagship")
+    comment_style = body.get("comment_style", "casual")
+    protected = bool(body.get("protected", False))
+    try:
+        return request.app.state.orchestrator.add_account(
+            username, role=role, comment_style=comment_style, protected=protected,
+        )
+    except ValueError as e:
+        raise HTTPException(409, str(e))
+
+
+@router.delete("/api/accounts/{username}")
+async def delete_account(username: str, request: Request):
+    try:
+        return request.app.state.orchestrator.delete_account(username)
+    except KeyError as e:
+        raise HTTPException(404, str(e))
+    except ValueError as e:
+        raise HTTPException(409, str(e))
+
+
+# --------------------------------------------------------- mode navigateur PC
+
+
+@router.post("/api/start-browser/{username}")
+async def start_browser(username: str, request: Request, force: bool = False):
+    """Démarre une session warmup via navigateur PC."""
+    try:
+        await request.app.state.orchestrator.start_account_browser(username, force=force)
+    except RuntimeError as e:
+        raise HTTPException(409, str(e))
+    return {"ok": True, "mode": "browser", "forced": force}
+
+
+@router.post("/api/start-all-browser")
+async def start_all_browser(request: Request, force: bool = False):
+    """Démarre le warmup navigateur pour tous les comptes en parallèle."""
+    started = await request.app.state.orchestrator.start_all_browser(force=force)
+    return {"ok": True, "started": started, "count": len(started)}
+
+
+@router.post("/api/browser/login/{username}")
+async def browser_login(username: str, request: Request):
+    """Ouvre un Chromium visible pour connexion manuelle à TikTok."""
+    mgr = request.app.state.orchestrator.browser_manager
+    if mgr.is_logging_in(username):
+        raise HTTPException(409, f"connexion déjà en cours pour {username}")
+    try:
+        await mgr.start_login(username)
+    except Exception as e:
+        raise HTTPException(500, f"impossible d'ouvrir le navigateur : {e}")
+    return {"ok": True, "message": "Navigateur ouvert — connecte-toi puis clique « Sauvegarder »"}
+
+
+@router.post("/api/browser/login/{username}/save")
+async def browser_login_save(username: str, request: Request):
+    """Sauvegarde les cookies après connexion manuelle."""
+    mgr = request.app.state.orchestrator.browser_manager
+    try:
+        await mgr.finish_login(username)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    return {"ok": True}
+
+
+@router.get("/api/browser/status")
+async def browser_status(request: Request):
+    """État des cookies par compte (pour le mode navigateur)."""
+    mgr = request.app.state.orchestrator.browser_manager
+    status = request.app.state.orchestrator.get_status()
+    return {
+        username: {
+            "has_cookies": mgr.has_cookies(username),
+            "logging_in": mgr.is_logging_in(username),
+        }
+        for username in status
+    }
 
 
 @router.get("/api/events")

@@ -38,18 +38,13 @@ def test_session_duration_in_range():
         assert 900 <= d <= 2700
 
 
-def test_ramp_up_day_1_scroll_watch_only():
-    actions = get_allowed_actions(1)
-    assert "scroll" in actions
-    assert "watch" in actions
-    assert "like" not in actions
-    assert "comment" not in actions
-
-
-def test_ramp_up_day_4_adds_likes():
-    actions = get_allowed_actions(4)
-    assert "like" in actions
-    assert "comment" not in actions
+def test_every_action_is_unlocked_from_day_1():
+    """Choix du 28.09 : pas de montée en charge progressive des actions, les
+    comptes neufs likent, s'abonnent et commentent dès le premier jour. Les
+    plafonds 24 h du protocole restent la seule limite."""
+    for day in (1, 4):
+        assert set(get_allowed_actions(day)) == {
+            "scroll", "watch", "like", "follow", "visit_profile", "comment"}
 
 
 def test_ramp_up_day_6_adds_follow():
@@ -70,9 +65,8 @@ def test_ramp_up_day_11_all_actions():
 
 def test_action_limits_day_1():
     limits = get_action_limits(1)
-    assert limits.get("like", 0) == 0
-    assert limits.get("follow", 0) == 0
-    assert limits.get("comment", 0) == 0
+    assert 5 <= limits["like"] <= 10
+    assert 1 <= limits["follow"] <= 3
 
 
 def test_action_limits_day_4():
