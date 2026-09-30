@@ -17,3 +17,7 @@ db/quicktest/
 
 # macOS
 .DS_Store
+
+# Captures des sessions
+db/fyp/
+db/trace/
