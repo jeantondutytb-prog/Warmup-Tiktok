@@ -157,6 +157,9 @@ class ActionEngine:
         les deux cas, on saute et on re-scrolle jusqu'à un contenu normal.
         """
         skipped = []
+        # Tentative qui a fait bouger le dernier geste : un fil qui ne cède
+        # qu'au 2e ou 3e essai se lit dans les logs, pas seulement un blocage.
+        attempt = 0
 
         for _ in range(6):
             before = await self._take_screenshot_hash()
@@ -200,9 +203,12 @@ class ActionEngine:
         if pause > 0:
             await asyncio.sleep(pause)
 
+        notes = []
+        if attempt:
+            notes.append(f"{attempt + 1}e essai")
         if skipped:
-            return f"scrolled feed (sauté {len(skipped)} {'/'.join(skipped)})"
-        return "scrolled feed"
+            notes.append(f"sauté {len(skipped)} {'/'.join(skipped)}")
+        return f"scrolled feed ({', '.join(notes)})" if notes else "scrolled feed"
 
     async def watch_video(self) -> str:
         duration = watch_duration(30)
