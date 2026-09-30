@@ -7,3 +7,13 @@ __pycache__/
 db/*.db
 logs/
 *.log
+
+# Secrets et sessions TikTok
+.env
+config/browser_cookies/
+
+# Captures des tests rapides
+db/quicktest/
+
+# macOS
+.DS_Store
