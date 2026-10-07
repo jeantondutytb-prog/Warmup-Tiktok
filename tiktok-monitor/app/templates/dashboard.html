@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Health Monitor</title>
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --surface: #1a1a2e;
+            --surface2: #16213e;
+            --border: #2a2a4a;
+            --text: #e0e0e0;
+            --text-muted: #888;
+            --healthy: #00e676;
+            --warning: #ffc107;
+            --critical: #ff5252;
+            --accent: #7c4dff;
+            --accent2: #00bcd4;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent2);
+        }
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .status-dot.live { background: var(--healthy); animation: pulse 2s infinite; }
+        .status-dot.off { background: var(--critical); }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: border-color 0.3s;
+        }
+        .card:hover { border-color: var(--accent); }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+        .card-handle {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent2);
+        }
+        .card-role {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .role-flagship { background: rgba(124,77,255,0.2); color: var(--accent); }
+        .role-secondary { background: rgba(0,188,212,0.2); color: var(--accent2); }
+        .role-lab { background: rgba(255,193,7,0.2); color: var(--warning); }
+        .role-protected { background: rgba(255,82,82,0.2); color: var(--critical); }
+        .score-section {
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .score-ring {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 0.5rem;
+        }
+        .score-ring svg { transform: rotate(-90deg); }
+        .score-ring circle {
+            fill: none;
+            stroke-width: 6;
+        }
+        .score-ring .bg { stroke: var(--border); }
+        .score-ring .fg { stroke-linecap: round; transition: stroke-dashoffset 0.8s ease; }
+        .score-value {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        .level-badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .level-healthy { background: rgba(0,230,118,0.15); color: var(--healthy); }
+        .level-warning { background: rgba(255,193,7,0.15); color: var(--warning); }
+        .level-critical { background: rgba(255,82,82,0.15); color: var(--critical); }
+        .meta {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .cookies-badge {
+            font-size: 0.7rem;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+        .cookies-yes { background: rgba(0,230,118,0.15); color: var(--healthy); }
+        .cookies-no { background: rgba(255,82,82,0.15); color: var(--critical); }
+        .sparkline {
+            margin-top: 0.8rem;
+            height: 35px;
+        }
+        .sparkline svg { width: 100%; height: 100%; }
+        .sparkline polyline {
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .card-actions {
+            margin-top: 0.8rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn-sm {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 5px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            cursor: pointer;
+        }
+        .btn-sm:hover { border-color: var(--accent); }
+        .toast-container {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .toast {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            animation: slideIn 0.3s ease;
+            max-width: 300px;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .last-update {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>TikTok Health Monitor</h1>
+        <div class="header-controls">
+            <span>
+                <span class="status-dot {{ 'live' if scheduler_running else 'off' }}" id="scheduler-dot"></span>
+                <span style="font-size:0.8rem;color:var(--text-muted)">
+                    Scheduler {{ 'actif' if scheduler_running else 'inactif' }}
+                </span>
+            </span>
+            <button class="btn" id="check-all-btn" onclick="checkAll()">Vérifier tout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="grid" id="accounts-grid">
+            {% for username, acct in accounts.items() %}
+            <div class="card" id="card-{{ username }}" data-username="{{ username }}">
+                <div class="card-header">
+                    <span class="card-handle">{{ acct.tiktok_handle }}</span>
+                    <span class="card-role role-{{ acct.role }}">{{ acct.role }}</span>
+                </div>
+                <div class="score-section">
+                    {% set score = acct.last_score if acct.last_score is not none else 0 %}
+                    {% set level = acct.last_level or 'critical' %}
+                    <div class="score-ring">
+                        <svg viewBox="0 0 90 90">
+                            <circle class="bg" cx="45" cy="45" r="38"/>
+                            <circle class="fg level-stroke-{{ level }}"
+                                cx="45" cy="45" r="38"
+                                stroke-dasharray="{{ 238.76 }}"
+                                stroke-dashoffset="{{ 238.76 - (238.76 * score / 100) }}"
+                                style="stroke: var(--{{ level }})"/>
+                        </svg>
+                        <span class="score-value" style="color: var(--{{ level }})">{{ score|round(0)|int }}</span>
+                    </div>
+                    <span class="level-badge level-{{ level }}">{{ level }}</span>
+                </div>
+                <div class="meta">
+                    <div class="meta-row">
+                        <span>Cookies</span>
+                        <span class="cookies-badge {{ 'cookies-yes' if acct.has_cookies else 'cookies-no' }}">
+                            {{ 'OK' if acct.has_cookies else 'Manquants' }}
+                        </span>
+                    </div>
+                    <div class="meta-row">
+                        <span>Dernier check</span>
+                        <span>{{ acct.last_check_at[:16] if acct.last_check_at else 'Jamais' }}</span>
+                    </div>
+                </div>
+                {% if acct.history %}
+                <div class="sparkline" id="spark-{{ username }}">
+                    <svg viewBox="0 0 200 35" preserveAspectRatio="none">
+                        {% set scores = acct.history|map(attribute='score')|list %}
+                        {% if scores|length > 1 %}
+                            {% set max_s = scores|max %}
+                            {% set min_s = scores|min %}
+                            {% set range_s = max_s - min_s if max_s != min_s else 1 %}
+                            <polyline
+                                style="stroke: var(--{{ level }})"
+                                points="{% for s in scores %}{{ (loop.index0 * 200 / (scores|length - 1))|round(1) }},{{ (35 - (s - min_s) / range_s * 30)|round(1) }} {% endfor %}"/>
+                        {% endif %}
+                    </svg>
+                </div>
+                {% endif %}
+                <div class="card-actions">
+                    <button class="btn-sm" onclick="checkOne('{{ username }}')">Check</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="last-update" id="last-update">
+            Dernière mise à jour : chargement...
+        </div>
+    </div>
+
+    <div class="toast-container" id="toasts"></div>
+
+    <script>
+        function showToast(msg, duration) {
+            const c = document.getElementById('toasts');
+            const t = document.createElement('div');
+            t.className = 'toast';
+            t.textContent = msg;
+            c.appendChild(t);
+            setTimeout(() => t.remove(), duration || 4000);
+        }
+
+        function updateTimestamp() {
+            document.getElementById('last-update').textContent =
+                'Dernière mise à jour : ' + new Date().toLocaleTimeString('fr-FR');
+        }
+
+        async function checkAll() {
+            const btn = document.getElementById('check-all-btn');
+            btn.disabled = true;
+            btn.textContent = 'En cours...';
+            try {
+                const res = await fetch('/api/check-all', { method: 'POST' });
+                if (res.ok) {
+                    showToast('Vérification terminée');
+                    setTimeout(() => location.reload(), 500);
+                } else {
+                    showToast('Erreur lors de la vérification');
+                }
+            } catch (e) {
+                showToast('Erreur réseau');
+            }
+            btn.disabled = false;
+            btn.textContent = 'Vérifier tout';
+        }
+
+        async function checkOne(username) {
+            showToast('Vérification de ' + username + '...');
+            try {
+                const res = await fetch('/api/check/' + username, { method: 'POST' });
+                if (res.ok) {
+                    showToast('Check terminé pour ' + username);
+                    setTimeout(() => location.reload(), 500);
+                } else {
+                    showToast('Erreur pour ' + username);
+                }
+            } catch (e) {
+                showToast('Erreur réseau');
+            }
+        }
+
+        function connectSSE() {
+            const source = new EventSource('/api/events');
+            source.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    if (data.type === 'check_done' && data.username) {
+                        showToast(data.username + ' : ' + (data.level || 'terminé'));
+                        updateTimestamp();
+                        setTimeout(() => location.reload(), 1000);
+                    } else if (data.type === 'check_start' && data.username) {
+                        showToast('Check en cours : ' + data.username + '...', 2000);
+                    }
+                } catch (e) {}
+            };
+            source.onerror = function() {
+                setTimeout(connectSSE, 5000);
+                source.close();
+            };
+        }
+
+        updateTimestamp();
+        connectSSE();
+    </script>
+</body>
+</html>
