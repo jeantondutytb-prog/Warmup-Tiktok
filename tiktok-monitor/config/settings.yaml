@@ -1,0 +1,28 @@
+check_interval_hours: 4
+db_url: "sqlite:///db/monitor.db"
+port: 8001
+
+accounts:
+  - username: "emma.srpt"
+    tiktok_handle: "@emma.srtp"
+    role: "flagship"
+  - username: "chloe.rtps"
+    tiktok_handle: "@chloe.rtps"
+    role: "secondary"
+  - username: "eva.drtp"
+    tiktok_handle: "@eva.drtp"
+    role: "lab"
+  - username: "emma.ftpl"
+    tiktok_handle: "@emma.ftpl"
+    role: "protected"
+
+scoring:
+  weights:
+    follower_ratio: 0.15
+    engagement_rate: 0.30
+    video_count: 0.10
+    growth_trend: 0.25
+    consistency: 0.20
+  thresholds:
+    healthy: 70
+    warning: 40
