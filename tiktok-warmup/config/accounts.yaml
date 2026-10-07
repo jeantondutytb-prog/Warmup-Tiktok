@@ -26,10 +26,31 @@ accounts:
     role: "lab"
     protected: false
 
+  - username: "zoelaurentt"
+    device_profile: "iphone_xs"
+    comment_style: "casual"
+    tiktok_row: 4
+    role: "warmup"
+    protected: false
+
+  - username: "sophie.mare"
+    device_profile: "iphone_xs"
+    comment_style: "questions"
+    tiktok_row: 5
+    role: "warmup"
+    protected: false
+
+  - username: "sarah.mche"
+    device_profile: "iphone_xs"
+    comment_style: "emoji_heavy"
+    tiktok_row: 6
+    role: "warmup"
+    protected: false
+
   # Compte Capiria (coupes hommes). Aucun warmup, aucune publication peachtint.
   - username: "emma.ftpl"
     device_profile: "iphone_xs"
     comment_style: "casual"
-    tiktok_row: 3
+    tiktok_row: 7
     role: "capiria"
     protected: true
